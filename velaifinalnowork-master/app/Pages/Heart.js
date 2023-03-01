@@ -25,6 +25,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useSelector } from "react-redux";
 import { Use } from "react-native-svg";
 import Top2 from "../components/Topcontainer2";
 
@@ -250,6 +251,7 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
 // create a component
 const Heart = ({ navigation }) => {
   // const [search, setSearch] = useState("");
+  const user_id = useSelector((state) => state.ID);
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(true);
   const [refreshing, setRefreshing] = useState(true);
@@ -263,7 +265,7 @@ const Heart = ({ navigation }) => {
   async function fetchdata() {
     console.log("i am at the dataass");
     try {
-      await fetch("http://192.168.1.19:5000/api/s_l_like_job/4", {
+      await fetch(`http://192.168.1.15:5000/api/s_l_like_job/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -278,6 +280,8 @@ const Heart = ({ navigation }) => {
           console.log(result);
           setRefreshing(false);
           var newdata = result["liked_job"];
+          console.log("im the data going to savee");
+          console.log(newdata);
           setdata(newdata);
           setloading(false);
         });
@@ -299,6 +303,7 @@ const Heart = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <View>
           {refreshing ? <ActivityIndicator /> : null}
+          {console.log(data)}
           <FlatList
             data={data}
             decelerationRate="fast"

@@ -208,7 +208,7 @@ export default function Workexperience() {
                     <View style={styles.fname}>
                       <Text style={styles.labelname}>Company Name</Text>
                       <TextInput
-                        placeholder={t("comp")}
+                        placeholder="Company name"
                         name="firstname"
                         style={styles.input}
                         placeholderTextColor="#707070"
@@ -233,7 +233,7 @@ export default function Workexperience() {
                   <View style={styles.phone}>
                     <Text style={styles.labelname}>Industry</Text>
                     <TextInput
-                      placeholder={t("Induss")}
+                      placeholder="Industry Type"
                       style={styles.input}
                       maxLength={10}
                       keyboardType="number-pad"
@@ -257,7 +257,7 @@ export default function Workexperience() {
                   <View style={styles.email}>
                     <Text style={styles.labelname}>My Designation</Text>
                     <TextInput
-                      placeholder={t("Designationnn")}
+                      placeholder="Your Designation"
                       style={styles.input}
                       keyboardType="email-address"
                       onChangeText={handleChange("email")}
@@ -278,9 +278,9 @@ export default function Workexperience() {
                     )}
                   </View>
                   <View style={styles.email}>
-                    <Text style={styles.labelname}>My Designation</Text>
+                    <Text style={styles.labelname}>Your Job Description</Text>
                     <TextInput
-                      placeholder={t("Designationnn")}
+                      placeholder="Enter Your Description"
                       style={[styles.input, { height: 100 }]}
                       keyboardType="email-address"
                       onChangeText={handleChange("email")}

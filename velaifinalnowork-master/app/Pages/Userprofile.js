@@ -45,11 +45,12 @@ import { AuthContext, LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 export default function Userprofile({ navigation }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
+  const redux_dispatch = useDispatch();
   console.log(state);
   console.log(state.userdeatils);
   const handlecall = () => {
@@ -85,6 +86,7 @@ export default function Userprofile({ navigation }) {
     getphonenumber();
   }, []);
   //to get the files
+  const [resume, setresume] = useState();
   const [fileResponse, setfileResponse] = useState(null);
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -98,8 +100,7 @@ export default function Userprofile({ navigation }) {
       console.log("result is " + response);
       // console.log(result);
       let localUri = response.uri;
-      console.log(localUri);
-      setImage(localUri);
+
       let filename = localUri.split("/").pop();
       console.log(filename);
       // Infer the type of the image
@@ -130,6 +131,7 @@ export default function Userprofile({ navigation }) {
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
+              setresume(result["updated"]);
               // setjobpostpic(result["updated"]);
               // setActivityIndicators(false);
               // setModalVisible(false);
@@ -188,6 +190,7 @@ export default function Userprofile({ navigation }) {
       mode: currentMode,
     });
   };
+  const [profilepic, setprofilepic] = useState("");
   async function takeAndUploadPhotoAsync(paras) {
     // Display the camera to the user and wait for them to take a photo or to cancel
     // the action
@@ -229,7 +232,7 @@ export default function Userprofile({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.7:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -244,7 +247,7 @@ export default function Userprofile({ navigation }) {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
-            setjobpostpic(result["updated"]);
+            setprofilepic(result["updated"]);
             setActivityIndicators(false);
             setModalVisible(false);
           });
@@ -330,11 +333,15 @@ export default function Userprofile({ navigation }) {
   const handleSubmits = async (values) => {
     console.log(values);
     values.dob = date;
+    values.number = phonenumber;
     values.gender = genderValue;
+    values.resume = resume;
+    values.profilepic = profilepic;
+    values.user_id = userID;
     console.log(values);
 
     try {
-      await fetch("http://192.168.1.19:5000/skills/api", {
+      await fetch("http://192.168.1.19:5000/api/job_see_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -346,7 +353,13 @@ export default function Userprofile({ navigation }) {
         body: JSON.stringify(values),
       })
         .then((response) => response.json())
-        .then((result) => (console.log(result), setSkills(result)));
+        .then((result) => {
+          console.log(result === "success");
+          if (result === "success") {
+            redux_dispatch({ type: "User_Details_Given" });
+            navigation.navigate("bottomhome");
+          }
+        });
     } catch (error) {
       console.warn(error);
     }
@@ -488,9 +501,9 @@ export default function Userprofile({ navigation }) {
         <Formik
           validationSchema={loginValidationSchema}
           initialValues={{
-            email: "",
+            emailid: "",
             proof: "",
-            first_name: "",
+            username: "",
             // password: "",
             // phone_number: "",
 
@@ -517,12 +530,12 @@ export default function Userprofile({ navigation }) {
                         name="firstname"
                         style={styles.input}
                         placeholderTextColor="#707070"
-                        onChangeText={handleChange("first_name")}
-                        onBlur={handleBlur("first_name")}
+                        onChangeText={handleChange("username")}
+                        onBlur={handleBlur("username")}
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.first_name && touched.first_name && (
+                      {errors.username && touched.username && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -530,7 +543,7 @@ export default function Userprofile({ navigation }) {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.first_name}
+                          {errors.username}
                         </Text>
                       )}
                     </View>
@@ -555,17 +568,17 @@ export default function Userprofile({ navigation }) {
                       </Text>
                     )}
                   </View>
-                  <View style={styles.email}>
+                  <View style={styles.emailid}>
                     <TextInput
                       placeholder={t("emailplace")}
                       style={styles.input}
                       keyboardType="email-address"
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
+                      onChangeText={handleChange("emailid")}
+                      onBlur={handleBlur("emailid")}
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.emailid && touched.emailid && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -573,11 +586,11 @@ export default function Userprofile({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.emailid}
                       </Text>
                     )}
                   </View>
-                  <View style={styles.email}>
+                  <View style={styles.emailid}>
                     <Controller
                       name="gender"
                       defaultValue=""

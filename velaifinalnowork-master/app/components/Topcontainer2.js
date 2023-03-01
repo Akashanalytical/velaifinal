@@ -40,7 +40,13 @@ export default function Top2() {
         latitude: CurrentLocation.coords.latitude,
       });
       setLocation(reverseGeocodeAddress);
-      if (location || state.location != null) {
+      if (
+        (location &&
+          location[0].district &&
+          location[0].city &&
+          location[0].region) ||
+        state.location != null
+      ) {
         setiloading(false);
         dispatch({
           type: "Set_Location",

@@ -464,9 +464,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../../App";
 import { useContext } from "react";
 import { LocalizationContext } from "../../App";
+import { useDispatch, useSelector } from "react-redux";
 export default function Profilepage({ navigation, route }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
-
+  const is_details_given = useSelector((state) => state.user_details_given);
+  // const user_type = useSelector((state) => state.job_seeker_info);
+  const userID = useSelector((state) => state.ID);
+  const states = useSelector((state) => state);
+  delete states["_persist"];
+  console.log(states);
+  const handleUpdate1 = (paras) => {
+    for (let i = 0; i < Object.keys(paras).length; i++) {
+      if (
+        !(Object.keys(paras)[i] == "user_details_given") &&
+        !(Object.keys(paras)[i] == "IS_user_login") &&
+        !(Object.keys(paras)[i] == "ID") &&
+        Object.values(paras)[i]
+      ) {
+        return Object.keys(paras)[i];
+      }
+    }
+  };
+  const userType = handleUpdate1(states);
+  // console.log;
+  console.log("im at the joob seeker");
+  console.log(userType);
   //set profile
   const [profilemodal, setprofilemodal] = useState(false);
   const [profileActivityIndicators, setprofileActivityIndicators] =
@@ -479,8 +501,8 @@ export default function Profilepage({ navigation, route }) {
   const addprofile = async (paras1, paras2) => {
     console.log("im at loading the image");
     const body = {};
-    body.userType = paras2;
-    body.user_id = 4;
+    body.userType = userType;
+    body.user_id = userID;
     body.profilepic = paras1;
     console.log(body);
     try {
@@ -560,7 +582,7 @@ export default function Profilepage({ navigation, route }) {
           .then((result) => {
             console.log("im at the a profile image");
             console.log(result);
-            const usertype = handleUpdate1(state);
+            const usertype = handleUpdate1(states);
             console.log(usertype);
             setprofilepic(result["updated"]);
             console.log("i am going to call the function to upload a image");
@@ -586,8 +608,12 @@ export default function Profilepage({ navigation, route }) {
     getdataofuser();
   }, []);
   const getdataofuser = async () => {
+    const body = {};
+    body.user_id = userID;
+    body.userType = userType;
+    console.log(body);
     try {
-      await fetch(`http://192.168.1.19:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.15:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -595,7 +621,7 @@ export default function Profilepage({ navigation, route }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(route.params),
+        body: JSON.stringify(body),
       })
         .then((response) => response.json())
         .then((result) => {
@@ -617,16 +643,6 @@ export default function Profilepage({ navigation, route }) {
           userType: Object.keys(paras)[i],
           user_id: 4,
         });
-      }
-    }
-  };
-  const handleUpdate1 = (paras) => {
-    for (let i = 0; i < Object.keys(paras).length; i++) {
-      if (
-        !(Object.keys(paras)[i] == "userdeatils") &&
-        Object.values(paras)[i]
-      ) {
-        return Object.keys(paras)[i];
       }
     }
   };
@@ -736,15 +752,17 @@ export default function Profilepage({ navigation, route }) {
         </View>
         <View style={styles.top2}>
           <View style={{ marginVertical: 10 }}>
-            <Text style={{ fontSize: 18, color: "#333" }}>{data.number}</Text>
+            <Text style={{ fontSize: 18, color: "#333" }}>
+              {data.username ? data.username : "Your name"}
+            </Text>
           </View>
           <View>
-            <Text style={{ fontSize: 18, color: "#333" }}>{data.location}</Text>
+            <Text style={{ fontSize: 18, color: "#333" }}>{data.number}</Text>
           </View>
         </View>
       </View>
       <ScrollView style={{ marginHorizontal: 20 }}>
-        {!state.job_provider_info ? (
+        {!state.job_provider_info && !is_details_given ? (
           <View
             style={{
               height: 130,

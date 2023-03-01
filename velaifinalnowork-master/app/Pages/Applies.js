@@ -14,7 +14,7 @@ import {
   Search,
   Alert,
 } from "react-native";
-
+import { useSelector } from "react-redux";
 import Top from "../components/Topcontainer";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -230,6 +230,8 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
 );
 // create a component
 function Saved({ navigation }) {
+  const user_id = useSelector((state) => state.ID);
+
   console.log(navigation);
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(true);
@@ -246,7 +248,7 @@ function Saved({ navigation }) {
     console.log("i am at the dataa");
     console.log(navigation);
     try {
-      await fetch("http://192.168.1.19:5000/api/s_apply_details/4", {
+      await fetch(`http://192.168.1.15:5000/api/s_apply_details/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

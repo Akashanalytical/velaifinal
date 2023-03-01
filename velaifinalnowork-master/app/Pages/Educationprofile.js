@@ -35,6 +35,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PhoneInput from "react-native-phone-number-input";
 import { parsePhoneNumber } from "react-native-phone-number-input";
 import Top from "../components/Topcontainer";
+import eduValidationSchema from "../components/educationvalidation";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 import { LinearGradient } from "expo-linear-gradient";
 import OtpScreen from "./Otpscreen";
@@ -43,10 +44,29 @@ import * as ImagePicker from "expo-image-picker";
 import { LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useSelector } from "react-redux";
+
 import { Button } from "react-native-paper";
 export default function EduInfo() {
   const { t, language, setlanguage } = useContext(LocalizationContext);
+  //user_ID
+  const userID = useSelector((state) => state.ID);
+  //Date 2
   const [ActivityIndicators, setActivityIndicators] = useState(false);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const showDatePicker1 = () => {
+    setDatePickerVisible(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+  const handleConfirm = (date) => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+  //
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [image, setImage] = useState(null);
   //to get skills
   useEffect(() => {
@@ -171,20 +191,46 @@ export default function EduInfo() {
   const [jobseeker, setjobseeker] = useState(false);
   const [jobprovider, setjobprovider] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const handleSubmits = (values) => {
+    values.from = date;
+    values.to = selectedDate;
+    const finalOBj = {};
+    finalOBj.education = values;
+    finalOBj.user_id = userID;
+    console.log(finalOBj);
+
+    async function submitdata(paras) {
+      try {
+        await fetch("http://192.168.1.15:5000/api/user/education", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify(paras),
+        })
+          .then((response) => response.json())
+          .then((result) => console.log(result));
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    submitdata(finalOBj);
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
 
       <ScrollView nestedScrollEnabled={true}>
         <Formik
-          validationSchema={loginValidationSchema}
+          validationSchema={eduValidationSchema}
           initialValues={{
-            // email: "",
-            // password: "",
-            // phone_number: "",
-            first_name: "",
-            last_name: "",
-            //location: "",
+            inisitute: "",
+            eduaction_level: "",
+            Grade: "",
           }}
           onSubmit={(values) => handleSubmits(values)}
         >
@@ -204,16 +250,16 @@ export default function EduInfo() {
                     <View style={styles.fname}>
                       <Text style={styles.labelname}>Insititue Name</Text>
                       <TextInput
-                        placeholder={t("inisit")}
-                        name="firstname"
+                        placeholder="Insititute Name"
+                        name="inisitute"
                         style={styles.input}
                         placeholderTextColor="#707070"
-                        onChangeText={handleChange("first_name")}
-                        onBlur={handleBlur("first_name")}
+                        onChangeText={handleChange("inisitute")}
+                        onBlur={handleBlur("inisitute")}
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.first_name && touched.first_name && (
+                      {errors.inisitute && touched.inisitute && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -221,7 +267,7 @@ export default function EduInfo() {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.first_name}
+                          {errors.inisitute}
                         </Text>
                       )}
                     </View>
@@ -229,16 +275,14 @@ export default function EduInfo() {
                   <View style={styles.phone}>
                     <Text style={styles.labelname}>Education Level</Text>
                     <TextInput
-                      placeholder={t("edulevel")}
+                      placeholder="Education Level"
                       style={styles.input}
-                      maxLength={10}
-                      keyboardType="number-pad"
                       placeholderTextColor="#707070"
-                      onChangeText={handleChange("phone_number")}
-                      onBlur={handleBlur("phone_number")}
+                      onChangeText={handleChange("eduaction_level")}
+                      onBlur={handleBlur("eduaction_level")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.eduaction_level && touched.eduaction_level && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -246,22 +290,21 @@ export default function EduInfo() {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.eduaction_level}
                       </Text>
                     )}
                   </View>
                   <View style={styles.email}>
                     <Text style={styles.labelname}>Grade(Optional)</Text>
                     <TextInput
-                      placeholder={t("emailtt")}
+                      placeholder="Marks/CGPA"
                       style={styles.input}
-                      keyboardType="email-address"
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
+                      onChangeText={handleChange("Grade")}
+                      onBlur={handleBlur("Grade")}
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.Grade && touched.Grade && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -269,7 +312,7 @@ export default function EduInfo() {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.Grade}
                       </Text>
                     )}
                   </View>
@@ -279,8 +322,6 @@ export default function EduInfo() {
                       placeholder={t("passpla")}
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
                       placeholderTextColor="#707070"
                       defaultValue={date.toDateString()}
                     />
@@ -296,17 +337,6 @@ export default function EduInfo() {
                         }}
                       />
                     </Pressable>
-                    {errors.password && touched.password && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.password}
-                      </Text>
-                    )}
                   </View>
                   <View style={styles.password}>
                     <Text style={styles.labelname}>To:</Text>
@@ -314,12 +344,10 @@ export default function EduInfo() {
                       placeholder={t("passpla")}
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
                       placeholderTextColor="#707070"
-                      defaultValue={date.toDateString()}
+                      defaultValue={selectedDate.toDateString()}
                     />
-                    <Pressable onPressOut={showDatepicker}>
+                    <Pressable onPressOut={showDatePicker1}>
                       <FontAwesome5
                         name="calendar-alt"
                         size={24}
@@ -331,17 +359,13 @@ export default function EduInfo() {
                         }}
                       />
                     </Pressable>
-                    {errors.password && touched.password && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.password}
-                      </Text>
-                    )}
+                    <DateTimePickerModal
+                      date={selectedDate}
+                      isVisible={datePickerVisible}
+                      mode="date"
+                      onConfirm={handleConfirm}
+                      onCancel={hideDatePicker}
+                    />
                   </View>
                 </View>
                 <LinearGradient
@@ -353,6 +377,7 @@ export default function EduInfo() {
                     padding: 10,
                     width: "50%",
                     alignSelf: "center",
+                    opacity: isValid ? 1 : 0.5,
                     borderRadius: 10,
                     marginVertical: 20,
                   }}

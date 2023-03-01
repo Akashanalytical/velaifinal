@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const loginValidationSchema = yup.object().shape({
-  email: yup
+  emailid: yup
     .string()
     .email("Please enter valid email")
     .required("Email Address is Required"),
@@ -12,7 +12,7 @@ const loginValidationSchema = yup.object().shape({
       "Enter a valid aadhar number"
     )
     .required("aadhar is required"),
-  first_name: yup.string().required("Firstname is required"),
+  username: yup.string().required("Firstname is required"),
 });
 
 export default loginValidationSchema;

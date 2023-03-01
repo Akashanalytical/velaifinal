@@ -31,7 +31,7 @@ export default function SelectCategory({ route }) {
   const hi = "helllo";
   console.log(`${hi},hello`);
   const [isclick, setIsclick] = useState(false);
-
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isvoice, setisvoice] = useState(true);
   const [search, setSearch] = useState("");
@@ -41,6 +41,12 @@ export default function SelectCategory({ route }) {
   const myIDnumber = useSelector((state) => state.ID);
   console.log("hi i am the id", myIDnumber);
   console.log(todoList);
+
+  //habdle job seeker
+  const handlejobseeker = () => {
+    dispatch({ type: "im_job_seeker" });
+    navigation.navigate("bottomhome");
+  };
   // console.log(route.params);
   // const userDetails = route.params.Details;
   // console.log("im at main category");
@@ -262,7 +268,7 @@ export default function SelectCategory({ route }) {
               })
             }
           > */}
-          <Pressable onPress={() => navigation.navigate("bottomhome")}>
+          <Pressable onPress={() => handlejobseeker()}>
             <LinearGradient
               colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
               start={{ x: 0, y: 0 }}

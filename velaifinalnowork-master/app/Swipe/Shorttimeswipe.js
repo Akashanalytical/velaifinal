@@ -91,6 +91,7 @@ export default function ShorttimeSwiperCard({ route }) {
   const { t, language, setlanguage, userDetails } =
     useContext(LocalizationContext);
   const isdetailsgiven = useSelector((state) => state.user_details_given);
+  const userID = useSelector((state) => state.ID);
   console.log("i am the Details ghiving shot");
   console.log(isdetailsgiven);
   // const { getstate } = useContext(AuthContext);
@@ -122,12 +123,14 @@ export default function ShorttimeSwiperCard({ route }) {
 
   //to get the API && mark liked
   async function fetchdata(paras1, paras2) {
+    console.log("im getting the fetch data function");
+    console.log(paras1);
     const body = {};
     body.s_id = paras2;
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.19:5000/api/s_like_details", {
+      await fetch("http://192.168.1.15:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -154,7 +157,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.19:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.15:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -209,18 +212,15 @@ export default function ShorttimeSwiperCard({ route }) {
   //To get the applied jobs
   const getJobs = async () => {
     try {
-      await fetch(
-        `http://192.168.1.5:5000/api/count_apply_job/${route.params.userID}`,
-        {
-          method: "GET",
-          mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      await fetch(`http://192.168.1.15:5000/api/count_apply_job/${userID}`, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => response.json())
         .then((result) => {
           console.log("giveing the applied jobss");
@@ -277,7 +277,7 @@ export default function ShorttimeSwiperCard({ route }) {
     const body = {};
     body.page = 0;
     try {
-      await fetch("http://192.168.1.19:5000/api/limit/s_like_apply_check/4", {
+      await fetch("http://192.168.1.15:5000/api/limit/s_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -306,7 +306,7 @@ export default function ShorttimeSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.19:5000/api/limit/s_like_apply_check/4", {
+      await fetch("http://192.168.1.15:5000/api/limit/s_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -339,11 +339,11 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log("im at 92");
     console.log(parameter);
     const body = {};
-    body.uid = route.params.userID;
+    body.uid = userID;
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.5:5000/api/apply_job", {
+      await fetch("http://192.168.1.15:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -363,9 +363,10 @@ export default function ShorttimeSwiperCard({ route }) {
     return <ActivityIndicator size="larger" />;
   };
   const handleLikeButtonPress = (card) => {
+    console.log("i clicked the button");
     const newCards = data.map((c) => {
       if (c.id === card.id) {
-        fetchdata(4, card.id);
+        fetchdata(userID, card.id);
         console.log(card);
         return { ...c, liked: c.liked == "true" ? "false" : "true" };
       } else {
@@ -423,8 +424,8 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log("im after");
     const handleCallclick = () => {
       console.log(data[index].isallow_tocall);
-      console.log(state.userdeatils);
-      if (data[index].isallow_tocall == "1" && state.userdeatils) {
+      console.log(isdetailsgiven);
+      if (data[index].isallow_tocall == "1" && isdetailsgiven) {
         Alert.alert(
           `Name: MR/Ms ${data[index].username}\nContact:${data[index].number}(or)\n${data[index].additionalnumber}`
         );
@@ -440,7 +441,7 @@ export default function ShorttimeSwiperCard({ route }) {
         // console.log(userDetails);
         const newCards = data.map((c) => {
           if (c.id === paras.id) {
-            setapplied(4, card.id);
+            setapplied(userID, card.id);
             console.log(card);
             return { ...c, apply: "True" };
           } else {
@@ -909,6 +910,7 @@ export default function ShorttimeSwiperCard({ route }) {
                   >
                     <TouchableOpacity
                       onPress={() => handleCallclick(data[index])}
+                      disabled={data[index].isallow_tocall == "0"}
                     >
                       <LinearGradient
                         colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
@@ -917,6 +919,7 @@ export default function ShorttimeSwiperCard({ route }) {
                           width: 160,
                           borderRadius: 10,
                           marginTop: 30,
+                          opacity: data[index].isallow_tocall == "0" ? 0.5 : 1,
                           justifyContent: "center",
                           alignItems: "center",
                           flexDirection: "row",
@@ -1103,25 +1106,25 @@ export default function ShorttimeSwiperCard({ route }) {
   useEffect(() => {
     fetchdata();
   }, []);
-  async function fetchdata() {
-    try {
-      await fetch("http://192.168.1.19:5000/api/job_title", {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      })
-        .then((response) => response.json())
-        .then((result) => (console.log(result), setworkspace(result)));
-    } catch (error) {
-      console.log("i at job titile error");
-      console.warn(error);
-    }
-  }
+  // async function fetchdata() {
+  //   try {
+  //     await fetch("http://192.168.1.15:5000/api/job_title", {
+  //       method: "GET", // *GET, POST, PUT, DELETE, etc.
+  //       mode: "cors", // no-cors, *cors, same-origin
+  //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+  //       credentials: "same-origin", // include, *same-origin, omit
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         // 'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //     })
+  //       .then((response) => response.json())
+  //       .then((result) => (console.log(result), setworkspace(result)));
+  //   } catch (error) {
+  //     console.log("i at job titile error");
+  //     console.warn(error);
+  //   }
+  // }
   const handleOnSwipedAll = () => {
     console.log("I get the daata");
     if (!swipedAll) {

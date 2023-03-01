@@ -5,6 +5,8 @@ const initialState = {
   IS_user_login: false,
   ID: "",
   user_details_given: false,
+  job_provider_info: false,
+  job_seeker_info: false,
 };
 
 const todoReducer = (state = initialState, action) => {
@@ -15,6 +17,17 @@ const todoReducer = (state = initialState, action) => {
         ...state,
         IS_user_login: true,
         ID: action.payload,
+      };
+    }
+    case "im_job_seeker": {
+      return {
+        ...state,
+        job_seeker_info: true,
+      };
+    }
+    case "get_State": {
+      return {
+        ...state,
       };
     }
     case "User_Details_Given": {

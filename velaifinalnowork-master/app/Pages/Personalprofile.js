@@ -8,9 +8,12 @@ import {
   Image,
   ActivityIndicator,
   TouchableHighlight,
+  Linking,
 } from "react-native";
 import React from "react";
 import { useContext } from "react";
+import * as DocumentPicker from "expo-document-picker";
+import { useCallback } from "react";
 import { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -27,8 +30,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useEffect } from "react";
 import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native";
-export default function PersonProfilepage({ route }) {
+import { useSelector } from "react-redux";
+export default function PersonProfilepage({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   //setprofile
   const [profilemodal, setprofilemodal] = useState(false);
@@ -42,25 +47,92 @@ export default function PersonProfilepage({ route }) {
   //for mailID
   const [emailmodalVisible, setemailmodalVisible] = useState(false);
   const [email, setemail] = useState("");
+  //for username
+  const [usernamemodal, setusernamemodal] = useState(false);
+  const [username, setusername] = useState("");
   //for designation
   const [designationmodalVisible, setdesignationmodalVisible] = useState(false);
   const [designation, setdesignation] = useState("");
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const { state, dispatch } = useContext(AuthContext);
   const [image, setImage] = useState(null);
-
+  console.log();
+  const userID = useSelector((state) => state.ID);
   const [data, setdata] = useState({});
   console.log(route.params);
   useEffect(() => {
     getdataofuser();
   }, []);
 
+  //data
+  const [resume, setresume] = useState("");
+  const [fileResponse, setfileResponse] = useState(null);
+  const handleDocumentSelection = useCallback(async () => {
+    try {
+      const response = await DocumentPicker.getDocumentAsync({
+        copyToCacheDirectory: true,
+      });
+      console.log(response);
+      setfileResponse(response);
+      console.log(response);
+      // setActivityIndicators(true);
+      console.log("result is " + response);
+      // console.log(result);
+      let localUri = response.uri;
+
+      let filename = localUri.split("/").pop();
+      console.log(filename);
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      console.log(type);
+      var formdata = new FormData();
+      formdata.append("file", { uri: localUri, name: filename, type });
+      // Upload the image using the fetch and FormData APIs
+      let FFormData = new FormData();
+      // Assume "photo" is the name of the form field the server expects
+      FFormData.append("photo", { uri: localUri, name: filename, type });
+      async function submitdata() {
+        try {
+          console.log("im inside");
+          await fetch(
+            `http://192.168.1.15:5000/api/file/aws_upload/${userID}`,
+            {
+              method: "POST",
+              mode: "cors", // no-cors, *cors, same-origin
+              // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+              // credentials: "same-origin", // include, *same-origin, omit
+              headers: {
+                // Accept: "application/json",
+                "Content-Type": "multipart/form-data",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: formdata, // body data type must match "Content-Type" header
+            }
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result);
+              setresume(result["updated"]);
+              // setjobpostpic(result["updated"]);
+              // setActivityIndicators(false);
+              // setModalVisible(false);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      submitdata();
+    } catch (err) {
+      console.warn(err);
+    }
+  }, []);
   const handleSubmit = async (data) => {
     console.log(data);
-    data.userType = route.params.userType;
+    data.userType = userType;
     try {
       await fetch(
-        `http://192.168.1.19:5000/api/user_details_update/${route.params.user_id}`,
+        `http://192.168.1.15:5000/api/user_details_update/${userID}`,
         {
           method: "PUT",
           mode: "cors", // no-cors, *cors, same-origin
@@ -81,10 +153,29 @@ export default function PersonProfilepage({ route }) {
       console.log(error);
     }
   };
-
+  const states = useSelector((state) => state);
+  delete states["_persist"];
+  console.log(states);
+  const handleUpdate1 = (paras) => {
+    for (let i = 0; i < Object.keys(paras).length; i++) {
+      if (
+        !(Object.keys(paras)[i] == "user_details_given") &&
+        !(Object.keys(paras)[i] == "IS_user_login") &&
+        !(Object.keys(paras)[i] == "ID") &&
+        Object.values(paras)[i]
+      ) {
+        return Object.keys(paras)[i];
+      }
+    }
+  };
+  const userType = handleUpdate1(states);
   const getdataofuser = async () => {
+    const body = {};
+    body.user_id = userID;
+    body.userType = userType;
+    console.log(body);
     try {
-      await fetch(`http://192.168.1.19:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.15:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -92,7 +183,7 @@ export default function PersonProfilepage({ route }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(route.params),
+        body: JSON.stringify(body),
       })
         .then((response) => response.json())
         .then((result) => {
@@ -144,18 +235,21 @@ export default function PersonProfilepage({ route }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/5`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            Accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.15:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -210,18 +304,21 @@ export default function PersonProfilepage({ route }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/5`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            Accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.15:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -254,7 +351,9 @@ export default function PersonProfilepage({ route }) {
                 }}
               >
                 <Image
-                  source={{ uri: data.profilepic }}
+                  source={{
+                    uri: profilepic == "" ? data.profilepic : profilepic,
+                  }}
                   style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
                 />
               </View>
@@ -375,7 +474,9 @@ export default function PersonProfilepage({ route }) {
             </TouchableOpacity> */}
           </View>
           <View>
-            <Text style={{ fontSize: 18, color: "#333" }}>Adayar,chennai</Text>
+            <Text style={{ fontSize: 18, color: "#333" }}>
+              {state.location == "" ? "Your Location" : state.location}
+            </Text>
           </View>
         </View>
       </View>
@@ -630,7 +731,7 @@ export default function PersonProfilepage({ route }) {
               borderBottomWidth: 0,
             }}
           >
-            DOB
+            Username
           </Text>
           <View
             style={{
@@ -640,9 +741,48 @@ export default function PersonProfilepage({ route }) {
             }}
           >
             <View>
-              <Text>24/03/2000</Text>
+              <Text>
+                <Text>{username == "" ? data.username : username}</Text>
+              </Text>
             </View>
-            <View></View>
+            <View>
+              <TouchableOpacity onPress={() => setusernamemodal(true)}>
+                <View>
+                  <Feather name="edit" size={24} color="black" />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <Modal
+              animationType="slide"
+              //animationInTiming = {13900}
+              transparent={true}
+              visible={usernamemodal}
+              animationOut="slide"
+              swipeDirection="down"
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <SafeAreaView>
+                    <Text>Enter your new Username</Text>
+                    <TextInput
+                      // value={companyname}
+                      onChangeText={(username) => setusername(username)}
+                      keyboardType="email-address"
+                      defaultValue={data.username}
+                      placeholder={"Comapny name"}
+                      style={styles.input}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setusernamemodal(false);
+                      }}
+                    >
+                      <Text>Done</Text>
+                    </TouchableOpacity>
+                  </SafeAreaView>
+                </View>
+              </View>
+            </Modal>
           </View>
         </View>
         {!state.job_provider_info ? (
@@ -671,7 +811,11 @@ export default function PersonProfilepage({ route }) {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ width: 50 }}>
-                    <AntDesign name="plus" size={24} color="black" />
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("eduexp")}
+                    >
+                      <AntDesign name="plus" size={24} color="black" />
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <Feather name="edit" size={24} color="black" />
@@ -714,7 +858,11 @@ export default function PersonProfilepage({ route }) {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ width: 50 }}>
-                    <AntDesign name="plus" size={24} color="black" />
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("workexp")}
+                    >
+                      <AntDesign name="plus" size={24} color="black" />
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <Feather name="edit" size={24} color="black" />
@@ -730,6 +878,52 @@ export default function PersonProfilepage({ route }) {
                 </View>
                 <View>
                   <Text>2017-2021</Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 20,
+                  paddingBottom: 10,
+                  borderColor: "#D9D9D9",
+                  borderBottomWidth: 0,
+                  borderWidth: 1,
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      paddingLeft: 2,
+                      borderColor: "#D9D9D9",
+                    }}
+                  >
+                    Update Resume
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity onPress={handleDocumentSelection}>
+                    <View>
+                      <Feather name="edit" size={24} color="black" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{ paddingLeft: 25, paddingBottom: 10 }}>
+                <View>
+                  <Text
+                    style={{ color: "blue" }}
+                    onPress={() => {
+                      console.log(resume),
+                        Linking.openURL(resume == "" ? data.resume : resume);
+                    }}
+                  >
+                    {resume == ""
+                      ? "Your Previous Resume"
+                      : "Your updated Resume"}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -768,14 +962,25 @@ export default function PersonProfilepage({ route }) {
                   alignItems: "center",
                 }}
                 onPress={() => {
-                  handleSubmit({
-                    username:
-                      companyname == "" ? data.companyname : companyname,
-                    emailid: email == "" ? data.emailid : email,
-                    designation:
-                      designation == "" ? data.designation : designation,
-                    profilepic: profilepic == "" ? data.profilepic : profilepic,
-                  });
+                  {
+                    userType == "job_seeker_info"
+                      ? handleSubmit({
+                          username: username == "" ? data.username : username,
+                          emailid: email == "" ? data.emailid : email,
+                          resume: resume == "" ? data.resume : resume,
+                          profilepic:
+                            profilepic == "" ? data.profilepic : profilepic,
+                        })
+                      : handleSubmit({
+                          username:
+                            companyname == "" ? data.companyname : companyname,
+                          emailid: email == "" ? data.emailid : email,
+                          designation:
+                            designation == "" ? data.designation : designation,
+                          profilepic:
+                            profilepic == "" ? data.profilepic : profilepic,
+                        });
+                  }
                 }}
               >
                 <Text

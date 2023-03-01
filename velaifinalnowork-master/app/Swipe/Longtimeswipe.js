@@ -22,6 +22,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../../App";
+import { useSelector } from "react-redux";
 
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -80,6 +81,8 @@ const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 export default function LongtimeSwiperCard({ route }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
+  const isdetailsgiven = useSelector((state) => state.user_details_given);
+  const userID = useSelector((state) => state.ID);
   console.log("post data");
   console.log(route);
   const navigation = useNavigation();
@@ -97,7 +100,7 @@ export default function LongtimeSwiperCard({ route }) {
   const handleLikeButtonPress = (card) => {
     const newCards = data.map((c) => {
       if (c.id === card.id) {
-        fetchdata(4, card.id);
+        fetchdata(userID, card.id);
         console.log(card);
         return { ...c, liked: c.liked == "true" ? "false" : "true" };
       } else {
@@ -113,7 +116,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.19:5000/api/l_like_job", {
+      await fetch("http://192.168.1.15:5000/api/l_like_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -140,7 +143,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.19:5000/api/longtime_apply_job", {
+      await fetch("http://192.168.1.15:5000/api/longtime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -248,7 +251,7 @@ export default function LongtimeSwiperCard({ route }) {
     const body = {};
     body.page = 0;
     try {
-      await fetch("http://192.168.1.19:5000/api/limit/L_like_apply_check/4", {
+      await fetch("http://192.168.1.15:5000/api/limit/L_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -302,7 +305,7 @@ export default function LongtimeSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.19:5000/api/limit/L_like_apply_check/4", {
+      await fetch("http://192.168.1.15:5000/api/limit/L_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -367,12 +370,12 @@ export default function LongtimeSwiperCard({ route }) {
     const handlenavigation = (paras) => {
       console.log("im at navigatioon");
       console.log(state);
-      if (state.userdeatils) {
+      if (isdetailsgiven) {
         console.log("you already applied");
         // console.log(userDetails);
         const newCards = data.map((c) => {
           if (c.id === paras.id) {
-            setapplied(4, card.id);
+            setapplied(userID, card.id);
             console.log(card);
             return { ...c, apply: "True" };
           } else {
@@ -380,6 +383,19 @@ export default function LongtimeSwiperCard({ route }) {
           }
         });
         setData(newCards);
+      } else {
+        navigation.navigate("Userprofile");
+      }
+    };
+    const handleCallclick = (paras) => {
+      console.log(paras);
+
+      console.log("hiiii");
+      console.log(isdetailsgiven);
+      if (paras.isallow_tocall == "1" && isdetailsgiven) {
+        Alert.alert(
+          `Name: MR/Ms ${paras.username}\nContact:${paras.number}(or)\n${paras.additionalnumber}`
+        );
       } else {
         navigation.navigate("Userprofile");
       }
@@ -911,6 +927,7 @@ export default function LongtimeSwiperCard({ route }) {
                   >
                     <TouchableOpacity
                       onPress={() => handleCallclick(data[index])}
+                      disabled={data[index].isallow_tocall == "0"}
                     >
                       <LinearGradient
                         colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
@@ -920,6 +937,7 @@ export default function LongtimeSwiperCard({ route }) {
                           borderRadius: 10,
                           marginTop: 30,
                           justifyContent: "center",
+                          opacity: data[index].isallow_tocall == "0" ? 0.5 : 1,
                           alignItems: "center",
                           flexDirection: "row",
                         }}
