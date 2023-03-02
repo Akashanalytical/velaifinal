@@ -107,18 +107,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../../App";
 import { useContext } from "react";
+import { useDispatch } from "react-redux";
 // create a component
 function Jobmainselect({ naviagtion }) {
   const { state, dispatch } = useContext(AuthContext);
+  const redux_dispatch = useDispatch();
   console.log(state);
   const navigation = useNavigation();
   const handlecall = () => {
-    dispatch({ type: "Set_Job_Provider" });
+    redux_dispatch({ type: "personal_job_provider" });
     navigation.navigate("p_job_provider", { screen: "post" });
   };
   const handlecall2 = () => {
-    dispatch({ type: "Set_Job_Provider" });
-
+    redux_dispatch({ type: "job_Provider_company" });
     navigation.navigate("c_job_provider", { screen: "post" });
   };
   console.log(navigation);

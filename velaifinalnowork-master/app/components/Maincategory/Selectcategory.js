@@ -30,6 +30,12 @@ export default function SelectCategory({ route }) {
   console.log(route);
   const hi = "helllo";
   console.log(`${hi},hello`);
+  const is_personal_provider = useSelector(
+    (state) => state.job_Provider_personal
+  );
+  const is_company_provider = useSelector(
+    (state) => state.job_Provider_company
+  );
   const [isclick, setIsclick] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -46,6 +52,17 @@ export default function SelectCategory({ route }) {
   const handlejobseeker = () => {
     dispatch({ type: "im_job_seeker" });
     navigation.navigate("bottomhome");
+  };
+  //handlejobprovider
+  const handleJobProvider = () => {
+    dispatch({ type: "job_provider" });
+    if (is_personal_provider) {
+      navigation.navigate("p_job_provider", { screen: "post" });
+    } else if (is_company_provider) {
+      navigation.navigate("c_job_provider", { screen: "post" });
+    } else {
+      navigation.navigate("Jobmainselect", { screen: "post" });
+    }
   };
   // console.log(route.params);
   // const userDetails = route.params.Details;
@@ -325,8 +342,9 @@ export default function SelectCategory({ route }) {
             //     // Details: userDetails,
             //   })
             // }
-            onPress={() =>
-              navigation.navigate("Jobmainselect", { screen: "post" })
+            onPress={
+              () => handleJobProvider()
+              // navigation.navigate("Jobmainselect", { screen: "post" })
             }
           >
             <LinearGradient

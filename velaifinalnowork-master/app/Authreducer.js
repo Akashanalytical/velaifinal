@@ -2,6 +2,8 @@ export const Inital_State = {
   userdeatils: false,
   notIntrested: false,
   job_provider_info: false,
+  job_provider_personal: false,
+  job_provider_company: false,
   job_seeker_info: false,
   isrentalseeker: false,
   isrentalprovider: false,
@@ -17,6 +19,7 @@ export const AUthReducer = (state, action) => {
         userdeatils: true,
       };
     }
+
     case "Set_Job_seeker": {
       return {
         ...state,

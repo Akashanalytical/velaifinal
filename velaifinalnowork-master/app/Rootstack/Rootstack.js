@@ -79,6 +79,12 @@ function CustomHeaderBackImage({ navigation }) {
 function Root({ navigation }) {
   // const navigation = useNavigation();
   const userlogin = useSelector((state) => state.IS_user_login);
+  const personal_job_provider = useSelector(
+    (state) => state.job_Provider_personal
+  );
+  const company_job_provider = useSelector(
+    (state) => state.job_Provider_company
+  );
   console.log(userlogin);
   console.log("inside Root");
   console.log(LocalizationContext);
@@ -108,6 +114,7 @@ function Root({ navigation }) {
             options={{ headerShown: false }}
           />
         )}
+
         <Stack.Screen
           name="short"
           component={ShortTermForms}
@@ -155,11 +162,13 @@ function Root({ navigation }) {
             },
           }}
         />
+
         <Stack.Screen
           name="p_job_provider"
           component={PersonalJobProvider}
           options={{ headerShown: true }}
         ></Stack.Screen>
+
         <Stack.Screen
           name="c_job_provider"
           component={CompanyJobProvider}

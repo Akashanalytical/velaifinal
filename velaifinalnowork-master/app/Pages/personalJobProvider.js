@@ -45,11 +45,13 @@ import { AuthContext, LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button } from "react-native-paper";
+import { useSelector } from "react-redux";
 export default function PersonalJobProvider({ navigation }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
-
+  const states = useSelector((state) => state);
+  console.log(states);
   //to store the image
   //to set the image of the user
   const [profilemodal, setprofilemodal] = useState(false);
