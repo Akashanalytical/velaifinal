@@ -35,26 +35,45 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PhoneInput from "react-native-phone-number-input";
 import { parsePhoneNumber } from "react-native-phone-number-input";
 import Top from "../components/Topcontainer";
-import eduValidationSchema from "../components/educationvalidation";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 import { LinearGradient } from "expo-linear-gradient";
+import workvalidationSchema from "../components/workformvalidation";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import OtpScreen from "./Otpscreen";
+import { useSelector } from "react-redux";
 import OTPInput from "../components/otp/otpInput";
 import * as ImagePicker from "expo-image-picker";
 import { LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useSelector } from "react-redux";
-
 import { Button } from "react-native-paper";
-export default function EduInfo({ navigation: { goBack } }) {
+export default function Workexperience2({ navigation: { goBack }, route }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
-  //user_ID
-  const userID = useSelector((state) => state.ID);
-  //Date 2
   const [ActivityIndicators, setActivityIndicators] = useState(false);
+  const [datechanged1, setdatechanged1] = useState(false);
+  const [datechanged, setdatechanged] = useState(false);
+
+  const [loading, setloading] = useState(true);
+  const [data, setdata] = useState([]);
+  const id = route.params;
+  const [image, setImage] = useState(null);
+  //set to date using this method
   const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const handleDates = (paras) => {
+    // const dateString = "2023-03-05T06:26:08.021Z";
+    const dateObj = new Date(paras);
+    const options = {
+      weekday: "short",
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    };
+    const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+    return formattedDate.split(",").join(" ");
+  };
+  const userID = useSelector((state) => state.ID);
+
   const showDatePicker1 = () => {
     setDatePickerVisible(true);
   };
@@ -63,38 +82,46 @@ export default function EduInfo({ navigation: { goBack } }) {
   };
   const handleConfirm = (date) => {
     setSelectedDate(date);
+    setdatechanged1(true);
     hideDatePicker();
   };
   //
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [image, setImage] = useState(null);
   //to get skills
   useEffect(() => {
-    async function fetchdata() {
-      try {
-        await fetch("http://192.168.1.6:5000/skills/api", {
-          method: "GET", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-          .then((response) => response.json())
-          .then((result) => (console.log(result), setSkills(result)));
-      } catch (error) {
-        console.warn(error);
-      }
-    }
     fetchdata();
   }, []);
+  async function fetchdata() {
+    const details = {};
+    details.id = route.params.id;
+    details.tableType = "experience";
+    try {
+      await fetch("http://192.168.1.15:5000/api/exp_eductaion_re", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(details),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result), setdata(result[0]);
+          setloading(false);
+        });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
   //DAte picker
   const [date, setDate] = useState(new Date());
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
+    setdatechanged(true);
   };
   const showMode = (currentMode) => {
     DateTimePickerAndroid.open({
@@ -176,34 +203,22 @@ export default function EduInfo({ navigation: { goBack } }) {
   const [genderValue, setGenderValue] = useState(null);
   const [genderOpen, setGenderOpen] = useState(false);
   const { handleSubmit, control } = useForm();
-  const onGenderOpen = useCallback(() => {
-    setCompanyOpen(false);
-  }, []);
-  const [gender, setGender] = useState([
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Prefer Not to Say", value: "neutral" },
-  ]);
-  const [isvoice, setisvoice] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
-  const [skills, setSkills] = useState(null);
-  const [jobseeker, setjobseeker] = useState(false);
-  const [jobprovider, setjobprovider] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+
   const handleSubmits = (values) => {
-    values.start = date;
-    values.end = selectedDate;
-    values.user_id = userID;
+    values.start = datechanged ? date : data.start;
+    values.end = datechanged1 ? selectedDate : data.end;
+    values.id = route.params.id;
+    values.tableType = "experience";
+    console.log(values);
     // const finalOBj = {};
-    // finalOBj.education = values;
+    // finalOBj.experience = values;
     // finalOBj.user_id = userID;
     // console.log(finalOBj);
 
     async function submitdata(paras) {
       try {
-        await fetch("http://192.168.1.15:5000/api/user/education", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+        await fetch("http://192.168.1.15:5000/api/edu_exp_update", {
+          method: "PUT", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
           credentials: "same-origin", // include, *same-origin, omit
@@ -225,17 +240,40 @@ export default function EduInfo({ navigation: { goBack } }) {
     }
     submitdata(values);
   };
+  const onGenderOpen = useCallback(() => {
+    setCompanyOpen(false);
+  }, []);
+  const [gender, setGender] = useState([
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Prefer Not to Say", value: "neutral" },
+  ]);
+  const [isvoice, setisvoice] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState([]);
+  const [skills, setSkills] = useState(null);
+  const [jobseeker, setjobseeker] = useState(false);
+  const [jobprovider, setjobprovider] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+      }}
+    >
       <StatusBar style="auto" />
-
       <ScrollView nestedScrollEnabled={true}>
         <Formik
-          validationSchema={eduValidationSchema}
+          validationSchema={workvalidationSchema}
           initialValues={{
-            inisitute: "",
-            eduaction_level: "",
-            Grade: "",
+            job_description: "",
+            Designation: "",
+            industry: "",
+            company_name: "",
           }}
           onSubmit={(values) => handleSubmits(values)}
         >
@@ -253,18 +291,18 @@ export default function EduInfo({ navigation: { goBack } }) {
                 <View style={styles.inputform}>
                   <View style={styles.name}>
                     <View style={styles.fname}>
-                      <Text style={styles.labelname}>Insititue Name</Text>
+                      <Text style={styles.labelname}>Company Name</Text>
                       <TextInput
-                        placeholder="Insititute Name"
-                        name="inisitute"
+                        placeholder="Company name"
+                        name="firstname"
                         style={styles.input}
                         placeholderTextColor="#707070"
-                        onChangeText={handleChange("inisitute")}
-                        onBlur={handleBlur("inisitute")}
-                        defaultValue=""
+                        onChangeText={handleChange("company_name")}
+                        onBlur={handleBlur("company_name")}
+                        defaultValue={data.company_name}
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.inisitute && touched.inisitute && (
+                      {errors.company_name && touched.company_name && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -272,22 +310,22 @@ export default function EduInfo({ navigation: { goBack } }) {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.inisitute}
+                          {errors.company_name}
                         </Text>
                       )}
                     </View>
                   </View>
                   <View style={styles.phone}>
-                    <Text style={styles.labelname}>Education Level</Text>
+                    <Text style={styles.labelname}>Industry</Text>
                     <TextInput
-                      placeholder="Education Level"
+                      placeholder="Industry Type"
                       style={styles.input}
                       placeholderTextColor="#707070"
-                      onChangeText={handleChange("eduaction_level")}
-                      onBlur={handleBlur("eduaction_level")}
-                      defaultValue=""
+                      onChangeText={handleChange("industry")}
+                      onBlur={handleBlur("industry")}
+                      defaultValue={data.industry}
                     />
-                    {errors.eduaction_level && touched.eduaction_level && (
+                    {errors.industry && touched.industry && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -295,21 +333,21 @@ export default function EduInfo({ navigation: { goBack } }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.eduaction_level}
+                        {errors.industry}
                       </Text>
                     )}
                   </View>
                   <View style={styles.email}>
-                    <Text style={styles.labelname}>Grade(Optional)</Text>
+                    <Text style={styles.labelname}>My Designation</Text>
                     <TextInput
-                      placeholder="Marks/CGPA"
-                      style={styles.input}
-                      onChangeText={handleChange("Grade")}
-                      onBlur={handleBlur("Grade")}
+                      placeholder="Your Designation"
+                      style={[styles.input, { textAlignVertical: "top" }]}
+                      onChangeText={handleChange("Designation")}
+                      onBlur={handleBlur("Designation")}
                       placeholderTextColor="#707070"
-                      defaultValue=""
+                      defaultValue={data.Designation}
                     />
-                    {errors.Grade && touched.Grade && (
+                    {errors.Designation && touched.Designation && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -317,7 +355,31 @@ export default function EduInfo({ navigation: { goBack } }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.Grade}
+                        {errors.Designation}
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.email}>
+                    <Text style={styles.labelname}>Your Job Description</Text>
+                    <TextInput
+                      placeholder="Enter Your Description"
+                      style={[styles.input, { height: 100 }]}
+                      onChangeText={handleChange("job_description")}
+                      onBlur={handleBlur("job_description")}
+                      placeholderTextColor="#707070"
+                      defaultValue={data.job_description}
+                      multiline={true}
+                      numberOfLines={2}
+                    />
+                    {errors.job_description && touched.job_description && (
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: "red",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {errors.job_description}
                       </Text>
                     )}
                   </View>
@@ -327,8 +389,14 @@ export default function EduInfo({ navigation: { goBack } }) {
                       placeholder={t("passpla")}
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
                       placeholderTextColor="#707070"
-                      defaultValue={date.toDateString()}
+                      defaultValue={
+                        datechanged
+                          ? date.toDateString()
+                          : handleDates(data.start)
+                      }
                     />
                     <Pressable onPressOut={showDatepicker}>
                       <FontAwesome5
@@ -342,6 +410,17 @@ export default function EduInfo({ navigation: { goBack } }) {
                         }}
                       />
                     </Pressable>
+                    {errors.password && touched.password && (
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: "red",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {errors.password}
+                      </Text>
+                    )}
                   </View>
                   <View style={styles.password}>
                     <Text style={styles.labelname}>To:</Text>
@@ -350,7 +429,11 @@ export default function EduInfo({ navigation: { goBack } }) {
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
                       placeholderTextColor="#707070"
-                      defaultValue={selectedDate.toDateString()}
+                      defaultValue={
+                        datechanged1
+                          ? selectedDate.toDateString()
+                          : handleDates(data.end)
+                      }
                     />
                     <Pressable onPressOut={showDatePicker1}>
                       <FontAwesome5
@@ -461,7 +544,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 23,
     color: "#333",
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "500",
   },
   modalView: {
     margin: 20,

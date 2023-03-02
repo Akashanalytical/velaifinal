@@ -251,16 +251,19 @@ export default function LongtimeSwiperCard({ route }) {
     const body = {};
     body.page = 0;
     try {
-      await fetch("http://192.168.1.15:5000/api/limit/L_like_apply_check/4", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
+      await fetch(
+        `http://192.168.1.15:5000/api/limit/L_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log("post result");

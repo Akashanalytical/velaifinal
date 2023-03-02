@@ -195,42 +195,42 @@ export default function ShorttimeSwiperCard({ route }) {
 
   console.log("im at aPost page");
 
-  const checkpost = (paras, Datas) => {
-    for (let i = 0; i < Datas.length; i++) {
-      console.log("Dtaa comes");
-      console.log(paras);
-      console.log("Data gettt");
-      console.log(Datas[i].post_id);
-      if (Datas[i].post_id == paras) {
-        console.log("result");
-        console.log(paras);
-        return true;
-      }
-    }
-    return false;
-  };
+  // const checkpost = (paras, Datas) => {
+  //   for (let i = 0; i < Datas.length; i++) {
+  //     console.log("Dtaa comes");
+  //     console.log(paras);
+  //     console.log("Data gettt");
+  //     console.log(Datas[i].post_id);
+  //     if (Datas[i].post_id == paras) {
+  //       console.log("result");
+  //       console.log(paras);
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // };
   //To get the applied jobs
-  const getJobs = async () => {
-    try {
-      await fetch(`http://192.168.1.15:5000/api/count_apply_job/${userID}`, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("giveing the applied jobss");
-          console.log(result);
-          setpostId(result);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getJobs = async () => {
+  //   try {
+  //     await fetch(`http://192.168.1.15:5000/api/count_apply_job/${userID}`, {
+  //       method: "GET",
+  //       mode: "cors",
+  //       cache: "no-cache",
+  //       credentials: "same-origin",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //       .then((response) => response.json())
+  //       .then((result) => {
+  //         console.log("giveing the applied jobss");
+  //         console.log(result);
+  //         setpostId(result);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   //TO CALUCULAET THE DISTANCE..
   function haversine(lat1, lon1, lat2, lon2) {
     // distance between latitudes
@@ -256,10 +256,10 @@ export default function ShorttimeSwiperCard({ route }) {
   }
 
   useEffect(() => {
-    getPermission();
+    // getPermission();
 
     getdata();
-    getJobs();
+    // getJobs();
   }, []);
 
   useEffect(() => {
@@ -277,16 +277,19 @@ export default function ShorttimeSwiperCard({ route }) {
     const body = {};
     body.page = 0;
     try {
-      await fetch("http://192.168.1.15:5000/api/limit/s_like_apply_check/4", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
+      await fetch(
+        `http://192.168.1.15:5000/api/limit/s_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log("post result");
@@ -390,6 +393,7 @@ export default function ShorttimeSwiperCard({ route }) {
     if ((index) => 0) {
       console.log("new page dynamic");
       console.log(page);
+      console.log(index);
       setIndex(index + 1);
       // console.log();
       if (index === 7 * page) {
@@ -510,8 +514,8 @@ export default function ShorttimeSwiperCard({ route }) {
                 {data[index].payment} */}
                 <TouchableOpacity
                   onPress={() => {
-                    handleLikeButtonPress(data[index]);
                     console.log("im at the like ", data[index].liked);
+                    handleLikeButtonPress(data[index]);
                   }}
                 >
                   {data[index].liked == "true" ? (
@@ -1103,9 +1107,9 @@ export default function ShorttimeSwiperCard({ route }) {
     { label: "Remote", value: "Remote" },
     { label: "offline", value: "offline" },
   ]);
-  useEffect(() => {
-    fetchdata();
-  }, []);
+  // useEffect(() => {
+  //   fetchdata();
+  // }, []);
   // async function fetchdata() {
   //   try {
   //     await fetch("http://192.168.1.15:5000/api/job_title", {

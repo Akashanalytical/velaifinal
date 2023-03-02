@@ -602,13 +602,14 @@ export default function Profilepage({ navigation, route }) {
   const [data, setdata] = useState({});
   console.log(state);
   console.log("Im at job profile");
-  console.log(route.params);
-  console.log(state.job_provider_info);
+  // console.log(route.params);
+  // console.log(state.job_provider_info);
   useEffect(() => {
     getdataofuser();
   }, []);
   const getdataofuser = async () => {
     const body = {};
+    console.log("Im at the get data of user");
     body.user_id = userID;
     body.userType = userType;
     console.log(body);
@@ -633,18 +634,11 @@ export default function Profilepage({ navigation, route }) {
     }
   };
   const handleUpdate = (paras) => {
-    for (let i = 0; i < Object.keys(paras).length; i++) {
-      if (
-        !(Object.keys(paras)[i] == "userdeatils") &&
-        Object.values(paras)[i]
-      ) {
-        console.log(Object.keys(paras)[i]);
-        navigation.navigate("personalprofile", {
-          userType: Object.keys(paras)[i],
-          user_id: 4,
-        });
-      }
-    }
+    console.log("i called the handle update");
+    navigation.navigate("personalprofile", {
+      userType: userType,
+      user_id: 4,
+    });
   };
 
   return (

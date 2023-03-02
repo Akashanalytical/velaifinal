@@ -37,39 +37,58 @@ import { parsePhoneNumber } from "react-native-phone-number-input";
 import Top from "../components/Topcontainer";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 import { LinearGradient } from "expo-linear-gradient";
+import workvalidationSchema from "../components/workformvalidation";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import OtpScreen from "./Otpscreen";
+import { useSelector } from "react-redux";
 import OTPInput from "../components/otp/otpInput";
 import * as ImagePicker from "expo-image-picker";
 import { LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button } from "react-native-paper";
-export default function Workexperience() {
+export default function Workexperience({ navigation: { goBack } }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const [image, setImage] = useState(null);
+  //set to date using this method
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const userID = useSelector((state) => state.ID);
+
+  const showDatePicker1 = () => {
+    setDatePickerVisible(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+  const handleConfirm = (date) => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+  //
+  const [selectedDate, setSelectedDate] = useState(new Date());
   //to get skills
-  useEffect(() => {
-    async function fetchdata() {
-      try {
-        await fetch("http://192.168.1.6:5000/skills/api", {
-          method: "GET", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-          .then((response) => response.json())
-          .then((result) => (console.log(result), setSkills(result)));
-      } catch (error) {
-        console.warn(error);
-      }
-    }
-    fetchdata();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchdata() {
+  //     try {
+  //       await fetch("http://192.168.1.6:5000/skills/api", {
+  //         method: "GET", // *GET, POST, PUT, DELETE, etc.
+  //         mode: "cors", // no-cors, *cors, same-origin
+  //         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+  //         credentials: "same-origin", // include, *same-origin, omit
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // 'Content-Type': 'application/x-www-form-urlencoded',
+  //         },
+  //       })
+  //         .then((response) => response.json())
+  //         .then((result) => (console.log(result), setSkills(result)));
+  //     } catch (error) {
+  //       console.warn(error);
+  //     }
+  //   }
+  //   fetchdata();
+  // }, []);
   //DAte picker
   const [date, setDate] = useState(new Date());
   const onChange = (event, selectedDate) => {
@@ -156,6 +175,42 @@ export default function Workexperience() {
   const [genderValue, setGenderValue] = useState(null);
   const [genderOpen, setGenderOpen] = useState(false);
   const { handleSubmit, control } = useForm();
+
+  const handleSubmits = (values) => {
+    values.start = date;
+    values.end = selectedDate;
+    values.user_id = userID;
+    console.log(values);
+    // const finalOBj = {};
+    // finalOBj.experience = values;
+    // finalOBj.user_id = userID;
+    // console.log(finalOBj);
+
+    async function submitdata(paras) {
+      try {
+        await fetch("http://192.168.1.15:5000/api/user/experience", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify(paras),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.user == "success") {
+              goBack();
+            }
+          });
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    submitdata(values);
+  };
   const onGenderOpen = useCallback(() => {
     setCompanyOpen(false);
   }, []);
@@ -181,14 +236,12 @@ export default function Workexperience() {
       <StatusBar style="auto" />
       <ScrollView nestedScrollEnabled={true}>
         <Formik
-          validationSchema={loginValidationSchema}
+          validationSchema={workvalidationSchema}
           initialValues={{
-            // email: "",
-            // password: "",
-            // phone_number: "",
-            first_name: "",
-            last_name: "",
-            //location: "",
+            job_description: "",
+            Designation: "",
+            industry: "",
+            company_name: "",
           }}
           onSubmit={(values) => handleSubmits(values)}
         >
@@ -212,12 +265,12 @@ export default function Workexperience() {
                         name="firstname"
                         style={styles.input}
                         placeholderTextColor="#707070"
-                        onChangeText={handleChange("first_name")}
-                        onBlur={handleBlur("first_name")}
+                        onChangeText={handleChange("company_name")}
+                        onBlur={handleBlur("company_name")}
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.first_name && touched.first_name && (
+                      {errors.company_name && touched.company_name && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -225,7 +278,7 @@ export default function Workexperience() {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.first_name}
+                          {errors.company_name}
                         </Text>
                       )}
                     </View>
@@ -235,14 +288,12 @@ export default function Workexperience() {
                     <TextInput
                       placeholder="Industry Type"
                       style={styles.input}
-                      maxLength={10}
-                      keyboardType="number-pad"
                       placeholderTextColor="#707070"
-                      onChangeText={handleChange("phone_number")}
-                      onBlur={handleBlur("phone_number")}
+                      onChangeText={handleChange("industry")}
+                      onBlur={handleBlur("industry")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.industry && touched.industry && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -250,7 +301,7 @@ export default function Workexperience() {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.industry}
                       </Text>
                     )}
                   </View>
@@ -258,14 +309,13 @@ export default function Workexperience() {
                     <Text style={styles.labelname}>My Designation</Text>
                     <TextInput
                       placeholder="Your Designation"
-                      style={styles.input}
-                      keyboardType="email-address"
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
+                      style={[styles.input, { textAlignVertical: "top" }]}
+                      onChangeText={handleChange("Designation")}
+                      onBlur={handleBlur("Designation")}
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.Designation && touched.Designation && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -273,7 +323,7 @@ export default function Workexperience() {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.Designation}
                       </Text>
                     )}
                   </View>
@@ -282,15 +332,14 @@ export default function Workexperience() {
                     <TextInput
                       placeholder="Enter Your Description"
                       style={[styles.input, { height: 100 }]}
-                      keyboardType="email-address"
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
+                      onChangeText={handleChange("job_description")}
+                      onBlur={handleBlur("job_description")}
                       placeholderTextColor="#707070"
                       defaultValue=""
                       multiline={true}
                       numberOfLines={2}
                     />
-                    {errors.email && touched.email && (
+                    {errors.job_description && touched.job_description && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -298,7 +347,7 @@ export default function Workexperience() {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.job_description}
                       </Text>
                     )}
                   </View>
@@ -343,12 +392,10 @@ export default function Workexperience() {
                       placeholder={t("passpla")}
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
                       placeholderTextColor="#707070"
-                      defaultValue={date.toDateString()}
+                      defaultValue={selectedDate.toDateString()}
                     />
-                    <Pressable onPressOut={showDatepicker}>
+                    <Pressable onPressOut={showDatePicker1}>
                       <FontAwesome5
                         name="calendar-alt"
                         size={24}
@@ -360,17 +407,13 @@ export default function Workexperience() {
                         }}
                       />
                     </Pressable>
-                    {errors.password && touched.password && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.password}
-                      </Text>
-                    )}
+                    <DateTimePickerModal
+                      date={selectedDate}
+                      isVisible={datePickerVisible}
+                      mode="date"
+                      onConfirm={handleConfirm}
+                      onCancel={hideDatePicker}
+                    />
                   </View>
                 </View>
                 <LinearGradient
@@ -382,6 +425,7 @@ export default function Workexperience() {
                     padding: 10,
                     width: "50%",
                     alignSelf: "center",
+                    opacity: isValid ? 1 : 0.5,
                     borderRadius: 10,
                     marginVertical: 20,
                   }}

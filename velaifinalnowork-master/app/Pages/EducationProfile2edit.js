@@ -48,13 +48,40 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSelector } from "react-redux";
 
 import { Button } from "react-native-paper";
-export default function EduInfo({ navigation: { goBack } }) {
+export default function EduInfo2({ navigation: { goBack }, route }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const [loading, setloading] = useState(true);
+  console.log(route.params.id);
   //user_ID
   const userID = useSelector((state) => state.ID);
+
+  //  const onRefresh = React.useCallback(() => {
+  //    setRefreshing(true);
+  //    setTimeout(() => {
+  //      setRefreshing(false);
+  //    }, 2000);
+  //  }, []);
+  //handleDates
+  const handleDates = (paras) => {
+    // const dateString = "2023-03-05T06:26:08.021Z";
+    const dateObj = new Date(paras);
+    const options = {
+      weekday: "short",
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    };
+    const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+    return formattedDate.split(",").join(" ");
+  };
   //Date 2
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [datechanged1, setdatechanged1] = useState(false);
+
   const showDatePicker1 = () => {
     setDatePickerVisible(true);
   };
@@ -63,38 +90,49 @@ export default function EduInfo({ navigation: { goBack } }) {
   };
   const handleConfirm = (date) => {
     setSelectedDate(date);
+    setdatechanged1(true);
     hideDatePicker();
   };
   //
+  const [data, setdata] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [image, setImage] = useState(null);
   //to get skills
   useEffect(() => {
-    async function fetchdata() {
-      try {
-        await fetch("http://192.168.1.6:5000/skills/api", {
-          method: "GET", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-          .then((response) => response.json())
-          .then((result) => (console.log(result), setSkills(result)));
-      } catch (error) {
-        console.warn(error);
-      }
-    }
     fetchdata();
   }, []);
+  async function fetchdata() {
+    const details = {};
+    details.id = route.params.id;
+    details.tableType = "education";
+    try {
+      await fetch("http://192.168.1.15:5000/api/exp_eductaion_re", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(details),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result), setdata(result[0]);
+          setloading(false);
+        });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
   //DAte picker
   const [date, setDate] = useState(new Date());
+  const [datechanged, setdatechanged] = useState(false);
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
+    setdatechanged(true);
   };
   const showMode = (currentMode) => {
     DateTimePickerAndroid.open({
@@ -192,18 +230,21 @@ export default function EduInfo({ navigation: { goBack } }) {
   const [jobprovider, setjobprovider] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const handleSubmits = (values) => {
-    values.start = date;
-    values.end = selectedDate;
-    values.user_id = userID;
+    values.start = datechanged ? date : data.start;
+    values.end = datechanged1 ? selectedDate : data.end;
+    values.id = route.params.id;
+    values.tableType = "education";
     // const finalOBj = {};
     // finalOBj.education = values;
     // finalOBj.user_id = userID;
     // console.log(finalOBj);
 
     async function submitdata(paras) {
+      console.log("Im at submitting thedata");
+      console;
       try {
-        await fetch("http://192.168.1.15:5000/api/user/education", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+        await fetch("http://192.168.1.15:5000/api/edu_exp_update", {
+          method: "PUT", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
           credentials: "same-origin", // include, *same-origin, omit
@@ -215,6 +256,7 @@ export default function EduInfo({ navigation: { goBack } }) {
         })
           .then((response) => response.json())
           .then((result) => {
+            console.log(result);
             if (result.user == "success") {
               goBack();
             }
@@ -225,6 +267,9 @@ export default function EduInfo({ navigation: { goBack } }) {
     }
     submitdata(values);
   };
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
@@ -254,6 +299,8 @@ export default function EduInfo({ navigation: { goBack } }) {
                   <View style={styles.name}>
                     <View style={styles.fname}>
                       <Text style={styles.labelname}>Insititue Name</Text>
+                      {console.log("im at dats return type")}
+                      {console.log(data)}
                       <TextInput
                         placeholder="Insititute Name"
                         name="inisitute"
@@ -261,7 +308,7 @@ export default function EduInfo({ navigation: { goBack } }) {
                         placeholderTextColor="#707070"
                         onChangeText={handleChange("inisitute")}
                         onBlur={handleBlur("inisitute")}
-                        defaultValue=""
+                        defaultValue={data.inisitute}
                         underlineColorAndroid={"transparent"}
                       />
                       {errors.inisitute && touched.inisitute && (
@@ -285,7 +332,7 @@ export default function EduInfo({ navigation: { goBack } }) {
                       placeholderTextColor="#707070"
                       onChangeText={handleChange("eduaction_level")}
                       onBlur={handleBlur("eduaction_level")}
-                      defaultValue=""
+                      defaultValue={data.eduaction_level}
                     />
                     {errors.eduaction_level && touched.eduaction_level && (
                       <Text
@@ -307,7 +354,7 @@ export default function EduInfo({ navigation: { goBack } }) {
                       onChangeText={handleChange("Grade")}
                       onBlur={handleBlur("Grade")}
                       placeholderTextColor="#707070"
-                      defaultValue=""
+                      defaultValue={data.Grade}
                     />
                     {errors.Grade && touched.Grade && (
                       <Text
@@ -328,7 +375,11 @@ export default function EduInfo({ navigation: { goBack } }) {
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
                       placeholderTextColor="#707070"
-                      defaultValue={date.toDateString()}
+                      defaultValue={
+                        datechanged
+                          ? date.toDateString()
+                          : handleDates(data.start)
+                      }
                     />
                     <Pressable onPressOut={showDatepicker}>
                       <FontAwesome5
@@ -350,7 +401,11 @@ export default function EduInfo({ navigation: { goBack } }) {
                       style={[styles.input, { position: "relative" }]}
                       underlineColorAndroid="transparent"
                       placeholderTextColor="#707070"
-                      defaultValue={selectedDate.toDateString()}
+                      defaultValue={
+                        datechanged1
+                          ? selectedDate.toDateString()
+                          : handleDates(data.end)
+                      }
                     />
                     <Pressable onPressOut={showDatePicker1}>
                       <FontAwesome5
@@ -405,10 +460,10 @@ export default function EduInfo({ navigation: { goBack } }) {
                       style={{
                         textAlign: "center",
                         fontWeight: "600",
-                        color: isValid ? "black" : "white",
+                        color: "white",
                       }}
                     >
-                      Create
+                      Update
                     </Text>
                   </TouchableOpacity>
                 </LinearGradient>

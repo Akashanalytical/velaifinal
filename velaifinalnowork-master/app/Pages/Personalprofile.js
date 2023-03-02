@@ -8,7 +8,10 @@ import {
   Image,
   ActivityIndicator,
   TouchableHighlight,
+  RefreshControl,
   Linking,
+  LogBox,
+  FlatList,
 } from "react-native";
 import React from "react";
 import { useContext } from "react";
@@ -31,6 +34,10 @@ import { useEffect } from "react";
 import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
+
+//const data of the Education details/workexperience details
+const dummyArray = [{ id: 1, value: "ADD Your Deatils Here" }];
+
 export default function PersonProfilepage({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -52,6 +59,8 @@ export default function PersonProfilepage({ route, navigation }) {
   const [username, setusername] = useState("");
   //for designation
   const [designationmodalVisible, setdesignationmodalVisible] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  //
   const [designation, setdesignation] = useState("");
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const { state, dispatch } = useContext(AuthContext);
@@ -62,7 +71,20 @@ export default function PersonProfilepage({ route, navigation }) {
   console.log(route.params);
   useEffect(() => {
     getdataofuser();
+    getexperienceataofuser();
+    getedudataofuser();
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getdataofuser();
+    getexperienceataofuser();
+    getedudataofuser();
+    setRefreshing(false);
+  }, []);
+  //getData
+  const [eduexp, seteduexp] = useState(dummyArray);
+  const [workexp, setworkexp] = useState(dummyArray);
 
   //data
   const [resume, setresume] = useState("");
@@ -189,6 +211,149 @@ export default function PersonProfilepage({ route, navigation }) {
         .then((result) => {
           console.log(result);
           setdata(result["profile_info"]);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //education info
+  const ItemSeparatorView = () => {
+    return (
+      //Item Separator
+      <View
+        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
+      />
+    );
+  };
+  const getedudataofuser = async () => {
+    // const body = {};
+    // body.user_id = userID;
+    // body.userType = userType;
+    // console.log(body);
+    try {
+      await fetch(`http://192.168.1.15:5000/api/education/${userID}`, {
+        method: "GET",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          seteduexp(result["education"]);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //edu info flatlist
+  const eduinfodetails = ({ item }) => {
+    const fromdate_string = item.start;
+    const year1 = new Date(fromdate_string).getFullYear();
+    const to_string = item.end;
+    const year2 = new Date(to_string).getFullYear();
+    return (
+      <View
+        style={{
+          padding: 10,
+          paddingRight: 20,
+          flexDirection: "row",
+
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <View>
+            <Text>{item.eduaction_level}</Text>
+          </View>
+          <View>
+            <Text>{item.inisitute}</Text>
+          </View>
+          <View>
+            <Text>
+              {year1}-{year2}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("eduexp2", { id: item.id })}
+          >
+            <View>
+              <Feather name="edit" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  //work flatlist data
+  const workinfodetails = ({ item }) => {
+    const fromdate_string = item.start;
+    const year1 = new Date(fromdate_string).getFullYear();
+    const to_string = item.end;
+    const year2 = new Date(to_string).getFullYear();
+    return (
+      <View
+        style={{
+          padding: 10,
+          paddingRight: 20,
+          flexDirection: "row",
+
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <View>
+            <Text>{item.Designation}</Text>
+          </View>
+          <View>
+            <Text>{item.company_name}</Text>
+          </View>
+          <View>
+            <Text>
+              {year1}-{year2}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("workexp2", { id: item.id })}
+          >
+            <View>
+              <Feather name="edit" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const getexperienceataofuser = async () => {
+    // const body = {};
+    // body.user_id = userID;
+    // body.userType = userType;
+    // console.log(body);
+    try {
+      await fetch(`http://192.168.1.15:5000/api/experience/${userID}`, {
+        method: "GET",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          setworkexp(result["experience"]);
         });
     } catch (error) {
       console.log(error);
@@ -439,7 +604,7 @@ export default function PersonProfilepage({ route, navigation }) {
         </Modal>
         <View style={styles.top2}>
           <View style={{ marginVertical: 5, flexDirection: "row" }}>
-            <Text style={{ fontSize: 18, color: "#333" }}>+91 8220553838</Text>
+            <Text style={{ fontSize: 18, color: "#333" }}>{data.number}</Text>
             <LinearGradient
               colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
               style={{
@@ -480,7 +645,13 @@ export default function PersonProfilepage({ route, navigation }) {
           </View>
         </View>
       </View>
-      <ScrollView style={{ marginBottom: 50 }}>
+      <ScrollView
+        style={{ marginBottom: 50 }}
+        nestedScrollEnabled={true}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View
           style={{
             height: 130,
@@ -817,21 +988,18 @@ export default function PersonProfilepage({ route, navigation }) {
                       <AntDesign name="plus" size={24} color="black" />
                     </TouchableOpacity>
                   </View>
-                  <View>
-                    <Feather name="edit" size={24} color="black" />
-                  </View>
                 </View>
               </View>
               <View style={{ paddingLeft: 25, paddingBottom: 10 }}>
-                <View>
-                  <Text>B.Tech(IT)</Text>
-                </View>
-                <View>
-                  <Text>Anna University,chennai</Text>
-                </View>
-                <View>
-                  <Text>2017-2021</Text>
-                </View>
+                <FlatList
+                  nestedScrollEnabled={true}
+                  data={eduexp}
+                  //data defined in constructor
+                  ItemSeparatorComponent={ItemSeparatorView}
+                  //Item Separator View
+                  renderItem={eduinfodetails}
+                  keyExtractor={(item, index) => index.toString()}
+                />
               </View>
             </View>
             <View>
@@ -864,21 +1032,17 @@ export default function PersonProfilepage({ route, navigation }) {
                       <AntDesign name="plus" size={24} color="black" />
                     </TouchableOpacity>
                   </View>
-                  <View>
-                    <Feather name="edit" size={24} color="black" />
-                  </View>
                 </View>
               </View>
               <View style={{ paddingLeft: 25, paddingBottom: 10 }}>
-                <View>
-                  <Text>Process Asssociate - 7months</Text>
-                </View>
-                <View>
-                  <Text>Zeal Zoft private limited</Text>
-                </View>
-                <View>
-                  <Text>2017-2021</Text>
-                </View>
+                <FlatList
+                  data={workexp}
+                  //data defined in constructor
+                  ItemSeparatorComponent={ItemSeparatorView}
+                  //Item Separator View
+                  renderItem={workinfodetails}
+                  keyExtractor={(item, index) => index.toString()}
+                />
               </View>
             </View>
             <View>

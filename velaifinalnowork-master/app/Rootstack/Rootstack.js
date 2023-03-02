@@ -6,7 +6,9 @@ import Posts from "../Pages/Post";
 import { NavigationContainer } from "@react-navigation/native";
 import Landing from "../Pages/Landing";
 import { Ionicons } from "@expo/vector-icons";
+import EduInfo2 from "../Pages/EducationProfile2edit";
 import MainScreen from "../Pages/MainScreen";
+import Workexperience2 from "../Pages/workexperience2";
 import Mobillogin from "../Pages/MobileLogin";
 import UserInfoTwo from "../Pages/UserInfoEdit";
 import SelectRole from "../Pages/Roleslectionpage";
@@ -1020,6 +1022,53 @@ function Root({ navigation }) {
           }}
         />
         <Stack.Screen
+          name="workexp2"
+          component={Workexperience2}
+          options={{
+            headerRight: (props) => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: "70%",
+                  }}
+                >
+                  <Ionicons name="md-globe-outline" size={24} color="#333" />
+                  <Pressable>
+                    <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                  </Pressable>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginHorizontal: 12,
+                  }}
+                >
+                  <Pressable onPress={() => setisvoice(!isvoice)}>
+                    {isvoice ? (
+                      <MaterialCommunityIcons
+                        name="account-voice"
+                        size={26}
+                        color="#333"
+                      />
+                    ) : (
+                      <MaterialCommunityIcons
+                        name="account-voice-off"
+                        size={24}
+                        color="black"
+                      />
+                    )}
+                  </Pressable>
+                </View>
+              </View>
+            ),
+            headerStyle: {
+              backgroundColor: "#fff",
+            },
+          }}
+        />
+        <Stack.Screen
           name="register"
           component={UserInfo}
           options={{ headerShown: false }}
@@ -1027,6 +1076,11 @@ function Root({ navigation }) {
         <Stack.Screen
           name="rentalswipe"
           component={RentalSwiperCard}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="eduexp2"
+          component={EduInfo2}
           options={{ headerShown: true }}
         />
         <Stack.Screen
