@@ -31,10 +31,10 @@ export default function SelectCategory({ route }) {
   const hi = "helllo";
   console.log(`${hi},hello`);
   const is_personal_provider = useSelector(
-    (state) => state.job_Provider_personal
+    (state) => state.job_provider_personal_user_details
   );
   const is_company_provider = useSelector(
-    (state) => state.job_Provider_company
+    (state) => state.job_Provider_company_user_details
   );
   const [isclick, setIsclick] = useState(false);
   const dispatch = useDispatch();
@@ -55,11 +55,10 @@ export default function SelectCategory({ route }) {
   };
   //handlejobprovider
   const handleJobProvider = () => {
+    console.log(is_personal_provider, is_company_provider);
     dispatch({ type: "job_provider" });
-    if (is_personal_provider) {
-      navigation.navigate("p_job_provider", { screen: "post" });
-    } else if (is_company_provider) {
-      navigation.navigate("c_job_provider", { screen: "post" });
+    if (is_personal_provider || is_company_provider) {
+      navigation.navigate("jobprovidebottamtab");
     } else {
       navigation.navigate("Jobmainselect", { screen: "post" });
     }

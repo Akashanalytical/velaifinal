@@ -115,11 +115,11 @@ function Jobmainselect({ naviagtion }) {
   console.log(state);
   const navigation = useNavigation();
   const handlecall = () => {
-    redux_dispatch({ type: "personal_job_provider" });
+    // redux_dispatch({ type: "personal_job_provider" });
     navigation.navigate("p_job_provider", { screen: "post" });
   };
   const handlecall2 = () => {
-    redux_dispatch({ type: "job_Provider_company" });
+    // redux_dispatch({ type: "job_Provider_company" });
     navigation.navigate("c_job_provider", { screen: "post" });
   };
   console.log(navigation);

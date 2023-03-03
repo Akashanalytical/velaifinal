@@ -150,11 +150,13 @@ export default function PersonProfilepage({ route, navigation }) {
     }
   }, []);
   const handleSubmit = async (data) => {
+    data.userType = states.job_provider_info
+      ? "job_provider_info"
+      : "job_seeker_info";
     console.log(data);
-    data.userType = userType;
     try {
       await fetch(
-        `http://192.168.1.15:5000/api/user_details_update/${userID}`,
+        `http://192.168.1.11:5000/api/user_details_update/${userID}`,
         {
           method: "PUT",
           mode: "cors", // no-cors, *cors, same-origin
@@ -194,10 +196,12 @@ export default function PersonProfilepage({ route, navigation }) {
   const getdataofuser = async () => {
     const body = {};
     body.user_id = userID;
-    body.userType = userType;
+    body.userType = states.job_provider_info
+      ? "job_provider_info"
+      : "job_seeker_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.15:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.11:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -231,7 +235,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.15:5000/api/education/${userID}`, {
+      await fetch(`http://192.168.1.11:5000/api/education/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -507,22 +511,7 @@ export default function PersonProfilepage({ route, navigation }) {
               alignItems: "center",
             }}
           >
-            {!(data.profilepic == null) ? (
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                <Image
-                  source={{
-                    uri: profilepic == "" ? data.profilepic : profilepic,
-                  }}
-                  style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
-                />
-              </View>
-            ) : (
+            {data.profilepic == "" && profile == "" ? (
               <>
                 <FontAwesome name="user-circle" size={80} color="#D9D9D9" />
                 <MaterialCommunityIcons
@@ -532,6 +521,21 @@ export default function PersonProfilepage({ route, navigation }) {
                   style={{ position: "relative", bottom: 28, left: 30 }}
                 />
               </>
+            ) : (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <Image
+                  source={{
+                    uri: data.profilepic == "" ? profile : data.profilepic,
+                  }}
+                  style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
+                />
+              </View>
             )}
           </View>
         </TouchableOpacity>
@@ -680,7 +684,7 @@ export default function PersonProfilepage({ route, navigation }) {
             </View>
           </View>
         </View>
-        {state.job_provider_info ? (
+        {states.job_provider_info ? (
           <>
             <View>
               <Text
@@ -701,7 +705,9 @@ export default function PersonProfilepage({ route, navigation }) {
                 }}
               >
                 <View>
-                  <Text>{companyname == "" ? data.username : companyname}</Text>
+                  <Text>
+                    {companyname == "" ? data.companyname : companyname}
+                  </Text>
                 </View>
                 <TouchableOpacity onPress={() => setcompanymodalVisible(true)}>
                   <View>
@@ -956,7 +962,7 @@ export default function PersonProfilepage({ route, navigation }) {
             </Modal>
           </View>
         </View>
-        {!state.job_provider_info ? (
+        {!states.job_provider_info ? (
           <>
             <View>
               <View
@@ -1127,7 +1133,8 @@ export default function PersonProfilepage({ route, navigation }) {
                 }}
                 onPress={() => {
                   {
-                    userType == "job_seeker_info"
+                    console.log(states.job_seeker_info);
+                    states.job_seeker_info
                       ? handleSubmit({
                           username: username == "" ? data.username : username,
                           emailid: email == "" ? data.emailid : email,
@@ -1136,7 +1143,8 @@ export default function PersonProfilepage({ route, navigation }) {
                             profilepic == "" ? data.profilepic : profilepic,
                         })
                       : handleSubmit({
-                          username:
+                          username: username == "" ? data.username : username,
+                          companyname:
                             companyname == "" ? data.companyname : companyname,
                           emailid: email == "" ? data.emailid : email,
                           designation:

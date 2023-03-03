@@ -501,12 +501,14 @@ export default function Profilepage({ navigation, route }) {
   const addprofile = async (paras1, paras2) => {
     console.log("im at loading the image");
     const body = {};
-    body.userType = userType;
+    body.userType = states.job_seeker_info
+      ? "job_seeker_info"
+      : "job_provider_info";
     body.user_id = userID;
     body.profilepic = paras1;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.19:5000/api/prfilepic_update`, {
+      await fetch(`http://192.168.1.11:5000/api/prfilepic_update`, {
         method: "PUT",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -566,18 +568,21 @@ export default function Profilepage({ navigation, route }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/4`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            Accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log("im at the a profile image");
@@ -611,10 +616,12 @@ export default function Profilepage({ navigation, route }) {
     const body = {};
     console.log("Im at the get data of user");
     body.user_id = userID;
-    body.userType = userType;
+    body.userType = states.job_seeker_info
+      ? "job_seeker_info"
+      : "job_provider_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.15:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.11:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -651,20 +658,7 @@ export default function Profilepage({ navigation, route }) {
           }}
         >
           <TouchableOpacity onPress={() => setprofilemodal(true)}>
-            {!(data.profilepic == null) ? (
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                <Image
-                  source={{ uri: data.profilepic }}
-                  style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
-                />
-              </View>
-            ) : (
+            {data.profilepic == "" && profile == "" ? (
               <>
                 <FontAwesome name="user-circle" size={80} color="#D9D9D9" />
                 <MaterialCommunityIcons
@@ -674,6 +668,21 @@ export default function Profilepage({ navigation, route }) {
                   style={{ position: "relative", bottom: 28, left: 30 }}
                 />
               </>
+            ) : (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <Image
+                  source={{
+                    uri: data.profilepic == "" ? profile : data.profilepic,
+                  }}
+                  style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
+                />
+              </View>
             )}
           </TouchableOpacity>
           <Modal
@@ -756,7 +765,7 @@ export default function Profilepage({ navigation, route }) {
         </View>
       </View>
       <ScrollView style={{ marginHorizontal: 20 }}>
-        {!state.job_provider_info && !is_details_given ? (
+        {!states.job_provider_info && !is_details_given ? (
           <View
             style={{
               height: 130,

@@ -33,6 +33,7 @@ import { useContext } from "react";
 import { useCallback } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import providerValidationSchema from "../components/jobProviderValidation";
 import PhoneInput from "react-native-phone-number-input";
 import { parsePhoneNumber } from "react-native-phone-number-input";
 import Top from "../components/Topcontainer";
@@ -45,13 +46,14 @@ import { AuthContext, LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 export default function PersonalJobProvider({ navigation }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
+  const Redux_dispatch = useDispatch();
   const states = useSelector((state) => state);
-  console.log(states);
+  console.log(states.job_provider_personal_user_details);
   //to store the image
   //to set the image of the user
   const [profilemodal, setprofilemodal] = useState(false);
@@ -111,18 +113,21 @@ export default function PersonalJobProvider({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/4`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            Accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              Accept: "application/json",
+              // "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log("im at the a profile image");
@@ -304,7 +309,7 @@ export default function PersonalJobProvider({ navigation }) {
   async function fetchdata(paras1) {
     console.log(paras1);
     try {
-      await fetch("http://192.168.1.19:5000/api/job_pro_userinfo_details", {
+      await fetch("http://192.168.1.11:5000/api/job_pro_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -317,7 +322,10 @@ export default function PersonalJobProvider({ navigation }) {
       })
         .then((response) => response.json())
         .then((result) => {
+          console.log(result);
           if (result == "success") {
+            console.log("im at the sucess");
+            Redux_dispatch({ type: "personal_job_provider" });
             navigation.navigate("jobprovidebottamtab");
           }
         });
@@ -325,8 +333,9 @@ export default function PersonalJobProvider({ navigation }) {
       console.warn(error);
     }
   }
+  const userID = useSelector((state) => state.ID);
   const handlesubmits = (paras) => {
-    paras.user_id = 4;
+    paras.user_id = userID;
     paras.profilepic = profilepic;
     paras.gender = genderValue;
     console.log(paras);
@@ -455,7 +464,7 @@ export default function PersonalJobProvider({ navigation }) {
           </View>
         </View>
         <Formik
-          //   validationSchema={loginValidationSchema}
+          validationSchema={providerValidationSchema}
           initialValues={{
             // email: "",
             // password: "",
@@ -464,8 +473,7 @@ export default function PersonalJobProvider({ navigation }) {
             emailid: "",
             number: "",
             proof: "",
-            location: " ",
-
+            location: "",
             //location: "",
           }}
           onSubmit={(values) => handlesubmits(values)}
@@ -494,7 +502,7 @@ export default function PersonalJobProvider({ navigation }) {
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.first_name && touched.first_name && (
+                      {errors.username && touched.username && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -502,7 +510,7 @@ export default function PersonalJobProvider({ navigation }) {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.first_name}
+                          {errors.username}
                         </Text>
                       )}
                     </View>
@@ -518,7 +526,7 @@ export default function PersonalJobProvider({ navigation }) {
                       onBlur={handleBlur("number")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.number && touched.number && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -526,7 +534,7 @@ export default function PersonalJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.number}
                       </Text>
                     )}
                   </View>
@@ -540,7 +548,7 @@ export default function PersonalJobProvider({ navigation }) {
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.emailid && touched.emailid && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -548,20 +556,20 @@ export default function PersonalJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.emailid}
                       </Text>
                     )}
                   </View>
                   <View style={styles.email}>
                     <TextInput
-                      placeholder="Enter adhar number/ PAN number"
+                      placeholder="Enter adhar number"
                       style={styles.input}
                       onChangeText={handleChange("proof")}
                       onBlur={handleBlur("proof")}
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.proof && touched.proof && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -569,7 +577,7 @@ export default function PersonalJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.proof}
                       </Text>
                     )}
                   </View>
@@ -582,7 +590,7 @@ export default function PersonalJobProvider({ navigation }) {
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.location && touched.location && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -590,7 +598,7 @@ export default function PersonalJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.location}
                       </Text>
                     )}
                   </View>
@@ -775,6 +783,7 @@ export default function PersonalJobProvider({ navigation }) {
                       padding: 10,
                       width: "50%",
                       alignSelf: "center",
+                      opacity: isValid ? 1 : 0.5,
                       borderRadius: 10,
                       marginVertical: 20,
                     }}
@@ -798,7 +807,7 @@ export default function PersonalJobProvider({ navigation }) {
                         style={{
                           textAlign: "center",
                           fontWeight: "600",
-                          color: isValid ? "black" : "white",
+                          color: "white",
                         }}
                       >
                         Create

@@ -11,23 +11,50 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useContext } from "react";
 import { LocalizationContext } from "../../App";
 import Checkbox from "expo-checkbox";
 import { AntDesign } from "@expo/vector-icons";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 
-const ShortTermForms = () => {
+//short term form
+const schema = yup.object().shape({
+  job_title: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  // workspace: yup
+  //   .string()
+  //   .required("workspace is required")
+  //   .typeError("workspace cannot be null"),
+  location: yup.string().required("location of the job is required"),
+  Duration: yup
+    .string()
+    .typeError("Duration cannot be null")
+    .required("Duration is required"),
+  per: yup
+    .string()
+    .required("salary details cant be empty")
+    .typeError("job title  cannot be null"),
+  Salary: yup.string().required("Please enter the salary Details"),
+  // mobile_number: yup.string().required("Mobile number is required"),
+  // email: yup.string().required("email id is required"),
+});
+
+const ShortTermForms = ({ navigation: { goBack } }) => {
   const [genderOpen, setGenderOpen] = useState(false);
   const [genderValue, setGenderValue] = useState(null);
   const { t, language, setlanguage } = useContext(LocalizationContext);
-
+  const userID = useSelector((state) => state.ID);
   const [gender, setGender] = useState([
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
@@ -77,7 +104,7 @@ const ShortTermForms = () => {
   }, []);
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.10:5000/api/job_title", {
+      await fetch("http://192.168.1.11:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -149,18 +176,21 @@ const ShortTermForms = () => {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.10:5000/api/job_post/aws_upload/5`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            // Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -174,7 +204,13 @@ const ShortTermForms = () => {
     }
     submitdata();
   }
-  const { handleSubmit, control } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const onSubmit = (data) => {
     const result = company.filter(checkcom);
     function checkcom(com) {
@@ -184,12 +220,13 @@ const ShortTermForms = () => {
     console.log(finalJob);
     data.job_title = finalJob;
     data.pic = jobpost;
+    data.user_id = userID;
     data.isallow_tocall = isclicked;
     console.log(durationvalue);
     console.log(data, "data");
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.10:5000/api/shorttime_job", {
+        await fetch("http://192.168.1.11:5000/api/shorttime_job", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -203,6 +240,7 @@ const ShortTermForms = () => {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
+            goBack();
           });
       } catch (error) {
         console.warn(error);
@@ -210,6 +248,14 @@ const ShortTermForms = () => {
     }
     submitdata();
   };
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   resolver: yupResolver(schema),
+  // });
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -248,6 +294,11 @@ const ShortTermForms = () => {
               />
             )}
           />
+          {errors.job_title && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.job_title.message}
+            </Text>
+          )}
         </View>
         <Controller
           name="location"
@@ -263,9 +314,14 @@ const ShortTermForms = () => {
             />
           )}
         />
+        {errors.location && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.location.message}
+          </Text>
+        )}
         <View>
           <Controller
-            name="time"
+            name="Duration"
             defaultValue=""
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -296,6 +352,11 @@ const ShortTermForms = () => {
               </View>
             )}
           />
+          {errors.Duration && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.Duration.message}
+            </Text>
+          )}
         </View>
         <View
           style={{
@@ -317,6 +378,11 @@ const ShortTermForms = () => {
                 />
               )}
             />
+            {errors.Salary && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.Salary.message}
+              </Text>
+            )}
           </View>
           <View>
             <Controller
@@ -351,6 +417,11 @@ const ShortTermForms = () => {
                 </View>
               )}
             />
+            {errors.per && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.per.message}
+              </Text>
+            )}
           </View>
           <View></View>
         </View>

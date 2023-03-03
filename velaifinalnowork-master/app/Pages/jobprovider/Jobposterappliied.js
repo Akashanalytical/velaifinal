@@ -716,7 +716,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SearchBar } from "react-native-elements";
 import MessageSelect from "../message/MessageSelect";
-
+import { useSelector, useDispatch } from "react-redux";
 // create a component
 
 const Items = ({ pic, name, title, time }) => (
@@ -816,6 +816,7 @@ function Jobposterapplied() {
   const [refreshing, setRefreshing] = useState(true);
   //to calcualte the the time\
 
+  const userID = useSelector((state) => state.ID);
   const Tofindtimediff = (paras, paras2) => {
     const date1 = new Date(paras);
     const date2 = new Date(paras2);
@@ -855,16 +856,19 @@ function Jobposterapplied() {
     console.log("i am at the dataa");
     // console.log(navigation);
     try {
-      await fetch("http://192.168.1.19:5000/api/job_user_apply_list/8", {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      })
+      await fetch(
+        `http://192.168.1.11:5000/api/job_user_apply_list/${userID}`,
+        {
+          method: "GET", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log(result);

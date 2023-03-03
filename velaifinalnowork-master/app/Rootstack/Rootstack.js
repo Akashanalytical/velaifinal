@@ -78,9 +78,12 @@ function CustomHeaderBackImage({ navigation }) {
 }
 function Root({ navigation }) {
   // const navigation = useNavigation();
+  const state = useSelector((state) => state);
+  console.log(state);
+  console.log("im at the");
   const userlogin = useSelector((state) => state.IS_user_login);
   const personal_job_provider = useSelector(
-    (state) => state.job_Provider_personal
+    (state) => state.job_provider_personal_user_details
   );
   const company_job_provider = useSelector(
     (state) => state.job_Provider_company
@@ -114,7 +117,6 @@ function Root({ navigation }) {
             options={{ headerShown: false }}
           />
         )}
-
         <Stack.Screen
           name="short"
           component={ShortTermForms}
@@ -162,12 +164,15 @@ function Root({ navigation }) {
             },
           }}
         />
-
-        <Stack.Screen
-          name="p_job_provider"
-          component={PersonalJobProvider}
-          options={{ headerShown: true }}
-        ></Stack.Screen>
+        {!personal_job_provider ? (
+          <Stack.Screen
+            name="p_job_provider"
+            component={PersonalJobProvider}
+            options={{ headerShown: true }}
+          ></Stack.Screen>
+        ) : (
+          <></>
+        )}
 
         <Stack.Screen
           name="c_job_provider"
@@ -503,7 +508,6 @@ function Root({ navigation }) {
             ),
           }}
         />
-
         <Stack.Screen
           name="Faq"
           component={Faq}

@@ -6,8 +6,6 @@ const initialState = {
   ID: "",
   user_details_given: false,
   job_provider_info: false,
-  job_Provider_personal: false,
-  job_Provider_company: false,
   job_provider_personal_user_details: false,
   job_Provider_company_user_details: false,
   job_seeker_info: false,
@@ -33,15 +31,22 @@ const todoReducer = (state = initialState, action) => {
     case "personal_job_provider": {
       return {
         ...state,
+        job_provider_personal_user_details: true,
+        job_Provider_company_user_details: false,
+      };
+    }
+    case "remove these": {
+      return {
+        ...state,
         job_Provider_company: false,
-        job_Provider_personal: true,
+        job_Provider_personal: false,
       };
     }
     case "job_Provider_company": {
       return {
         ...state,
-        job_Provider_personal: false,
-        job_Provider_company: true,
+        job_provider_personal_user_details: false,
+        job_Provider_company_user_details: true,
       };
     }
     case "im_job_seeker": {

@@ -10,8 +10,12 @@ import {
   Modal,
   Image,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import Checkbox from "expo-checkbox";
 import { useEffect } from "react";
+// import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useContext } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { FontAwesome } from "@expo/vector-icons";
@@ -23,8 +27,25 @@ import { Entypo } from "@expo/vector-icons";
 import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
-
-const Sign = () => {
+const schema = yup.object().shape({
+  job_title: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  workspace: yup
+    .string()
+    .required("workspace is required")
+    .typeError("workspace cannot be null"),
+  location: yup.string().required("location of the job is required"),
+  Duration: yup
+    .string()
+    .typeError("Duration cannot be null")
+    .required("Duration is required"),
+  Salary: yup.string().required("Please enter the salary Details"),
+  // mobile_number: yup.string().required("Mobile number is required"),
+  email: yup.string().required("email id is required"),
+});
+const Sign = ({ navigation: { goBack } }) => {
   //gender
   const [genderOpen, setGenderOpen] = useState(false);
   const [genderValue, setGenderValue] = useState(null);
@@ -32,6 +53,7 @@ const Sign = () => {
   const [isChecked2, setChecked2] = useState(false);
   const [isChecked3, setChecked3] = useState(false);
   const [isclicked, setisclicked] = useState(false);
+  const userID = useSelector((state) => state.ID);
   //t for language translation
   const { t, language, setlanguage } = useContext(LocalizationContext);
 
@@ -85,18 +107,21 @@ const Sign = () => {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.10:5000/api/job_post/aws_upload/5`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            // Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -145,10 +170,11 @@ const Sign = () => {
   //to get the job title
   useEffect(() => {
     fetchdata();
+    getuserdata();
   }, []);
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.10:5000/api/job_title", {
+      await fetch("http://192.168.1.11:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -160,6 +186,28 @@ const Sign = () => {
       })
         .then((response) => response.json())
         .then((result) => (console.log(result), setComapny(result)));
+    } catch (error) {
+      console.log("i at job titile error");
+      console.warn(error);
+    }
+  }
+  const [phonenumber, setphonenumber] = useState("");
+  async function getuserdata() {
+    try {
+      await fetch(`http://192.168.1.11:5000/api/user_number/${userID}`, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+        .then((response) => response.json())
+        .then(
+          (result) => (console.log(result), setphonenumber(result["number"]))
+        );
     } catch (error) {
       console.log("i at job titile error");
       console.warn(error);
@@ -180,7 +228,19 @@ const Sign = () => {
     setCompanyOpen(false);
     setworkspaceopen(false);
   });
-  const { handleSubmit, control } = useForm();
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors, isValid },
+  // } = useForm({ mode: "onBlur" });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  // const { handleSubmit, control } = useForm();
   const onSubmit = (data) => {
     const result = company.filter(checkcom);
     function checkcom(com) {
@@ -191,11 +251,11 @@ const Sign = () => {
     data.job_title = finalJob;
     data.jobpic = jobpost;
     data.isallow_tocall = isclicked;
-    data.user_id = 1;
+    data.user_id = userID;
     console.log(data, "data");
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.10:5000/api/long_job_post", {
+        await fetch("http://192.168.1.11:5000/api/long_job_post", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -209,6 +269,9 @@ const Sign = () => {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
+            if (result.post === "success") {
+              goBack();
+            }
           });
       } catch (error) {
         console.warn(error);
@@ -227,7 +290,7 @@ const Sign = () => {
               name="job_title"
               defaultValue=""
               control={control}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange, value, onBlur } }) => (
                 <DropDownPicker
                   style={styles.dropdown}
                   open={companyOpen}
@@ -245,6 +308,7 @@ const Sign = () => {
                   setValue={setCompanyValue}
                   setItems={setComapny}
                   placeholder="job Title"
+                  onBlur={onBlur}
                   placeholderStyle={styles.placeholderStyles}
                   loading={loading}
                   activityIndicatorColor="#5188E3"
@@ -257,6 +321,11 @@ const Sign = () => {
                 />
               )}
             />
+            {errors.job_title && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.job_title.message}
+              </Text>
+            )}
           </View>
         </View>
         <View>
@@ -291,22 +360,33 @@ const Sign = () => {
               </View>
             )}
           />
+          {errors.workspace && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.workspace.message}
+            </Text>
+          )}
         </View>
         <View>
           <Controller
             name="location"
             defaultValue=""
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value, onBlur } }) => (
               <TextInput
                 style={styles.input}
                 selectionColor={"#5188E3"}
                 placeholder="Select location"
                 onChangeText={onChange}
+                onBlur={onBlur}
                 value={value}
               />
             )}
           />
+          {errors.location && (
+            <Text style={{ marginLeft: 20, color: "red" }}>
+              {errors.location.message}
+            </Text>
+          )}
         </View>
         <View>
           <Controller
@@ -341,6 +421,11 @@ const Sign = () => {
               </View>
             )}
           />
+          {errors.Duration && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.Duration.message}
+            </Text>
+          )}
         </View>
         <Controller
           name="Salary"
@@ -356,6 +441,11 @@ const Sign = () => {
             />
           )}
         />
+        {errors.Salary && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.Salary.message}
+          </Text>
+        )}
         <Controller
           name="Education"
           defaultValue=""
@@ -381,12 +471,18 @@ const Sign = () => {
               placeholder="Mobile Number"
               keyboardType="number-pad"
               multiline
+              // maxLength={}
               numberOfLines={4}
               onChangeText={onChange}
-              value={value}
+              value={phonenumber == "" ? value : phonenumber}
             />
           )}
         />
+        {/* {errors.mobile_number && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.mobile_number.message}
+          </Text>
+        )} */}
         <Controller
           name="email"
           defaultValue=""
@@ -403,6 +499,11 @@ const Sign = () => {
             />
           )}
         />
+        {errors.email && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.email.message}
+          </Text>
+        )}
         <Text style={{ paddingLeft: 20, marginBottom: 10 }}>
           Your Preference
         </Text>

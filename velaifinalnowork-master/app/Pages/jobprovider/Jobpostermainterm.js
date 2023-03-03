@@ -305,6 +305,7 @@ import {
   ActivityIndicator,
   TextInput,
   Search,
+  LogBox,
   Share,
   Alert,
 } from "react-native";
@@ -319,6 +320,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Message } from "react-native-gifted-chat";
 //on share
 const onShare = async ({
@@ -546,14 +548,17 @@ export default function Jobpostermain({ navigation }) {
   const [loading, setloading] = useState(true);
   const [data, setdata] = useState([]);
   const [refreshing, setRefreshing] = useState(true);
-
+  const userID = useSelector((state) => state.ID);
   useEffect(() => {
     submitdata();
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
-
+  React.useEffect(() => {
+    navigation.addListener("tabPress", () => submitdata());
+  }, []);
   async function submitdata() {
     try {
-      await fetch("http://192.168.1.19:5000/api/provide_jobs/4", {
+      await fetch(`http://192.168.1.11:5000/api/provide_jobs/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
