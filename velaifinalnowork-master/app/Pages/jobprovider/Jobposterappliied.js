@@ -857,7 +857,7 @@ function Jobposterapplied() {
     // console.log(navigation);
     try {
       await fetch(
-        `http://192.168.1.11:5000/api/job_user_apply_list/${userID}`,
+        `http://192.168.1.20:5000/api/job_user_apply_list/${userID}`,
         {
           method: "GET", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin

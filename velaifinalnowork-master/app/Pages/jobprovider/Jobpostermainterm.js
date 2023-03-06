@@ -569,7 +569,7 @@ export default function Jobpostermain({ navigation }) {
   }, []);
   async function submitdata() {
     try {
-      await fetch(`http://192.168.1.11:5000/api/provide_jobs/${userID}`, {
+      await fetch(`http://192.168.1.20:5000/api/provide_jobs/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
