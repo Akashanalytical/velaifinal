@@ -116,7 +116,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.15:5000/api/l_like_job", {
+      await fetch("http://192.168.1.20:5000/api/l_like_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -143,7 +143,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.15:5000/api/longtime_apply_job", {
+      await fetch("http://192.168.1.20:5000/api/longtime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -196,7 +196,7 @@ export default function LongtimeSwiperCard({ route }) {
   const getJobs = async () => {
     try {
       await fetch(
-        `http://192.168.1.5:5000/api/count_apply_job/${route.params.userID}`,
+        `http://192.168.1.20:5000/api/count_apply_job/${route.params.userID}`,
         {
           method: "GET",
           mode: "cors",
@@ -252,7 +252,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.page = 0;
     try {
       await fetch(
-        `http://192.168.1.15:5000/api/limit/L_like_apply_check/${userID}`,
+        `http://192.168.1.20:5000/api/limit/L_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -285,7 +285,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.55000/api/apply_job", {
+      await fetch("http://192.168.1.20:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -308,7 +308,7 @@ export default function LongtimeSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.15:5000/api/limit/L_like_apply_check/4", {
+      await fetch("http://192.168.1.20:5000/api/limit/L_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

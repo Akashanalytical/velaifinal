@@ -509,30 +509,41 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short, work }) => (
               {Dis}
             </Text>
           </View>
-          <View
+          <LinearGradient
+            colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
             style={{
               alignContent: "center",
-
-              flexDirection: "row",
-              marginBottom: 10,
-              width: 180,
+              borderRadius: 10,
+              width: 100,
+              height: 30,
+              marginLeft: 70,
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 14,
             }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            useAngle={45}
           >
-            <MaterialCommunityIcons
-              name="map-marker-distance"
-              size={22}
-              color="#333"
-            />
+            {/* <View
+              style={{
+                borderTopWidth: 20,
+                backgroundColor: "red",
+                borderColor: "red",
+              }}
+            > */}
+
             <Text
               style={{
-                marginLeft: 10,
                 fontSize: 13,
+                color: "#fff",
                 fontWeight: "400",
               }}
             >
               {short == "True" ? "Short Time" : "Long Time"}
             </Text>
-          </View>
+            {/* </View> */}
+          </LinearGradient>
         </View>
       </View>
     </View>

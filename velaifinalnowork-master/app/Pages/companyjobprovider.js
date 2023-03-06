@@ -106,7 +106,7 @@ export default function CompanyJobProvider({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/4`, {
+        await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/4`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -229,7 +229,7 @@ export default function CompanyJobProvider({ navigation }) {
   //fetch data
   async function fetchdata(paras1) {
     try {
-      await fetch("http://192.168.1.19:5000/api/job_pro_userinfo_details", {
+      await fetch("http://192.168.1.20:5000/api/job_pro_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -747,7 +747,7 @@ export default function CompanyJobProvider({ navigation }) {
                       padding: 10,
                       width: "50%",
                       alignSelf: "center",
-                      borderRadius: 10,
+                      borderRadius: 50,
                       marginVertical: 20,
                     }}
                     start={{ x: 0, y: 0 }}
@@ -770,7 +770,8 @@ export default function CompanyJobProvider({ navigation }) {
                         style={{
                           textAlign: "center",
                           fontWeight: "600",
-                          color: isValid ? "black" : "white",
+                          fontSize: 17,
+                          color: isValid ? "#fff" : "white",
                         }}
                       >
                         Create

@@ -94,7 +94,7 @@ export default function Mobillogin({ route, navigation }) {
       console.log(mobilenumber);
       if (mobilenumber.length > 10) {
         const body = { number: mobilenumber };
-        const response = await fetch("http://192.168.1.15:5000/sms", {
+        const response = await fetch("http://192.168.1.20:5000/sms", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -149,7 +149,7 @@ export default function Mobillogin({ route, navigation }) {
       body.number = mobilenumber;
       console.log(body);
       try {
-        await fetch("http://192.168.1.15:5000/api/sms", {
+        await fetch("http://192.168.1.20:5000/api/sms", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -201,7 +201,7 @@ export default function Mobillogin({ route, navigation }) {
     value.number = mobilenumber;
     console.log(value);
     try {
-      await fetch("http://192.168.1.15:5000/sms/verification", {
+      await fetch("http://192.168.1.20:5000/sms/verification", {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -242,7 +242,7 @@ export default function Mobillogin({ route, navigation }) {
     try {
       const body = {};
       body.number = mobilenumber;
-      const response = await fetch("http://192.168.1.15:5000/invaild", {
+      const response = await fetch("http://192.168.1.20:5000/invaild", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -585,7 +585,7 @@ export default function Mobillogin({ route, navigation }) {
                 value.number = mobilenumber;
                 console.log(value);
                 try {
-                  await fetch("http://192.168.1.15:5000/api/sms", {
+                  await fetch("http://192.168.1.11:5000/api/sms", {
                     method: "POST",
                     mode: "cors", // no-cors, *cors, same-origin
                     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

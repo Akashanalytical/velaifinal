@@ -168,8 +168,51 @@ function Root({ navigation }) {
           <Stack.Screen
             name="p_job_provider"
             component={PersonalJobProvider}
-            options={{ headerShown: true }}
-          ></Stack.Screen>
+            options={{
+              headerRight: (props) => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginLeft: "70%",
+                    }}
+                  >
+                    <Ionicons name="md-globe-outline" size={24} color="#333" />
+                    <Pressable>
+                      <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                    </Pressable>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginHorizontal: 12,
+                    }}
+                  >
+                    <Pressable onPress={() => setisvoice(!isvoice)}>
+                      {isvoice ? (
+                        <MaterialCommunityIcons
+                          name="account-voice"
+                          size={26}
+                          color="#333"
+                        />
+                      ) : (
+                        <MaterialCommunityIcons
+                          name="account-voice-off"
+                          size={24}
+                          color="black"
+                        />
+                      )}
+                    </Pressable>
+                  </View>
+                </View>
+              ),
+              headerStyle: {
+                backgroundColor: "#fff",
+              },
+              title: "",
+            }}
+          />
         ) : (
           <></>
         )}
@@ -177,7 +220,50 @@ function Root({ navigation }) {
         <Stack.Screen
           name="c_job_provider"
           component={CompanyJobProvider}
-          options={{ headerShown: true }}
+          options={{
+            headerRight: (props) => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: "70%",
+                  }}
+                >
+                  <Ionicons name="md-globe-outline" size={24} color="#333" />
+                  <Pressable>
+                    <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                  </Pressable>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginHorizontal: 12,
+                  }}
+                >
+                  <Pressable onPress={() => setisvoice(!isvoice)}>
+                    {isvoice ? (
+                      <MaterialCommunityIcons
+                        name="account-voice"
+                        size={26}
+                        color="#333"
+                      />
+                    ) : (
+                      <MaterialCommunityIcons
+                        name="account-voice-off"
+                        size={24}
+                        color="black"
+                      />
+                    )}
+                  </Pressable>
+                </View>
+              </View>
+            ),
+            headerStyle: {
+              backgroundColor: "#fff",
+            },
+            title: "",
+          }}
         />
         <Stack.Screen
           name="Long"

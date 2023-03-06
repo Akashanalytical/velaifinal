@@ -130,7 +130,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.15:5000/api/s_like_details", {
+      await fetch("http://192.168.1.20:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -157,7 +157,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.15:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.20:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -212,7 +212,7 @@ export default function ShorttimeSwiperCard({ route }) {
   //To get the applied jobs
   // const getJobs = async () => {
   //   try {
-  //     await fetch(`http://192.168.1.15:5000/api/count_apply_job/${userID}`, {
+  //     await fetch(`http://192.168.1.20:5000/api/count_apply_job/${userID}`, {
   //       method: "GET",
   //       mode: "cors",
   //       cache: "no-cache",
@@ -278,7 +278,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.page = 0;
     try {
       await fetch(
-        `http://192.168.1.15:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.20:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -309,7 +309,7 @@ export default function ShorttimeSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.15:5000/api/limit/s_like_apply_check/4", {
+      await fetch("http://192.168.1.20:5000/api/limit/s_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -346,7 +346,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.15:5000/api/apply_job", {
+      await fetch("http://192.168.1.20:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -1064,9 +1064,7 @@ export default function ShorttimeSwiperCard({ route }) {
                         resizeMode: "cover",
                         marginHorizontal: 20,
                       }}
-                      source={{
-                        uri: "https://velai3.s3.ap-south-1.amazonaws.com/29/map.png",
-                      }}
+                      source={require("../images/map.png")}
                     />
                     {/* <Image
                       style={{
@@ -1112,7 +1110,7 @@ export default function ShorttimeSwiperCard({ route }) {
   // }, []);
   // async function fetchdata() {
   //   try {
-  //     await fetch("http://192.168.1.15:5000/api/job_title", {
+  //     await fetch("http://192.168.1.20:5000/api/job_title", {
   //       method: "GET", // *GET, POST, PUT, DELETE, etc.
   //       mode: "cors", // no-cors, *cors, same-origin
   //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

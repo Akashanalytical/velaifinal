@@ -86,15 +86,15 @@ export default function SelectCategory({ route }) {
   ]);
   const [imageData2, setImageData2] = useState([
     {
-      src: require("../../images/ChatGPT.png"),
+      src: require("../../images/Ad1.png"),
       title: "ChatGPT Image 1",
     },
     {
-      src: require("../../images/Germanaid.png"),
+      src: require("../../images/ad2.png"),
       title: "ChatGPT Image 2",
     },
     {
-      src: require("../../images/GovtJobs.png"),
+      src: require("../../images/ad3.png"),
       title: "ChatGPT Image 3",
     },
   ]);
@@ -116,7 +116,6 @@ export default function SelectCategory({ route }) {
           style={{
             bottom: 16,
             fontSize: 50,
-            color: "red",
             marginTop: 20,
           }}
         >
@@ -134,21 +133,9 @@ export default function SelectCategory({ route }) {
           style={{
             resizeMode: "contain",
             width: "100%",
-            height: "100%",
-            marginTop: 140,
             borderRadius: 20,
           }}
         />
-        <Text
-          style={{
-            bottom: 16,
-            fontSize: 50,
-            color: "red",
-            marginTop: 20,
-          }}
-        >
-          {item.title}
-        </Text>
       </View>
     );
   };
@@ -519,30 +506,32 @@ export default function SelectCategory({ route }) {
             </LinearGradient>
           </Pressable>
         </View>
-        <View
-          style={{
-            height: 60,
-            backgroundColor: "#16323B",
-            marginHorizontal: 20,
-            borderRadius: 20,
-          }}
-        >
-          <Image
+
+        {/* <Image
             resizeMode="contain"
             source={require("../../images/Ad1.png")}
             style={{ width: "100%", height: "100%" }}
-          />
-          {/* <Carousel
+          /> */}
+        <View
+          style={{
+            height: 60,
+
+            alignItems: "center",
+            marginTop: 10,
+          }}
+        >
+          <Carousel
             data={imageData2}
-            // autoPlay={true}
+            autoPlay={true}
             renderItem={({ item, index }) => (
               <CarouselItem2 item={item} index={index} />
             )}
-            // height={60}
-            width={100}
-            // // inactiveSlideScale={2}
-            autoplayInterval={100}
-          /> */}
+            height={60}
+            width={360}
+            style={{ backgroundColor: "#fff", borderRadius: 20 }}
+            inactiveSlideScale={2}
+            autoplayInterval={2000}
+          />
         </View>
         <View
           style={{
@@ -735,6 +724,7 @@ export default function SelectCategory({ route }) {
             )}
             height={200}
             width={300}
+            style={{ backgroundColor: "#fff", borderRadius: 20 }}
             inactiveSlideScale={2}
             autoplayInterval={5000}
           />

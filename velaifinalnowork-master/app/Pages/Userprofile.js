@@ -116,7 +116,7 @@ export default function Userprofile({ navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/25`, {
+          await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/25`, {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
             // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -152,7 +152,7 @@ export default function Userprofile({ navigation }) {
   async function getphonenumber() {
     try {
       console.log("im inside");
-      await fetch(`http://192.168.1.19:5000/api/user_number/${userID}`, {
+      await fetch(`http://192.168.1.20:5000/api/user_number/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -232,7 +232,7 @@ export default function Userprofile({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.19:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -299,7 +299,7 @@ export default function Userprofile({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.7:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -341,7 +341,7 @@ export default function Userprofile({ navigation }) {
     console.log(values);
 
     try {
-      await fetch("http://192.168.1.19:5000/api/job_see_userinfo_details", {
+      await fetch("http://192.168.1.20:5000/api/job_see_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -454,7 +454,7 @@ export default function Userprofile({ navigation }) {
                         style={{
                           ...styles.openButton,
                           width: 150,
-                          backgroundColor: "#2196F3",
+                          backgroundColor: "#1E5966",
                         }}
                         onPress={() => {
                           takeAndUploadPhotoAsync("camera");
@@ -475,7 +475,7 @@ export default function Userprofile({ navigation }) {
                         style={{
                           ...styles.openButton,
                           width: 150,
-                          backgroundColor: "#2196F3",
+                          backgroundColor: "#1E5966",
                           marginTop: 20,
                         }}
                         onPress={() => takeAndUploadPhotoAsync("files")}
@@ -667,7 +667,7 @@ export default function Userprofile({ navigation }) {
                 </View>
                 <View style={styles.password}>
                   <TextInput
-                    placeholder="*** *** ***"
+                    placeholder="Enter Your Aadhar number"
                     style={[styles.input, { position: "relative" }]}
                     underlineColorAndroid="transparent"
                     onChangeText={handleChange("proof")}
@@ -763,9 +763,9 @@ export default function Userprofile({ navigation }) {
                     </View>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handlecall()}>
+                {/* <TouchableOpacity onPress={() => handlecall()}>
                   <Text>enter details</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <LinearGradient
                   colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
                   style={{
@@ -775,7 +775,7 @@ export default function Userprofile({ navigation }) {
                     padding: 10,
                     width: "50%",
                     alignSelf: "center",
-                    borderRadius: 10,
+                    borderRadius: 50,
                     marginVertical: 20,
                   }}
                   start={{ x: 0, y: 0 }}
@@ -797,7 +797,8 @@ export default function Userprofile({ navigation }) {
                       style={{
                         textAlign: "center",
                         fontWeight: "600",
-                        color: isValid ? "black" : "white",
+                        fontSize: 17,
+                        color: isValid ? "#fff" : "white",
                       }}
                     >
                       Create

@@ -118,7 +118,7 @@ export default function PersonProfilepage({ route, navigation }) {
         try {
           console.log("im inside");
           await fetch(
-            `http://192.168.1.15:5000/api/file/aws_upload/${userID}`,
+            `http://192.168.1.20:5000/api/file/aws_upload/${userID}`,
             {
               method: "POST",
               mode: "cors", // no-cors, *cors, same-origin
@@ -156,7 +156,7 @@ export default function PersonProfilepage({ route, navigation }) {
     console.log(data);
     try {
       await fetch(
-        `http://192.168.1.11:5000/api/user_details_update/${userID}`,
+        `http://192.168.1.20:5000/api/user_details_update/${userID}`,
         {
           method: "PUT",
           mode: "cors", // no-cors, *cors, same-origin
@@ -201,7 +201,7 @@ export default function PersonProfilepage({ route, navigation }) {
       : "job_seeker_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.11:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.20:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -235,7 +235,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.11:5000/api/education/${userID}`, {
+      await fetch(`http://192.168.1.20:5000/api/education/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -344,7 +344,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.15:5000/api/experience/${userID}`, {
+      await fetch(`http://192.168.1.20:5000/api/experience/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -405,7 +405,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.15:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -474,7 +474,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.15:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -660,10 +660,9 @@ export default function PersonProfilepage({ route, navigation }) {
           style={{
             height: 130,
             alignContent: "center",
-            borderColor: "#D9D9D9",
-            borderWidth: 1,
-            borderBottomWidth: 0,
-            borderBottomColor: "white",
+            borderBottomWidth: 1,
+            marginHorizontal: 20,
+            borderBottomColor: "#333",
           }}
         >
           <View style={{ marginBottom: 5, paddingLeft: 20 }}>
@@ -686,13 +685,19 @@ export default function PersonProfilepage({ route, navigation }) {
         </View>
         {states.job_provider_info ? (
           <>
-            <View>
+            <View
+              style={{
+                height: 130,
+                borderBottomWidth: 1,
+                marginHorizontal: 20,
+                borderBottomColor: "#333",
+              }}
+            >
               <Text
                 style={{
                   paddingLeft: 20,
                   borderColor: "#D9D9D9",
-                  borderWidth: 1,
-                  borderBottomWidth: 0,
+                  marginHorizontal: 20,
                 }}
               >
                 Company Name
@@ -727,7 +732,15 @@ export default function PersonProfilepage({ route, navigation }) {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <SafeAreaView>
-                    <Text>Enter your new company name</Text>
+                    <Text
+                      style={{
+                        justifyContent: "center",
+                        fontSize: 14,
+                        fontWeight: "500",
+                      }}
+                    >
+                      Enter your new company name :
+                    </Text>
                     <TextInput
                       // value={companyname}
                       onChangeText={(companyname) =>
@@ -742,19 +755,53 @@ export default function PersonProfilepage({ route, navigation }) {
                         setcompanymodalVisible(false);
                       }}
                     >
-                      <Text>Donr</Text>
+                      <LinearGradient
+                        colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+                        style={{
+                          height: 35,
+                          width: 100,
+                          marginLeft: 20,
+                          borderRadius: 10,
+                          marginTop: 4,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        useAngle={45}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "400",
+                            marginHorizontal: 10,
+                            justifyContent: "center",
+                          }}
+                        >
+                          Done
+                        </Text>
+                      </LinearGradient>
                     </TouchableOpacity>
                   </SafeAreaView>
                 </View>
               </View>
             </Modal>
-            <View>
+            <View
+              style={{
+                height: 130,
+                alignContent: "center",
+                borderBottomWidth: 1,
+                marginHorizontal: 20,
+                borderBottomColor: "#333",
+              }}
+            >
               <Text
                 style={{
                   paddingLeft: 20,
                   borderColor: "#D9D9D9",
-                  borderWidth: 1,
-                  borderBottomWidth: 0,
+                  // borderWidth: 1,
+                  // borderBottomWidth: 2,
                 }}
               >
                 Designation
@@ -791,14 +838,22 @@ export default function PersonProfilepage({ route, navigation }) {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <SafeAreaView>
-                    <Text>Enter your new Designation</Text>
+                    <Text
+                      style={{
+                        justifyContent: "center",
+                        fontSize: 14,
+                        fontWeight: "500",
+                      }}
+                    >
+                      Enter your new Designation
+                    </Text>
                     <TextInput
                       // value={companyname}
                       onChangeText={(designation) =>
                         setdesignation(designation)
                       }
                       defaultValue={data.designation}
-                      placeholder={"Comapny name"}
+                      placeholder={"Company name"}
                       style={styles.input}
                     />
                     <TouchableOpacity
@@ -806,7 +861,33 @@ export default function PersonProfilepage({ route, navigation }) {
                         setdesignationmodalVisible(false);
                       }}
                     >
-                      <Text>Done</Text>
+                      <LinearGradient
+                        colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+                        style={{
+                          height: 35,
+                          width: 100,
+                          marginLeft: 20,
+                          borderRadius: 10,
+                          marginTop: 4,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        useAngle={45}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "400",
+                            marginHorizontal: 10,
+                            justifyContent: "center",
+                          }}
+                        >
+                          Done
+                        </Text>
+                      </LinearGradient>
                     </TouchableOpacity>
                   </SafeAreaView>
                 </View>
@@ -816,13 +897,21 @@ export default function PersonProfilepage({ route, navigation }) {
         ) : (
           <></>
         )}
-        <View>
+        <View
+          style={{
+            height: 130,
+            alignContent: "center",
+            borderBottomWidth: 1,
+            marginHorizontal: 20,
+            borderBottomColor: "#333",
+          }}
+        >
           <Text
             style={{
               paddingLeft: 20,
               borderColor: "#D9D9D9",
-              borderWidth: 1,
-              borderBottomWidth: 0,
+              // borderWidth: 1,
+              // borderBottomWidth: 0,
             }}
           >
             Mail id
@@ -854,7 +943,15 @@ export default function PersonProfilepage({ route, navigation }) {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <SafeAreaView>
-                  <Text>Enter your new email id</Text>
+                  <Text
+                    style={{
+                      justifyContent: "center",
+                      fontSize: 14,
+                      fontWeight: "500",
+                    }}
+                  >
+                    Enter your new email id
+                  </Text>
                   <TextInput
                     // value={companyname}
                     onChangeText={(email) => setemail(email)}
@@ -868,20 +965,54 @@ export default function PersonProfilepage({ route, navigation }) {
                       setemailmodalVisible(false);
                     }}
                   >
-                    <Text>Donr</Text>
+                    <LinearGradient
+                      colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+                      style={{
+                        height: 35,
+                        width: 100,
+                        marginLeft: 20,
+                        borderRadius: 10,
+                        marginTop: 4,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      useAngle={45}
+                    >
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: 12,
+                          fontWeight: "400",
+                          marginHorizontal: 10,
+                          justifyContent: "center",
+                        }}
+                      >
+                        Done
+                      </Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </SafeAreaView>
               </View>
             </View>
           </Modal>
         </View>
-        <View>
+        <View
+          style={{
+            height: 130,
+            alignContent: "center",
+            borderBottomWidth: 1,
+            marginHorizontal: 20,
+            borderBottomColor: "#333",
+          }}
+        >
           <Text
             style={{
               paddingLeft: 20,
               borderColor: "#D9D9D9",
-              borderWidth: 1,
-              borderBottomWidth: 0,
+              // borderWidth: 1,
+              // borderBottomWidth: 0,
             }}
           >
             Gender
@@ -899,13 +1030,21 @@ export default function PersonProfilepage({ route, navigation }) {
             <View></View>
           </View>
         </View>
-        <View>
+        <View
+          style={{
+            height: 130,
+            alignContent: "center",
+            borderBottomWidth: 1,
+            marginHorizontal: 20,
+            borderBottomColor: "#333",
+          }}
+        >
           <Text
             style={{
               paddingLeft: 20,
               borderColor: "#D9D9D9",
-              borderWidth: 1,
-              borderBottomWidth: 0,
+              // borderWidth: 1,
+              // borderBottomWidth: 0,
             }}
           >
             Username
@@ -940,7 +1079,15 @@ export default function PersonProfilepage({ route, navigation }) {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <SafeAreaView>
-                    <Text>Enter your new Username</Text>
+                    <Text
+                      style={{
+                        justifyContent: "center",
+                        fontSize: 14,
+                        fontWeight: "500",
+                      }}
+                    >
+                      Enter your new Username
+                    </Text>
                     <TextInput
                       // value={companyname}
                       onChangeText={(username) => setusername(username)}
@@ -954,7 +1101,33 @@ export default function PersonProfilepage({ route, navigation }) {
                         setusernamemodal(false);
                       }}
                     >
-                      <Text>Done</Text>
+                      <LinearGradient
+                        colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+                        style={{
+                          height: 35,
+                          width: 100,
+                          marginLeft: 20,
+                          borderRadius: 10,
+                          marginTop: 4,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        useAngle={45}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 12,
+                            fontWeight: "400",
+                            marginHorizontal: 10,
+                            justifyContent: "center",
+                          }}
+                        >
+                          Done
+                        </Text>
+                      </LinearGradient>
                     </TouchableOpacity>
                   </SafeAreaView>
                 </View>
@@ -1106,7 +1279,10 @@ export default function PersonProfilepage({ route, navigation }) {
           <View
             style={{
               width: "100%",
-              paddingLeft: 200,
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 30,
+              // paddingLeft: 200,
             }}
           >
             <LinearGradient
@@ -1115,7 +1291,7 @@ export default function PersonProfilepage({ route, navigation }) {
                 height: 49,
                 width: 170,
                 // marginHorizontal: 50,
-                borderRadius: 10,
+                borderRadius: 50,
                 // opacity: mobilenumber.length > 1 && !istick ? 1 : 0.5,
                 // marginTop: 30,
               }}

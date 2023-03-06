@@ -114,7 +114,7 @@ export default function PersonalJobProvider({ navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -190,7 +190,7 @@ export default function PersonalJobProvider({ navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(`http://192.168.1.6:5000/api/job_post/aws_upload/25`, {
+          await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/25`, {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
             // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -274,7 +274,7 @@ export default function PersonalJobProvider({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.7:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -309,7 +309,7 @@ export default function PersonalJobProvider({ navigation }) {
   async function fetchdata(paras1) {
     console.log(paras1);
     try {
-      await fetch("http://192.168.1.11:5000/api/job_pro_userinfo_details", {
+      await fetch("http://192.168.1.20:5000/api/job_pro_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -807,7 +807,8 @@ export default function PersonalJobProvider({ navigation }) {
                         style={{
                           textAlign: "center",
                           fontWeight: "600",
-                          color: "white",
+                          fontSize: 17,
+                          color: isValid ? "#fff" : "white",
                         }}
                       >
                         Create

@@ -4,7 +4,7 @@
     "slug": "VelaiApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logovelai.png",
+    "icon": "./assets/logovelai.png",
     "plugins": [
       [
         "expo-image-picker",
@@ -15,7 +15,7 @@
     ],
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Splashfinal.png",
+      "image": "./assets/Velaisplash.png",
       "objectFit": "fill",
       "resizeMode": "cover",
       "backgroundColor": "#fff"
