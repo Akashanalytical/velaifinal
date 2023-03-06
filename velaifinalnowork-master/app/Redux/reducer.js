@@ -53,6 +53,7 @@ const todoReducer = (state = initialState, action) => {
       return {
         ...state,
         job_seeker_info: true,
+        job_provider_info: false,
       };
     }
     case "get_State": {

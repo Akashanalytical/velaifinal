@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import companyValidationSchema from "../components/companyjobvalidation";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   Text,
@@ -382,7 +383,7 @@ export default function CompanyJobProvider({ navigation }) {
           </View>
         </View>
         <Formik
-          //   validationSchema={loginValidationSchema}
+          validationSchema={companyValidationSchema}
           initialValues={{
             // email: "",
             // password: "",
@@ -423,7 +424,7 @@ export default function CompanyJobProvider({ navigation }) {
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.first_name && touched.first_name && (
+                      {errors.companyname && touched.companyname && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -431,7 +432,7 @@ export default function CompanyJobProvider({ navigation }) {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.first_name}
+                          {errors.companyname}
                         </Text>
                       )}
                     </View>
@@ -446,7 +447,7 @@ export default function CompanyJobProvider({ navigation }) {
                       onBlur={handleBlur("location")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.location && touched.location && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -454,7 +455,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.location}
                       </Text>
                     )}
                   </View>
@@ -468,7 +469,7 @@ export default function CompanyJobProvider({ navigation }) {
                       onBlur={handleBlur("emailid")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.emailid && touched.emailid && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -476,7 +477,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.emailid}
                       </Text>
                     )}
                   </View>
@@ -490,7 +491,7 @@ export default function CompanyJobProvider({ navigation }) {
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.username && touched.username && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -498,7 +499,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.username}
                       </Text>
                     )}
                   </View>
@@ -511,7 +512,7 @@ export default function CompanyJobProvider({ navigation }) {
                       onBlur={handleBlur("designation")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.designation && touched.designation && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -519,7 +520,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.designation}
                       </Text>
                     )}
                   </View>
@@ -532,7 +533,7 @@ export default function CompanyJobProvider({ navigation }) {
                       onBlur={handleBlur("number")}
                       defaultValue=""
                     />
-                    {errors.phone_number && touched.phone_number && (
+                    {errors.number && touched.number && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -540,7 +541,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.phone_number}
+                        {errors.number}
                       </Text>
                     )}
                   </View>
@@ -554,7 +555,7 @@ export default function CompanyJobProvider({ navigation }) {
                       placeholderTextColor="#707070"
                       defaultValue=""
                     />
-                    {errors.email && touched.email && (
+                    {errors.proof && touched.proof && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -562,7 +563,7 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.email}
+                        {errors.proof}
                       </Text>
                     )}
                   </View>
@@ -747,6 +748,7 @@ export default function CompanyJobProvider({ navigation }) {
                       padding: 10,
                       width: "50%",
                       alignSelf: "center",
+                      opacity: isValid ? 1 : 0.5,
                       borderRadius: 50,
                       marginVertical: 20,
                     }}
@@ -764,7 +766,7 @@ export default function CompanyJobProvider({ navigation }) {
                       //   marginVertical: 20,
                       // }}
                       onPress={() => handleSubmit()}
-                      // disabled={!isValid}
+                      disabled={!isValid}
                     >
                       <Text
                         style={{

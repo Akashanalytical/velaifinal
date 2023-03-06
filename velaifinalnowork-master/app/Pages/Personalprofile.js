@@ -179,6 +179,7 @@ export default function PersonProfilepage({ route, navigation }) {
   };
   const states = useSelector((state) => state);
   delete states["_persist"];
+  console.log("im at the states");
   console.log(states);
   const handleUpdate1 = (paras) => {
     for (let i = 0; i < Object.keys(paras).length; i++) {

@@ -1,22 +1,25 @@
 //import liraries
-import React, { Component, useState } from "react";
+import React, { Component, useContext, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+
+import { S_FILTER } from "../../../App";
+// import { useDispatch } from "react-redux";
 
 // create a component
 export default function Salery() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-
+  const { state1, dispatch1 } = useContext(S_FILTER);
   const [items, setItems] = useState([
     {
       label: "0-1lakhs",
 
-      value: "1",
+      value: "0-1lakhs",
     },
-    { label: "1-5 lakhs", value: "2" },
-    { label: "5-10lakhs", value: "3" },
-    { label: "daily payment", value: "4" },
+    { label: "1-5 lakhs", value: "1-5 lakhs" },
+    { label: "5-10lakhs", value: "5-10lakhs" },
+    { label: "daily payment", value: "daily payment" },
   ]);
 
   return (
@@ -42,7 +45,7 @@ export default function Salery() {
         mode="BADGE"
         categorySelectable={true}
         closeAfterSelecting={true}
-        multiple={true}
+        // multiple={true}
         showTickIcon={true}
         setOpen={setOpen}
         setValue={setValue}
@@ -51,6 +54,11 @@ export default function Salery() {
         showArrowIcon={true}
         customItemLabelStyle={{
           fontStyle: "italic",
+        }}
+        onChangeValue={(value) => {
+          console.log("Im at the state chnge");
+          console.log(value);
+          dispatch1({ type: "SET_SALARY", payload: value });
         }}
         listItemLabelStyle={{
           color: "black",

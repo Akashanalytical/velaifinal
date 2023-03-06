@@ -29,7 +29,37 @@ import Experiance from "../Experiance";
 import Company from "../ComapanySearch";
 import Post from "../Post";
 import { LinearGradient } from "expo-linear-gradient";
+import { useContext } from "react";
+import { S_FILTER } from "../../../../App";
 
+async function getthechangedvalue(paras) {
+  console.log(paras);
+  try {
+    await fetch(`http://192.168.1.20:5000/api/job_fillter`, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(paras),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        //  setRefreshing(false);
+        //  var newdata = result["liked_job"];
+        //  console.log("im the data going to savee");
+        //  console.log(newdata);
+        //  setdata(newdata);
+        //  setloading(false);
+      });
+  } catch (error) {
+    console.warn(error);
+  }
+}
 const listTab = [
   {
     status: "Location",
@@ -114,16 +144,16 @@ const listTab = [
   //       />
   //     ),
   //   },
-  {
-    status: "Posted by",
-    icon: (
-      <Image
-        resizeMode="contain"
-        style={{ height: 30, width: 30 }}
-        source={require("../../../images/Imagefilter/postnote.png")}
-      />
-    ),
-  },
+  // {
+  //   status: "Posted by",
+  //   icon: (
+  //     <Image
+  //       resizeMode="contain"
+  //       style={{ height: 30, width: 30 }}
+  //       source={require("../../../images/Imagefilter/postnote.png")}
+  //     />
+  //   ),
+  // },
 ];
 
 // Linking content
@@ -170,15 +200,16 @@ const data = [
   //     text: "work",
   //     status: "Company",
   //   },
-  {
-    name: <Post />,
-    text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Posted by",
-  },
+  // {
+  //   name: <Post />,
+  //   text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
+  //   status: "Posted by",
+  // },
 ];
 
 export default function Shorttimefilter(navigation) {
   const [status, setStatus] = useState("location");
+  const { state1, dispatch1 } = useContext(S_FILTER);
   const [dataList, setDataList] = useState([
     ...data.filter((e) => e.status === "location"),
   ]);
@@ -235,12 +266,12 @@ export default function Shorttimefilter(navigation) {
         }}
       >
         <TouchableOpacity
-        // onPress={() => navigation.navigate("Userprofile")}
-        // style={{
-        //   backgroundColor: "green",
-        //   padding: 10,
-        //   borderRadius: 10,
-        // }}
+          onPress={() => getthechangedvalue(state1)}
+          // style={{
+          //   backgroundColor: "green",
+          //   padding: 10,
+          //   borderRadius: 10,
+          // }}
         >
           <LinearGradient
             colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}

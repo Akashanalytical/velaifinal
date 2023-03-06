@@ -508,7 +508,7 @@ export default function Profilepage({ navigation, route }) {
     body.profilepic = paras1;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.11:5000/api/prfilepic_update`, {
+      await fetch(`http://192.168.1.20:5000/api/prfilepic_update`, {
         method: "PUT",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -569,7 +569,7 @@ export default function Profilepage({ navigation, route }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -621,7 +621,7 @@ export default function Profilepage({ navigation, route }) {
       : "job_provider_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.11:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.20:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -658,7 +658,7 @@ export default function Profilepage({ navigation, route }) {
           }}
         >
           <TouchableOpacity onPress={() => setprofilemodal(true)}>
-            {data.profilepic == "" && profile == "" ? (
+            {data.profilepic == null && profile == "" ? (
               <>
                 <FontAwesome name="user-circle" size={80} color="#D9D9D9" />
                 <MaterialCommunityIcons
@@ -678,7 +678,7 @@ export default function Profilepage({ navigation, route }) {
               >
                 <Image
                   source={{
-                    uri: data.profilepic == "" ? profile : data.profilepic,
+                    uri: data.profilepic == null ? profile : data.profilepic,
                   }}
                   style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
                 />

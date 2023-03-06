@@ -19,6 +19,7 @@ import { useForm, Controller } from "react-hook-form";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Top from "../components/Topcontainer";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { AuthContext } from "../../App";
@@ -92,6 +93,9 @@ export default function ShorttimeSwiperCard({ route }) {
     useContext(LocalizationContext);
   const isdetailsgiven = useSelector((state) => state.user_details_given);
   const userID = useSelector((state) => state.ID);
+  const states = useSelector((state) => state);
+  const redux_dispatch = useDispatch();
+  console.log(states);
   console.log("i am the Details ghiving shot");
   console.log(isdetailsgiven);
   // const { getstate } = useContext(AuthContext);
@@ -259,6 +263,8 @@ export default function ShorttimeSwiperCard({ route }) {
     // getPermission();
 
     getdata();
+    hellouser();
+
     // getJobs();
   }, []);
 
@@ -299,6 +305,43 @@ export default function ShorttimeSwiperCard({ route }) {
           setloading(false);
           setpage(page + 1);
           console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const hellouser = async (paras) => {
+    const body = {};
+    body.user_id = states.ID;
+    body.userType = states.job_seeker_info
+      ? "job_seeker_info"
+      : "job_provider_info";
+    // body.page = 0;
+    try {
+      await fetch(`http://192.168.1.20:5000/api/user_in_or_out`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("post result");
+          console.log(result);
+          if (result.result11) {
+            redux_dispatch({ type: "User_Details_Given" });
+          }
+          // console.log(result);
+          // console.log(result["short"]);
+          // setData(result["short"]);
+          // setloading(false);
+          // setpage(page + 1);
+          // console.log(data);
         });
     } catch (error) {
       console.log(error);

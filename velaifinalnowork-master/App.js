@@ -11,7 +11,7 @@ import { createContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { AUthReducer, Inital_State } from "./app/Authreducer";
 import { PersistGate } from "redux-persist/integration/react";
-
+import { ShortTimeFilter, Inital_State1 } from "./app/shortTimefilter";
 import { store, persistor } from "./app/Redux/store";
 import { Provider } from "react-redux";
 import Jobmainselect from "./app/Pages/jobprovider/Jobtermchoose";
@@ -21,7 +21,7 @@ import Root from "./app/Rootstack/Rootstack";
 import { doSomethingWithInput, changeLanguage } from "./app/util/util.js";
 export const LocalizationContext = createContext();
 export const AuthContext = createContext();
-
+export const S_FILTER = createContext();
 //To make the splash screen to stay
 SplashScreen.preventAutoHideAsync();
 const i18n = new I18n(translations);
@@ -30,7 +30,9 @@ export default function App() {
   const [userDetails, setuserdetails] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
   const [state, dispatch] = useReducer(AUthReducer, Inital_State);
-
+  const [state1, dispatch1] = useReducer(ShortTimeFilter, Inital_State1);
+  console.log("im at the grade 1");
+  console.log(state1);
   //for otp frontEnd
 
   //to get the localize at first
@@ -88,16 +90,18 @@ export default function App() {
   return (
     <View style={styles.main} onLayout={onLayoutRootView}>
       <LocalizationContext.Provider value={localizationContext}>
-        <AuthContext.Provider value={{ state, dispatch }}>
-          <Provider store={store}>
-            <PersistGate
-              loading={<Text>Loading...</Text>}
-              persistor={persistor}
-            >
-              <Root />
-            </PersistGate>
-          </Provider>
-        </AuthContext.Provider>
+        <S_FILTER.Provider value={{ state1, dispatch1 }}>
+          <AuthContext.Provider value={{ state, dispatch }}>
+            <Provider store={store}>
+              <PersistGate
+                loading={<Text>Loading...</Text>}
+                persistor={persistor}
+              >
+                <Root />
+              </PersistGate>
+            </Provider>
+          </AuthContext.Provider>
+        </S_FILTER.Provider>
       </LocalizationContext.Provider>
     </View>
   );

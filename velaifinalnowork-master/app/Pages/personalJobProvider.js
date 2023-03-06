@@ -59,12 +59,37 @@ export default function PersonalJobProvider({ navigation }) {
   const [profilemodal, setprofilemodal] = useState(false);
   const [profileActivityIndicators, setprofileActivityIndicators] =
     useState(false);
+  const [phonenumber, setphonenumber] = useState("");
   const [profile, setprofile] = useState(null);
   const [profilepic, setprofilepic] = useState("");
   // to addd the
-
+  useEffect(() => {
+    getdata();
+  }, []);
   //add image to backend
-
+  const getdata = async () => {
+    // body.user_id = userID;
+    // console.log(body);
+    try {
+      await fetch(`http://192.168.1.20:5000/api/user_number/${userID}`, {
+        method: "GET",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          setphonenumber(result["number"]);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //to get the image
   async function takeAndUploadPhotoAsync1(paras) {
     // Display the camera to the user and wait for them to take a photo or to cancel
@@ -519,12 +544,13 @@ export default function PersonalJobProvider({ navigation }) {
                     <TextInput
                       placeholder={t("phoneplace")}
                       style={styles.input}
-                      maxLength={10}
+                      // maxLength={10}\
+                      editable={phonenumber == "" ? false : true}
                       keyboardType="number-pad"
                       placeholderTextColor="#707070"
                       onChangeText={handleChange("number")}
                       onBlur={handleBlur("number")}
-                      defaultValue=""
+                      value={phonenumber == "" ? "" : phonenumber}
                     />
                     {errors.number && touched.number && (
                       <Text
