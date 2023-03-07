@@ -16,12 +16,15 @@ import {
 } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { useForm, Controller } from "react-hook-form";
+import { useIsFocused } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Top from "../components/Topcontainer";
 import { useState, useEffect, useContext, useReducer } from "react";
+// import { useContext } from "react";
+import { S_FILTER } from "../../App";
 import { AuthContext } from "../../App";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -91,6 +94,11 @@ const transitionRef = React.createRef();
 export default function ShorttimeSwiperCard({ route }) {
   const { t, language, setlanguage, userDetails } =
     useContext(LocalizationContext);
+  const isFocused = useIsFocused();
+  const { state1, dispatch1 } = useContext(S_FILTER);
+  console.log("IM at short time swipe");
+  console.log(state1);
+  const [islastcard, setlastcard] = useState(false);
   const isdetailsgiven = useSelector((state) => state.user_details_given);
   const userID = useSelector((state) => state.ID);
   const states = useSelector((state) => state);
@@ -264,12 +272,22 @@ export default function ShorttimeSwiperCard({ route }) {
 
     getdata();
     hellouser();
-
+    // navigation.addListener("tabPress", () => getdata());
     // getJobs();
   }, []);
 
+  React.useEffect(() => {
+    if (isFocused) {
+      // callback
+      getdata();
+      setIndex(0);
+      hellouser();
+    }
+  }, [isFocused]);
+
   useEffect(() => {
     console.log("im at useeffect");
+    console.log(index);
     console.log(data);
     console.log(loading);
   }, [data, loading]);
@@ -282,6 +300,10 @@ export default function ShorttimeSwiperCard({ route }) {
   const getdata = async (paras) => {
     const body = {};
     body.page = 0;
+    body.filter = state1;
+    console.log("IM THE BODY DAATA");
+    console.log(body);
+    setloading(true);
     try {
       await fetch(
         `http://192.168.1.20:5000/api/limit/s_like_apply_check/${userID}`,
@@ -310,7 +332,86 @@ export default function ShorttimeSwiperCard({ route }) {
       console.log(error);
     }
   };
+  const getdata23 = async (paras) => {
+    const body = {};
+    body.page = 0;
+    body.filter = state1;
+    console.log("IM THE BODY DAATA");
+    console.log(body);
+    try {
+      await fetch(
+        `http://192.168.1.20:5000/api/limit/s_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("post result");
+          console.log(result);
+          console.log(result["short"]);
+          setData(result["short"]);
+          setIndex(0);
+          setloading(false);
+          setpage(page + 1);
+          console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  //getdata1
+  const getdata1 = async (paras) => {
+    const body = {};
+    body.page = paras;
+    body.filter = state1;
+    console.log("IM THE BODY DAATA");
+    console.log(body);
+    try {
+      await fetch(
+        `http://192.168.1.20:5000/api/limit/s_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("post result");
+          console.log(result);
+          const updated = [...data, ...result["short"]];
+          console.log(updated);
+          // setnewcards();
+          // setData(result["short"]);
+          setData(updated);
+          console.log(data);
+          setpage(page + 1);
+          setloading(false);
+          // console.log(result);
+          // console.log(result["short"]);
+          // setData(result["short"]);
+          // setloading(false);
+          // setpage(page + 1);
+          // console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const hellouser = async (paras) => {
     const body = {};
     body.user_id = states.ID;
@@ -348,37 +449,37 @@ export default function ShorttimeSwiperCard({ route }) {
     }
   };
 
-  const getdata1 = async (paras) => {
-    const body = {};
-    body.page = paras;
-    try {
-      await fetch("http://192.168.1.20:5000/api/limit/s_like_apply_check/4", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("post result");
-          console.log(result);
-          const updated = [...data, ...result["short"]];
-          console.log(updated);
-          // setnewcards();
-          // setData(result["short"]);
-          setData(updated);
-          console.log(data);
-          setpage(page + 1);
-          setloading(false);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getdata2 = async (paras) => {
+  //   const body = {};
+  //   body.page = paras;
+  //   try {
+  //     await fetch("http://192.168.1.20:5000/api/limit/s_like_apply_check/4", {
+  //       method: "POST",
+  //       mode: "cors",
+  //       cache: "no-cache",
+  //       credentials: "same-origin",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(body),
+  //     })
+  //       .then((response) => response.json())
+  //       .then((result) => {
+  //         console.log("post result");
+  //         console.log(result);
+  //         const updated = [...data, ...result["short"]];
+  //         console.log(updated);
+  //         // setnewcards();
+  //         // setData(result["short"]);
+  //         setData(updated);
+  //         console.log(data);
+  //         setpage(page + 1);
+  //         setloading(false);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //post the data
   const postData = async (parameter) => {
@@ -440,6 +541,7 @@ export default function ShorttimeSwiperCard({ route }) {
       setIndex(index + 1);
       // console.log();
       if (index === 7 * page) {
+        console.log(page);
         getdata1(page);
       }
     } else {
@@ -500,15 +602,15 @@ export default function ShorttimeSwiperCard({ route }) {
         navigation.navigate("Userprofile");
       }
     };
-    if (loading) {
-      console.log("im at loading");
-      console.log(loading);
-      return (
-        <View>
-          <Text>Loading..</Text>
-        </View>
-      );
-    }
+    // if (loading) {
+    //   console.log("im at loading");
+    //   console.log(loading);
+    //   return (
+    //     <View>
+    //       <Text>Loading..</Text>
+    //     </View>
+    //   );
+    // }
     return (
       <Animated.ScrollView
         vertical={true}
@@ -1178,14 +1280,23 @@ export default function ShorttimeSwiperCard({ route }) {
       console.log("i get the data");
       console.log(data);
       Alert.alert("No more cards left!");
+      setpage(0);
+      dispatch1({ type: "RESET1" });
+      setloading(true);
+      setlastcard(true);
       setSwipedAll(true);
-      getdata();
+      // navigation.navigate("nomoreCards");
+      console.log("im at the loaddd");
+      getdata23();
       // Timeout used for show Ripples loader to remove swiper container re-render glitch
     }
   };
 
   const onCompanyOpen = useCallback(() => {}, []);
   const [userName, setUserName] = useState("");
+  if (loading) {
+    return <Text>Loading.....</Text>;
+  }
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -1247,7 +1358,12 @@ export default function ShorttimeSwiperCard({ route }) {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Shorttimefilter")}
+          onPress={() => {
+            navigation.navigate("Shorttimefilter"),
+              setloading(true),
+              setIndex(0);
+            dispatch1({ type: "HASH_VALUES" });
+          }}
           style={{ marginLeft: 10 }}
         >
           <MaterialIcons name="filter-list" size={30} color="#333" />
@@ -1266,7 +1382,7 @@ export default function ShorttimeSwiperCard({ route }) {
           // onTapCardDeadZone={5}
           cardHorizontalMargin={4}
           onSwiped={onSwiped}
-          disableRightSwipe={index == 0 ? true : false}
+          disableRightSwipe={index == 0 || islastcard ? true : false}
           onSwipedRight={onSwipedRight}
           onSwipedAll={handleOnSwipedAll}
           useNativeDriver={true}
@@ -1278,6 +1394,8 @@ export default function ShorttimeSwiperCard({ route }) {
           stackSeparation={14}
           horizontalSwipe={true}
           showSecondCard={false}
+          // tSwipe={islastcard}disableLef
+          // disableRightSwipe={islastcard}
           verticalSwipe={false}
           inputOverlayLabelsOpacityRangeX={[0, 120]}
           outputOverlayLabelsOpacityRangeX={[0, 1]}

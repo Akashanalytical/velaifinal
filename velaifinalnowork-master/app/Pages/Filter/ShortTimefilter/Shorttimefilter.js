@@ -31,35 +31,8 @@ import Post from "../Post";
 import { LinearGradient } from "expo-linear-gradient";
 import { useContext } from "react";
 import { S_FILTER } from "../../../../App";
+import { useSelector, useDispatch } from "react-redux";
 
-async function getthechangedvalue(paras) {
-  console.log(paras);
-  try {
-    await fetch(`http://192.168.1.20:5000/api/job_fillter`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(paras),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        //  setRefreshing(false);
-        //  var newdata = result["liked_job"];
-        //  console.log("im the data going to savee");
-        //  console.log(newdata);
-        //  setdata(newdata);
-        //  setloading(false);
-      });
-  } catch (error) {
-    console.warn(error);
-  }
-}
 const listTab = [
   {
     status: "Location",
@@ -207,13 +180,42 @@ const data = [
   // },
 ];
 
-export default function Shorttimefilter(navigation) {
+export default function Shorttimefilter({ navigation: { goBack } }) {
+  const userID = useSelector((state) => state.ID);
+  const Redux_Dispatch = useDispatch();
   const [status, setStatus] = useState("location");
   const { state1, dispatch1 } = useContext(S_FILTER);
   const [dataList, setDataList] = useState([
     ...data.filter((e) => e.status === "location"),
   ]);
 
+  async function getthechangedvalue(paras) {
+    // Redux_Dispatch({ type: "GET Data", payload: userID });
+    console.log(userID);
+    paras.user_id = userID;
+    console.log(paras);
+    goBack();
+    // try {
+    //   await fetch(`http://192.168.1.20:5000/api/job_fillter`, {
+    //     method: "POST", // *GET, POST, PUT, DELETE, etc.
+    //     mode: "cors", // no-cors, *cors, same-origin
+    //     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    //     credentials: "same-origin", // include, *same-origin, omit
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // 'Content-Type': 'application/x-www-form-urlencoded',
+    //     },
+    //     body: JSON.stringify(paras),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((result) => {
+    //       console.log(result);
+    //       goBack();
+    //     });
+    // } catch (error) {
+    //   console.warn(error);
+    // }
+  }
   const setStatusFilter = (status) => {
     if (status !== "location") {
       setDataList([...data.filter((e) => e.status === status)]);

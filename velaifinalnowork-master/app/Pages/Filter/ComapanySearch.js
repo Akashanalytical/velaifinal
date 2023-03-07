@@ -4,13 +4,14 @@ import { TextInput } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { EvilIcons, FontAwesome } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import { useContext } from "react";
+import { L_FILTER } from "../../../App";
 // create a component
 export default function Company() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [search, setSearch] = useState("");
-
+  const { state2, dispatch2 } = useContext(L_FILTER);
   //   const [items, setItems] = useState([
   //     {
   //       label: "0-1 year",
@@ -24,40 +25,25 @@ export default function Company() {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          width: 270,
-          height: 35,
-          borderWidth: 1,
-          // paddingLeft: 20,
-          // margin: 5,
-
-          justifyContent: "space-evenly",
-          flexDirection: "row",
-          borderRadius: 20,
-          marginLeft: -11,
-          borderColor: "#707070",
-          backgroundColor: "#fffff",
-          //   marginHorizontal: 55,
-        }}
-      >
-        <View style={{ justifyContent: "center" }}>
-          <EvilIcons name="search" size={24} color="#707070" />
-        </View>
+      <View>
         <TextInput
+          // value={search}
           value={search}
+          onChangeText={(dist) => setSearch(dist)}
+          // onChange
           underlineColorAndroid="transparent"
-          placeholder="Search here"
-          style={{ marginLeft: 10 }}
+          placeholder="Type company name"
+          style={styles.input}
+          onBlur={() => {
+            dispatch2({ type: "SET_Company_NAME_long", payload: search });
+          }}
         />
         <View
           style={{
             marginLeft: 130,
             marginTop: 5,
           }}
-        >
-          <FontAwesome name="microphone" size={24} color="#707070" />
-        </View>
+        ></View>
       </View>
       {/* <DropDownPicker
         open={open}
@@ -102,6 +88,20 @@ export default function Company() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 20,
+    backgroundColor: "#ffffff",
+  },
+  input: {
+    width: 250,
+    height: 44,
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 10,
+    backgroundColor: "#e8e8e8",
   },
 });
 

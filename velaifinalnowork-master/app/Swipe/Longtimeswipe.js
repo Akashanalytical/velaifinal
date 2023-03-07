@@ -15,6 +15,8 @@ import {
   Pressable,
 } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
+
 import Top from "../components/Topcontainer";
 import { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
@@ -22,8 +24,8 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../../App";
-import { useSelector } from "react-redux";
-
+// import { useSelector } from "react-redux";
+// import { useContext } from "react";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -41,7 +43,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useContext } from "react";
+import { L_FILTER } from "../../App";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const { height, width } = Dimensions.get("window");
 
@@ -86,6 +90,7 @@ export default function LongtimeSwiperCard({ route }) {
   console.log("post data");
   console.log(route);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [index, setIndex] = React.useState(0);
   const [data, setData] = useState([]);
@@ -95,6 +100,16 @@ export default function LongtimeSwiperCard({ route }) {
   const [address, setaddress] = useState(null);
   const [loading, setloading] = useState(true);
   const [search, setSearch] = useState("");
+
+  //for focus
+  React.useEffect(() => {
+    if (isFocused) {
+      // callback
+      getdata();
+      setIndex(0);
+      // hellouser();
+    }
+  }, [isFocused]);
 
   //to get  or check the handlelike
   const handleLikeButtonPress = (card) => {
@@ -250,6 +265,7 @@ export default function LongtimeSwiperCard({ route }) {
   const getdata = async () => {
     const body = {};
     body.page = 0;
+    body.filter = state2;
     try {
       await fetch(
         `http://192.168.1.20:5000/api/limit/L_like_apply_check/${userID}`,
@@ -307,17 +323,21 @@ export default function LongtimeSwiperCard({ route }) {
   const getdata1 = async (paras) => {
     const body = {};
     body.page = paras;
+    body.filter = state2;
     try {
-      await fetch("http://192.168.1.20:5000/api/limit/L_like_apply_check/4", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
+      await fetch(
+        `http://192.168.1.20:5000/api/limit/L_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log("post result");
@@ -365,6 +385,8 @@ export default function LongtimeSwiperCard({ route }) {
     //   getdata1(page);
     // }
   };
+  const { state2, dispatch2 } = useContext(L_FILTER);
+
   const Card = ({ card }) => {
     const { state, dispatch } = useContext(AuthContext);
 
@@ -403,14 +425,14 @@ export default function LongtimeSwiperCard({ route }) {
         navigation.navigate("Userprofile");
       }
     };
-    if (loading) {
-      console.log(loading);
-      return (
-        <View>
-          <Text>Loading..</Text>
-        </View>
-      );
-    }
+    // if (loading) {
+    //   console.log(loading);
+    //   return (
+    //     <View>
+    //       <Text>Loading..</Text>
+    //     </View>
+    //   );
+    // }
     return (
       <Animated.ScrollView
         vertical={true}
@@ -1115,7 +1137,42 @@ export default function LongtimeSwiperCard({ route }) {
   };
 
   const [swipedAll, setSwipedAll] = useState(false);
+  const getdata23 = async (paras) => {
+    const body = {};
+    body.page = 0;
+    body.filter = state2;
+    console.log("IM THE BODY DAATA");
 
+    console.log(body);
+    try {
+      await fetch(
+        `http://192.168.1.20:5000/api/limit/L_like_apply_check/${userID}`,
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("post result");
+          console.log(result);
+          // console.log(result["short"]);
+          setData(result["long"]);
+          setIndex(0);
+          setloading(false);
+          setpage(page + 1);
+          console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleOnSwipedAll = () => {
     console.log("I get the daata");
     if (!swipedAll) {
@@ -1124,12 +1181,25 @@ export default function LongtimeSwiperCard({ route }) {
       console.log("i get the data");
       console.log(data);
       Alert.alert("No more cards left!");
-      setSwipedAll(true);
-      getdata();
+      // setSwipedAll(true);
+      // console.log("i get the data");
+      // console.log(data);
+      // Alert.alert("No more cards left!");
+      setpage(0);
+      dispatch2({ type: "RESET" });
+      setloading(true);
+      // setlastcard(true);
+      // setSwipedAll(true);
+      // navigation.navigate("nomoreCards");
+      console.log("im at the loaddd");
+      getdata23();
       // Timeout used for show Ripples loader to remove swiper container re-render glitch
     }
   };
 
+  if (loading) {
+    return <Text>Loading.....</Text>;
+  }
   return (
     <View style={{ flex: 1 }}>
       {/* <Top /> */}
@@ -1199,7 +1269,10 @@ export default function LongtimeSwiperCard({ route }) {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Longtimefilter")}
+          onPress={() => {
+            navigation.navigate("Longtimefilter"), setloading(true);
+            setIndex(0);
+          }}
           style={{ marginLeft: 10 }}
         >
           <MaterialIcons name="filter-list" size={30} color="#333" />

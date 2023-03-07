@@ -14,16 +14,22 @@ import {
 import { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useContext } from "react";
+import { L_FILTER } from "../../../App";
 import {
   MaterialIcons,
   MaterialCommunityIcons,
   FontAwesome,
 } from "@expo/vector-icons";
-import Location from "./Location";
-import MyComponent from "./Category";
+// import Location from "./LongtimeFilter/longloc";
+import Location1 from "./LongtimeFilter/longloc";
+import MyComponent1 from "./LongtimeFilter/longcat";
+import LongSalery from "./LongtimeFilter/longsal";
+import Duration1 from "./LongtimeFilter/longdu";
+// import MyComponent from "./LongtimeFilter/longcat";
 import Workmode from "./Workmode";
-import Duration from "./Duration";
-import Salery from "./Salery";
+// import Duration from "./LongtimeFilter/longdu";
+// import Salery from "./LongtimeFilter/longsal";
 import Education from "./Education";
 import Experiance from "./Experiance";
 import Company from "./ComapanySearch";
@@ -93,16 +99,16 @@ const listTab = [
       />
     ),
   },
-  {
-    status: "Experiance",
-    icon: (
-      <Image
-        resizeMode="contain"
-        style={{ height: 30, width: 30 }}
-        source={require("../../images/Imagefilter/portfolio.png")}
-      />
-    ),
-  },
+  // {
+  //   status: "Experiance",
+  //   icon: (
+  //     <Image
+  //       resizeMode="contain"
+  //       style={{ height: 30, width: 30 }}
+  //       source={require("../../images/Imagefilter/portfolio.png")}
+  //     />
+  //   ),
+  // },
   {
     status: "Company",
 
@@ -114,33 +120,33 @@ const listTab = [
       />
     ),
   },
-  {
-    status: "Posted by",
-    icon: (
-      <Image
-        resizeMode="contain"
-        style={{ height: 30, width: 30 }}
-        source={require("../../images/Imagefilter/postnote.png")}
-      />
-    ),
-  },
+  // {
+  //   status: "Posted by",
+  //   icon: (
+  //     <Image
+  //       resizeMode="contain"
+  //       style={{ height: 30, width: 30 }}
+  //       source={require("../../images/Imagefilter/postnote.png")}
+  //     />
+  //   ),
+  // },
 ];
 
 // Linking content
 const data = [
   {
-    name: <Location />,
+    name: <Location1 />,
     text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
     status: "Location",
   },
   {
-    name: <MyComponent />,
+    name: <MyComponent1 />,
     text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
     status: "Category",
   },
 
   {
-    name: <Duration />,
+    name: <Duration1 />,
     text: "Here I go into details about myself and my business, including the services we provide, how we started and our overall ethos.",
     status: "Duration",
   },
@@ -150,7 +156,7 @@ const data = [
     status: "Work Mode",
   },
   {
-    name: <Salery />,
+    name: <LongSalery />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
     status: "Salery",
   },
@@ -159,26 +165,28 @@ const data = [
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
     status: "Education",
   },
-  {
-    name: <Experiance />,
-    text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
-    status: "Experiance",
-  },
+  // {
+  //   name: <Experiance />,
+  //   text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
+  //   status: "Experiance",
+  // },
   {
     name: <Company />,
 
     text: "work",
     status: "Company",
   },
-  {
-    name: <Post />,
-    text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Posted by",
-  },
+  // {
+  //   name: <Post />,
+  //   text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
+  //   status: "Posted by",
+  // },
 ];
 
-export default function New(navigation) {
+export default function New({ navigation: { goBack } }) {
   const [status, setStatus] = useState("location");
+  const { state2, dispatch2 } = useContext(L_FILTER);
+
   const [dataList, setDataList] = useState([
     ...data.filter((e) => e.status === "location"),
   ]);
@@ -234,12 +242,12 @@ export default function New(navigation) {
         }}
       >
         <TouchableOpacity
-        // onPress={() => navigation.navigate("Userprofile")}
-        // style={{
-        //   backgroundColor: "green",
-        //   padding: 10,
-        //   borderRadius: 10,
-        // }}
+          onPress={() => goBack()}
+          // style={{
+          //   backgroundColor: "green",
+          //   padding: 10,
+          //   borderRadius: 10,
+          // }}
         >
           <LinearGradient
             colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}

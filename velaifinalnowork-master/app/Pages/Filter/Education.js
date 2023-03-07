@@ -2,21 +2,22 @@
 import React, { Component, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import { useContext } from "react";
+import { L_FILTER } from "../../../App";
 // create a component
 export default function Education() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-
+  const { state2, dispatch2 } = useContext(L_FILTER);
   const [items, setItems] = useState([
     {
       label: "B.tech/B.E",
 
-      value: "1",
+      value: "B.tech/B.E",
     },
-    { label: "B.sc", value: "2" },
-    { label: "10th", value: "3" },
-    { label: "12th", value: "4" },
+    { label: "B.sc", value: "B.sc" },
+    { label: "10th", value: "10th" },
+    { label: "12th", value: "12th" },
   ]);
 
   return (
@@ -42,7 +43,7 @@ export default function Education() {
         mode="BADGE"
         categorySelectable={true}
         closeAfterSelecting={true}
-        multiple={true}
+        // multiple={true}
         showTickIcon={true}
         setOpen={setOpen}
         setValue={setValue}
@@ -51,6 +52,12 @@ export default function Education() {
         showArrowIcon={true}
         customItemLabelStyle={{
           fontStyle: "italic",
+        }}
+        onChangeValue={(value) => {
+          console.log("Im at the states chnge");
+          console.log(value);
+          dispatch2({ type: "SET_EDUCATION_long", payload: value });
+          // handledistrict(value);
         }}
         listItemLabelStyle={{
           color: "black",

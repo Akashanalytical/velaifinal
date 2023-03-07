@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Landing from "../Pages/Landing";
 import { Ionicons } from "@expo/vector-icons";
 import EduInfo2 from "../Pages/EducationProfile2edit";
+import NomoreCards from "../nomorecards";
 import MainScreen from "../Pages/MainScreen";
 import Workexperience2 from "../Pages/workexperience2";
 import Mobillogin from "../Pages/MobileLogin";
@@ -537,6 +538,11 @@ function Root({ navigation }) {
         <Stack.Screen
           name="SelectCategory"
           component={SelectCategory}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="nomoreCards"
+          component={NomoreCards}
           options={{ headerShown: false }}
         ></Stack.Screen>
         <Stack.Screen

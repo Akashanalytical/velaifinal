@@ -2,21 +2,23 @@
 import React, { Component, useContext, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { S_FILTER } from "../../../App";
-
+// import { useContext } from "react";
+import { L_FILTER } from "../../../../App";
 // create a component
-export default function Duration() {
+export default function Duration1() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const { state1, dispatch1 } = useContext(S_FILTER);
+  const { state2, dispatch2 } = useContext(L_FILTER);
+
   const [items, setItems] = useState([
     {
-      label: "1-10 days",
+      label: "0-1 year",
 
-      value: "1-10 days",
+      value: "0-1 year",
     },
-    { label: "10-30 days", value: "10-30 days" },
-    { label: "more than a month", value: "more than a month " },
+    { label: "1-5 year", value: "1-5 year" },
+    { label: "5-10", value: "5-10" },
+    { label: "Permanent", value: "Permanent" },
   ]);
 
   return (
@@ -55,7 +57,7 @@ export default function Duration() {
         onChangeValue={(value) => {
           console.log("Im at the state chnge");
           console.log(value);
-          dispatch1({ type: "SET_Duration", payload: value });
+          dispatch2({ type: "SET_Duration_long", payload: value });
         }}
         listItemLabelStyle={{
           color: "black",

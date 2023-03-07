@@ -1,19 +1,21 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext, useState, useEffect, useMemo } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import { S_FILTER } from "../../../App";
+import { L_FILTER } from "../../../../App";
 import { useSelector } from "react-redux";
 import DropDownPicker from "react-native-dropdown-picker";
 import { set } from "react-native-reanimated";
-export default function Location(props) {
+export default function Location1(props) {
   const [open1, setOpen1] = useState(false);
   const [value1, setValue1] = useState(null);
   const [open2, setOpen2] = useState(false);
+  const { state2, dispatch2 } = useContext(L_FILTER);
+
   const [value2, setValue2] = useState(null);
   const [open3, setOpen3] = useState(false);
   const [value3, setValue3] = useState(null);
   const [District, setDistrict] = useState(null);
-  const { state1, dispatch1 } = useContext(S_FILTER);
+  //   const { state1, dispatch1 } = useContext(S_FILTER);
   // const [loading, setloading] = useState(true);
   const [data, setdata] = useState([]);
   const [country, setcountry] = useState([]);
@@ -194,10 +196,6 @@ export default function Location(props) {
         justifyContent: "space-between",
       }}
     >
-      <Text>
-        Selected values State:{state1.states == "" ? "" : state1.states}
-        District:{state1.district == "" ? "" : state1.district}
-      </Text>
       <View style={{ margin: 30 }}>
         <DropDownPicker
           open={open2}
@@ -231,7 +229,7 @@ export default function Location(props) {
           onChangeValue={(value) => {
             console.log("Im at the states chnge");
             console.log(value);
-            dispatch1({ type: "SET_STATE", payload: value });
+            dispatch2({ type: "SET_STATE_long", payload: value });
             // handledistrict(value);
           }}
           listItemLabelStyle={{
@@ -246,8 +244,8 @@ export default function Location(props) {
           placeholder={"Enter the district"}
           style={styles.input}
           onBlur={() => {
-            console.log(District),
-              dispatch1({ type: "SET_DISTRICT", payload: District });
+            console.log(District);
+            dispatch2({ type: "SET_DISTRICT_long", payload: District });
           }}
           // onBlur={() => dispatch1({ type: "SET_DISTRICT", payload: District })}
         />

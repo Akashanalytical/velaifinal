@@ -2,21 +2,23 @@
 import React, { Component, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import { useContext } from "react";
+import { L_FILTER } from "../../../App";
 // create a component
 export default function Workmode() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const { state2, dispatch2 } = useContext(L_FILTER);
 
   const [items, setItems] = useState([
     {
       label: "Work from Office",
 
-      value: "1",
+      value: "Work from Office",
     },
-    { label: "Hybrid", value: "2" },
-    { label: "Permanent Remote", value: "3" },
-    { label: "Internship", value: "4" },
+    { label: "Hybrid", value: "Hybrid" },
+    { label: "Permanent Remote", value: "Permanent Remote" },
+    { label: "Internship", value: "Internship" },
   ]);
 
   return (
@@ -42,7 +44,7 @@ export default function Workmode() {
         mode="BADGE"
         categorySelectable={true}
         closeAfterSelecting={true}
-        multiple={true}
+        // multiple={true}
         showTickIcon={true}
         setOpen={setOpen}
         setValue={setValue}
@@ -51,6 +53,12 @@ export default function Workmode() {
         showArrowIcon={true}
         customItemLabelStyle={{
           fontStyle: "italic",
+        }}
+        onChangeValue={(value) => {
+          console.log("Im at the states chnge");
+          console.log(value);
+          dispatch2({ type: "SET_WORKMODE_long", payload: value });
+          // handledistrict(value);
         }}
         listItemLabelStyle={{
           color: "black",
