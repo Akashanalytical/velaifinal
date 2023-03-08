@@ -116,18 +116,21 @@ export default function Userprofile({ navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(`http://192.168.1.20:5000/api/job_post/aws_upload/25`, {
-            method: "POST",
-            mode: "cors", // no-cors, *cors, same-origin
-            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            // credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-              // Accept: "application/json",
-              "Content-Type": "multipart/form-data",
-              // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formdata, // body data type must match "Content-Type" header
-          })
+          await fetch(
+            `http://192.168.1.20:5000/api/file/aws_upload/${userID}`,
+            {
+              method: "POST",
+              mode: "cors", // no-cors, *cors, same-origin
+              // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+              // credentials: "same-origin", // include, *same-origin, omit
+              headers: {
+                // Accept: "application/json",
+                "Content-Type": "multipart/form-data",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: formdata, // body data type must match "Content-Type" header
+            }
+          )
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
