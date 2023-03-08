@@ -11,11 +11,11 @@ export default function Duration() {
   const { state1, dispatch1 } = useContext(S_FILTER);
   const [items, setItems] = useState([
     {
-      label: "1-10 days",
+      label: "1-10days",
 
-      value: "1-10 days",
+      value: "1-10days",
     },
-    { label: "10-30 days", value: "10-30 days" },
+    { label: "10-30days", value: "10-30days" },
     { label: "more than a month", value: "more than a month " },
   ]);
 

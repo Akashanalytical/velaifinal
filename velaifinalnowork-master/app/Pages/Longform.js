@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   ActivityIndicator,
   Modal,
+  Alert,
   Image,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -41,6 +42,10 @@ const schema = yup.object().shape({
     .string()
     .typeError("Duration cannot be null")
     .required("Duration is required"),
+  per: yup
+    .string()
+    .required("salary details cant be empty")
+    .typeError("job title  cannot be null"),
   Salary: yup.string().required("Please enter the salary Details"),
   // mobile_number: yup.string().required("Mobile number is required"),
   email: yup.string().required("email id is required"),
@@ -166,6 +171,13 @@ const Sign = ({ navigation: { goBack } }) => {
     { label: "UCP", value: "ucp" },
     { label: "UET", value: "uet" },
   ]);
+  //per
+  const [houropen, sethouropen] = useState(false);
+  const [hourvalue, sethourvalue] = useState(false);
+  const [hour, sethour] = useState([
+    { label: "/Per Month", value: "Per Month" },
+    { label: "/LPA", value: "/LPA" },
+  ]);
 
   //to get the job title
   useEffect(() => {
@@ -250,6 +262,7 @@ const Sign = ({ navigation: { goBack } }) => {
     console.log(finalJob);
     data.job_title = finalJob;
     data.jobpic = jobpost;
+    data.is_short = "False";
     data.isallow_tocall = isclicked;
     data.user_id = userID;
     console.log(data, "data");
@@ -269,8 +282,11 @@ const Sign = ({ navigation: { goBack } }) => {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
-            if (result.post === "success") {
+            if (result.post == "success") {
+              Alert.alert("Sucessfully posted");
               goBack();
+            } else {
+              Alert.alert(result.post);
             }
           });
       } catch (error) {
@@ -427,25 +443,73 @@ const Sign = ({ navigation: { goBack } }) => {
             </Text>
           )}
         </View>
-        <Controller
-          name="Salary"
-          defaultValue=""
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              selectionColor={"#5188E3"}
-              placeholder="Salary"
-              onChangeText={onChange}
-              value={value}
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <View>
+            <Controller
+              name="Salary"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[styles.input, { width: 200 }]}
+                  selectionColor={"#5188E3"}
+                  placeholder="Salary"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        {errors.Salary && (
-          <Text style={{ color: "red", marginLeft: 20 }}>
-            {errors.Salary.message}
-          </Text>
-        )}
+            {errors.Salary && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.Salary.message}
+              </Text>
+            )}
+          </View>
+          <View>
+            <Controller
+              name="per"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <View style={styles.dropdownCompany}>
+                  <DropDownPicker
+                    style={[styles.dropdown, { width: 120 }]}
+                    open={houropen}
+                    value={hourvalue} //companyValue
+                    items={hour}
+                    setOpen={sethouropen}
+                    setValue={sethourvalue}
+                    setItems={sethour}
+                    placeholder="/hour"
+                    dropDownContainerStyle={{
+                      position: "relative", // to fix scroll issue ... it is by default 'absolute'
+                      top: 0, //to fix gap between label box and container
+                    }}
+                    placeholderStyle={[styles.placeholderStyles]}
+                    containerStyle={{ zIndex: 50, width: 120 }}
+                    loading={loading}
+                    listMode="SCROLLVIEW"
+                    activityIndicatorColor="#5188E3"
+                    searchable={true}
+                    searchPlaceholder="Set duration here..."
+                    onOpen={ondurationOpen}
+                    onChangeValue={onChange}
+                  />
+                </View>
+              )}
+            />
+            {errors.per && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.per.message}
+              </Text>
+            )}
+          </View>
+          <View></View>
+        </View>
         <Controller
           name="Education"
           defaultValue=""

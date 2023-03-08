@@ -321,12 +321,18 @@ export default function ShorttimeSwiperCard({ route }) {
         .then((response) => response.json())
         .then((result) => {
           console.log("post result");
-          console.log(result);
-          console.log(result["short"]);
-          setData(result["short"]);
-          setloading(false);
-          setpage(page + 1);
-          console.log(data);
+          console.log("im getting thte dataatata");
+          console.log(result.length);
+          console.log(result["short"].length);
+          if (result["short"].length > 0) {
+            setData(result["short"]);
+            setloading(false);
+            setpage(page + 1);
+            console.log(data);
+          } else {
+            alert("No cards found on your filter");
+            setTimeout(() => getdata23(), 1000);
+          }
         });
     } catch (error) {
       console.log(error);

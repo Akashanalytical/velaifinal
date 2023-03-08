@@ -290,11 +290,16 @@ export default function LongtimeSwiperCard({ route }) {
         .then((result) => {
           console.log("post result");
           console.log(result);
-          setData(result["long"]);
-          console.log("IM after comming from the page");
-          console.log(page);
-          setpage(page + 1);
-          setloading(false);
+          if (result["long"].length > 0) {
+            setData(result["long"]);
+            console.log("IM after comming from the page");
+            console.log(page);
+            setpage(page + 1);
+            setloading(false);
+          } else {
+            alert("No cards found on your filter");
+            setTimeout(() => getdata23(), 1000);
+          }
         });
     } catch (error) {
       console.log(error);

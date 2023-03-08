@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
+  Alert,
   Image,
   TouchableHighlight,
 } from "react-native";
@@ -98,9 +99,32 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
     { label: "/Per Month", value: "Per Month" },
     { label: "/Per Year", value: "Per Year" },
   ]);
+  const [phonenumber, setphonenumber] = useState("");
+  async function getuserdata() {
+    try {
+      await fetch(`http://192.168.1.20:5000/api/user_number/${userID}`, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+        .then((response) => response.json())
+        .then(
+          (result) => (console.log(result), setphonenumber(result["number"]))
+        );
+    } catch (error) {
+      console.log("i at job titile error");
+      console.warn(error);
+    }
+  }
   //to get the item
   useEffect(() => {
     fetchdata();
+    getuserdata();
   }, []);
   async function fetchdata() {
     try {
@@ -220,10 +244,13 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
     console.log(finalJob);
     data.job_title = finalJob;
     data.pic = jobpost;
+    data.number = phonenumber;
     data.user_id = userID;
+    data.is_short = "True";
     data.isallow_tocall = isclicked;
     console.log(durationvalue);
     console.log(data, "data");
+
     async function submitdata() {
       try {
         await fetch("http://192.168.1.20:5000/api/shorttime_job", {
@@ -240,7 +267,12 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
-            goBack();
+            if (result.post == "success") {
+              Alert.alert("Sucessfully posted");
+              goBack();
+            } else {
+              Alert.alert(result.post);
+            }
           });
       } catch (error) {
         console.warn(error);
@@ -311,6 +343,24 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
               placeholder="Job Location"
               onChangeText={onChange}
               value={value}
+            />
+          )}
+        />
+        <Controller
+          name="number"
+          defaultValue=""
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              style={[styles.input]}
+              selectionColor={"#5188E3"}
+              placeholder="Mobile Number"
+              keyboardType="number-pad"
+              multiline
+              // maxLength={}
+              numberOfLines={4}
+              onChangeText={onChange}
+              value={phonenumber == "" ? value : phonenumber}
             />
           )}
         />

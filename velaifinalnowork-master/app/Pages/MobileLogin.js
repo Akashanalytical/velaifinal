@@ -16,6 +16,7 @@ import { TextInput } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import * as Location from "expo-location";
 import { AuthContext } from "../../App";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -35,6 +36,7 @@ export default function Mobillogin({ route, navigation }) {
   const [mobilenumber, setmobilenumber] = useState("");
   const { state, dispatch } = useContext(AuthContext);
   const [otpCode, setotpCode] = useState("");
+  const [location, setLocation] = useState("");
   const [finalotp, setfinalotp] = useState("");
   const [ispinready, setispinready] = useState(false);
   const [ispinCorrect, setispincorrect] = useState(false);
@@ -67,6 +69,24 @@ export default function Mobillogin({ route, navigation }) {
   useEffect(() => {
     getData();
   });
+  //get location
+  useEffect(() => {
+    //getting a user Location takes time so i need to wait so i make a async function
+    const getPermission = async () => {
+      //we use foreround permission for gettin Permission inside the app
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Please give permissions to acces the Loaction");
+        return;
+      }
+      //To get the current Location
+      let CurrentLocation = await Location.getCurrentPositionAsync({});
+      setLocation(CurrentLocation);
+    };
+
+    getPermission();
+  }, [location]);
+
   //get data
   const getData = async () => {
     try {
@@ -197,8 +217,13 @@ export default function Mobillogin({ route, navigation }) {
 
   const handleStop = async () => {
     const value = {};
+    alert("hiiii");
     value.otp = otpCode;
     value.number = mobilenumber;
+    value.latitude = location.coords.latitude;
+    value.longitude = location.coords.longitude;
+    console.log(location.coords.latitude);
+    console.log(location.coords.longitude);
     console.log(value);
     try {
       await fetch("http://192.168.1.20:5000/sms/verification", {
@@ -585,7 +610,7 @@ export default function Mobillogin({ route, navigation }) {
                 value.number = mobilenumber;
                 console.log(value);
                 try {
-                  await fetch("http://192.168.1.11:5000/api/sms", {
+                  await fetch("http://192.168.1.20:5000/api/sms", {
                     method: "POST",
                     mode: "cors", // no-cors, *cors, same-origin
                     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
