@@ -293,6 +293,7 @@
 
 import React, { Component, useState } from "react";
 import { TouchableOpacity } from "react-native";
+import { Modal } from "react-native";
 import {
   View,
   Text,
@@ -322,6 +323,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Message } from "react-native-gifted-chat";
+import { useNavigation } from "@react-navigation/native";
+//to navigate
+
 //on share
 const onShare = async ({
   title,
@@ -329,6 +333,7 @@ const onShare = async ({
   per,
   time,
   loc,
+  cou,
   Dis,
   name,
   short,
@@ -358,174 +363,234 @@ const onShare = async ({
 };
 
 //flaatlist design
-const Items = ({ title, sal, per, time, loc, Dis, name, short, work }) => (
-  <View style={{ flex: 1, marginBottom: 20 }}>
-    <View
-      style={{
-        backgroundColor: "#F2F2F2",
-        borderRadius: 10,
-        height: "100%",
-        width: "90%",
-        marginLeft: "5%",
-        justifyContent: "center",
-        shadowColor: "#000000",
-        shadowOffset: {
-          width: 0,
-          height: 6,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 5.62,
-        elevation: 8,
-      }}
-    >
+const Iteems = ({ title }) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+  </View>
+);
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Second Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+];
+const Items = ({
+  title,
+  sal,
+  per,
+  time,
+  cou,
+  loc,
+  Dis,
+  name,
+  short,
+  work,
+  iD,
+  navigation,
+}) => {
+  // const { navigation } = this.props.navigation;
+  return (
+    <View style={{ flex: 1, marginBottom: 20 }}>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginHorizontal: 10,
+          backgroundColor: "#F2F2F2",
+          borderRadius: 10,
+          height: "100%",
+          width: "90%",
+          marginLeft: "5%",
+          justifyContent: "center",
+          shadowColor: "#000000",
+          shadowOffset: {
+            width: 0,
+            height: 6,
+          },
+          shadowOpacity: 0.2,
+          shadowRadius: 5.62,
+          elevation: 8,
         }}
       >
-        <Text
+        <View
           style={{
-            color: "#333",
-            fontSize: 18,
-            fontWeight: "500",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: "#333",
+              fontSize: 18,
+              fontWeight: "500",
+              marginTop: 10,
+            }}
+          >
+            {title}
+          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              onShare({
+                title,
+                sal,
+                per,
+                time,
+                loc,
+                cou,
+                Dis,
+                name,
+                short,
+                work,
+              })
+            }
+          >
+            <FontAwesome name="share-alt" size={34} color="#333" />
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            width: "57%",
+            marginHorizontal: 10,
             marginTop: 10,
           }}
         >
-          {title}
-        </Text>
-        <TouchableOpacity
-          onPress={() =>
-            onShare({ title, sal, per, time, loc, Dis, name, short, work })
-          }
-        >
-          <FontAwesome name="share-alt" size={34} color="#333" />
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{
-          flexDirection: "row",
-          width: "57%",
-          marginHorizontal: 10,
-          marginTop: 10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            width: 150,
-          }}
-        >
           <View
             style={{
-              flexDirection: "row",
-              marginBottom: 10,
-              alignContent: "center",
-            }}
-          >
-            <FontAwesome name="rupee" size={22} color="#333" />
-            <Text
-              style={{
-                // marginTop: 3,
-
-                marginLeft: 10,
-                fontSize: 13,
-                fontWeight: "400",
-              }}
-            >
-              {sal}/{short == "True" ? per : "LPA"}
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginBottom: 10,
+              flexDirection: "column",
+              justifyContent: "flex-start",
               width: 150,
-              alignContent: "center",
             }}
           >
-            <MaterialCommunityIcons name="timer-sand" size={24} color="#333" />
-            <Text
+            <View
               style={{
-                marginLeft: 10,
-                fontSize: 13,
-                fontWeight: "400",
+                flexDirection: "row",
+                marginBottom: 10,
+                alignContent: "center",
               }}
             >
-              {short == "True" ? time : work}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            marginLeft: 3,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              marginBottom: 10,
-              width: 180,
-              alignContent: "center",
-            }}
-          >
-            <Ionicons name="location-outline" size={24} color="#333" />
-            <Text
-              style={{
-                marginLeft: 10,
-                fontSize: 13,
-                fontWeight: "400",
-              }}
-            >
-              {loc}
-            </Text>
-          </View>
-          <View
-            style={{
-              alignContent: "center",
+              <FontAwesome name="rupee" size={22} color="#333" />
+              <Text
+                style={{
+                  // marginTop: 3,
 
-              flexDirection: "row",
-              marginBottom: 10,
-              width: 180,
-            }}
-          >
-            <MaterialCommunityIcons
-              name="map-marker-distance"
-              size={22}
-              color="#333"
-            />
-            <Text
+                  marginLeft: 10,
+                  fontSize: 13,
+                  fontWeight: "400",
+                }}
+              >
+                {sal}/{short == "True" ? per : "LPA"}
+              </Text>
+            </View>
+            <View
               style={{
-                marginLeft: 10,
-                fontSize: 13,
-                fontWeight: "400",
+                flexDirection: "row",
+                marginBottom: 10,
+                width: 150,
+                alignContent: "center",
               }}
             >
-              {Dis}
-            </Text>
+              <MaterialCommunityIcons
+                name="timer-sand"
+                size={24}
+                color="#333"
+              />
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontSize: 13,
+                  fontWeight: "400",
+                }}
+              >
+                {short == "True" ? time : work}
+              </Text>
+            </View>
           </View>
-          <LinearGradient
-            colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+          <View
             style={{
-              alignContent: "center",
-              borderRadius: 10,
-              width: 100,
-              height: 30,
-              marginLeft: 70,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 14,
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              marginLeft: 3,
             }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            useAngle={45}
           >
-            {/* <View
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: 10,
+                width: 180,
+                alignContent: "center",
+              }}
+            >
+              <Ionicons name="location-outline" size={24} color="#333" />
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontSize: 13,
+                  fontWeight: "400",
+                }}
+              >
+                {loc}
+              </Text>
+            </View>
+            <View
+              style={{
+                alignContent: "center",
+
+                flexDirection: "row",
+                marginBottom: 10,
+                width: 180,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  // chagePage();
+                  navigation.navigate("JobApppliedPersons", {
+                    id: iD,
+                    short: short,
+                  });
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={22}
+                  color="#333"
+                />
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    fontSize: 13,
+                    fontWeight: "400",
+                  }}
+                >
+                  {cou} Persons Applied
+                  {/* {count} */}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <LinearGradient
+              colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+              style={{
+                alignContent: "center",
+                borderRadius: 10,
+                width: 100,
+                height: 30,
+                marginLeft: 70,
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 14,
+              }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              useAngle={45}
+            >
+              {/* <View
               style={{
                 borderTopWidth: 20,
                 backgroundColor: "red",
@@ -533,25 +598,27 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short, work }) => (
               }}
             > */}
 
-            <Text
-              style={{
-                fontSize: 13,
-                color: "#fff",
-                fontWeight: "400",
-              }}
-            >
-              {short == "True" ? "Short Time" : "Long Time"}
-            </Text>
-            {/* </View> */}
-          </LinearGradient>
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: "#fff",
+                  fontWeight: "400",
+                }}
+              >
+                {short == "True" ? "Short Time" : "Long Time"}
+              </Text>
+              {/* </View> */}
+            </LinearGradient>
+          </View>
         </View>
       </View>
     </View>
-  </View>
-  // <View style={styles.item}>
-  //   <Text style={styles.title}>{title}</Text>
-  // </View>
-);
+
+    // <View style={styles.item}>
+    //   <Text style={styles.title}>{title}</Text>
+    // </View>
+  );
+};
 
 // create a component
 export default function Jobpostermain({ navigation }) {
@@ -560,6 +627,11 @@ export default function Jobpostermain({ navigation }) {
   const [data, setdata] = useState([]);
   const [refreshing, setRefreshing] = useState(true);
   const userID = useSelector((state) => state.ID);
+
+  const chagePage = () => {
+    navigation.navigate("JobApppliedPersons");
+  };
+
   useEffect(() => {
     submitdata();
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -584,6 +656,7 @@ export default function Jobpostermain({ navigation }) {
           console.log(result);
           setRefreshing(false);
           var newdata = result["posted_job"];
+          console.log(result["posted_job"][0].count);
           setdata(newdata);
           setloading(false);
         });
@@ -737,6 +810,7 @@ export default function Jobpostermain({ navigation }) {
                 data={data}
                 renderItem={({ item }) => (
                   <Items
+                    iD={item.id}
                     title={item.job_title}
                     sal={item.Salary}
                     per={item.per}
@@ -744,6 +818,9 @@ export default function Jobpostermain({ navigation }) {
                     loc={item.location}
                     short={item.is_short}
                     work={item.workspace}
+                    cou={item.count}
+                    navigation={navigation}
+                    // count={item.count}
                   />
                 )}
                 keyExtractor={(item) => item.id}
@@ -775,5 +852,46 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });

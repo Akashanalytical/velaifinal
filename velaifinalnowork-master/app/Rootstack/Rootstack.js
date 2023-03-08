@@ -6,6 +6,7 @@ import Posts from "../Pages/Post";
 import { NavigationContainer } from "@react-navigation/native";
 import Landing from "../Pages/Landing";
 import { Ionicons } from "@expo/vector-icons";
+import JOBApplied from "../Pages/jobAppliedPersons";
 import EduInfo2 from "../Pages/EducationProfile2edit";
 import NomoreCards from "../nomorecards";
 import MainScreen from "../Pages/MainScreen";
@@ -1025,6 +1026,11 @@ function Root({ navigation }) {
           name="Homex"
           component={ModifyHome}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="JobApppliedPersons"
+          component={JOBApplied}
+          // options={{ headerShown: false }}
         />
         <Stack.Screen
           name="eduexp"
