@@ -105,7 +105,11 @@ export default function LongtimeSwiperCard({ route }) {
   React.useEffect(() => {
     if (isFocused) {
       // callback
+      getPermission();
+
       getdata();
+      getJobs();
+      // getdata();
       setIndex(0);
       // hellouser();
     }
@@ -256,13 +260,15 @@ export default function LongtimeSwiperCard({ route }) {
     return (rad * c).toFixed();
   }
 
-  useEffect(() => {
-    getPermission();
+  // useEffect(() => {
+  //   getPermission();
 
-    getdata();
-    getJobs();
-  }, []);
+  //   getdata();
+  //   getJobs();
+  // }, []);
   const getdata = async () => {
+    console.log("IM comming from the page");
+    console.log(page);
     const body = {};
     body.page = 0;
     body.filter = state2;
@@ -285,6 +291,9 @@ export default function LongtimeSwiperCard({ route }) {
           console.log("post result");
           console.log(result);
           setData(result["long"]);
+          console.log("IM after comming from the page");
+          console.log(page);
+          setpage(page + 1);
           setloading(false);
         });
     } catch (error) {
@@ -324,6 +333,7 @@ export default function LongtimeSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     body.filter = state2;
+    console.log(body);
     try {
       await fetch(
         `http://192.168.1.20:5000/api/limit/L_like_apply_check/${userID}`,
@@ -343,6 +353,7 @@ export default function LongtimeSwiperCard({ route }) {
           console.log("post result");
           console.log(result);
           const updated = [...data, ...result["long"]];
+          console.log("updated result");
           console.log(updated);
           // setnewcards();
           // setData(result["short"]);
@@ -356,15 +367,21 @@ export default function LongtimeSwiperCard({ route }) {
     }
   };
   const onSwiped = () => {
-    console.log(data);
+    // console.log(data);
 
     transitionRef.current.animateNextTransition();
     if ((index) => 0) {
       console.log("new page dynamic");
       console.log(page);
+      console.log(index);
+      console.log(data);
+      console.log(data[index].job_title);
       setIndex(index + 1);
       // console.log();
-      if (index === 7 * page) {
+      if (index === 7 * page && index != 0) {
+        console.log("Im going to call the vlaues");
+        console.log(page);
+        setloading(true);
         getdata1(page);
       }
     } else {
@@ -768,7 +785,7 @@ export default function LongtimeSwiperCard({ route }) {
                             fontWeight: "400",
                           }}
                         >
-                          {data[index].Duration}
+                          {data[index].Education}
                         </Text>
                       </View>
                     </View>
@@ -850,7 +867,7 @@ export default function LongtimeSwiperCard({ route }) {
                         </Text>
                       </View>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         borderColor: "#707070",
                         borderWidth: 1,
@@ -859,7 +876,7 @@ export default function LongtimeSwiperCard({ route }) {
                         borderRadius: 20,
                       }}
                     >
-                      <View
+                      {/* <View
                         style={{
                           justifyContent: "center",
                           flexDirection: "row",
@@ -884,8 +901,8 @@ export default function LongtimeSwiperCard({ route }) {
                         >
                           Fresher
                         </Text>
-                      </View>
-                    </View>
+                      </View> */}
+                    {/* </View>  */}
                   </View>
                 </View>
 
@@ -1140,9 +1157,19 @@ export default function LongtimeSwiperCard({ route }) {
   const getdata23 = async (paras) => {
     const body = {};
     body.page = 0;
-    body.filter = state2;
+    body.filter = {
+      states: "$",
+      district: "$",
+      job_title: "$",
+      duration: "$",
+      salary: "$",
+      workmode: "$",
+      education: "$",
+      experience: "$",
+      companyname: "$",
+    };
     console.log("IM THE BODY DAATA");
-
+    setIndex(0);
     console.log(body);
     try {
       await fetch(
@@ -1160,11 +1187,11 @@ export default function LongtimeSwiperCard({ route }) {
       )
         .then((response) => response.json())
         .then((result) => {
-          console.log("post result");
+          console.log("post result of get data23");
           console.log(result);
           // console.log(result["short"]);
           setData(result["long"]);
-          setIndex(0);
+
           setloading(false);
           setpage(page + 1);
           console.log(data);
@@ -1173,11 +1200,13 @@ export default function LongtimeSwiperCard({ route }) {
       console.log(error);
     }
   };
-  const handleOnSwipedAll = () => {
+  const handleOnSwipedAll = async () => {
     console.log("I get the daata");
+    console.log(swipedAll);
     if (!swipedAll) {
       // setloading(true);
       // getdata1(page);
+      setpage(0);
       console.log("i get the data");
       console.log(data);
       Alert.alert("No more cards left!");
@@ -1185,8 +1214,9 @@ export default function LongtimeSwiperCard({ route }) {
       // console.log("i get the data");
       // console.log(data);
       // Alert.alert("No more cards left!");
-      setpage(0);
-      dispatch2({ type: "RESET" });
+
+      setTimeout(() => dispatch2({ type: "RESET" }), 1000);
+
       setloading(true);
       // setlastcard(true);
       // setSwipedAll(true);
@@ -1217,57 +1247,59 @@ export default function LongtimeSwiperCard({ route }) {
           flexDirection: "row",
         }}
       >
-        <View
-          style={{
-            width: 270,
-            height: 35,
-            borderWidth: 1,
-            // paddingLeft: 20,
-            // margin: 5,
-
-            justifyContent: "space-around",
-            alignItems: "center",
-            flexDirection: "row",
-            borderRadius: 20,
-            // marginLeft: 200,
-            borderColor: "#707070",
-            backgroundColor: "#fffff",
-            marginVertical: 15,
-          }}
-        >
+        <Pressable onPress={() => Alert.alert("Comming soon!")}>
           <View
             style={{
-              width: "80%",
-              justifyContent: "space-between",
-              flexDirection: "row",
+              width: 270,
+              height: 35,
+              borderWidth: 1,
+              // paddingLeft: 20,
+              // margin: 5,
+
+              justifyContent: "space-around",
               alignItems: "center",
+              flexDirection: "row",
+              borderRadius: 20,
+              // marginLeft: 200,
+              borderColor: "#707070",
+              backgroundColor: "#fffff",
+              marginVertical: 15,
             }}
           >
             <View
               style={{
-                // width: "60%",
+                width: "80%",
+                justifyContent: "space-between",
                 flexDirection: "row",
                 alignItems: "center",
               }}
             >
-              <EvilIcons name="search" size={24} color="#707070" />
-              <TextInput
-                value={search}
-                underlineColorAndroid="transparent"
-                placeholder="Search here"
-                style={{ marginLeft: 10 }}
-              />
-            </View>
-            {/* <View
+              <View
+                style={{
+                  // width: "60%",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <EvilIcons name="search" size={24} color="#707070" />
+                <TextInput
+                  value={search}
+                  underlineColorAndroid="transparent"
+                  placeholder="Search here"
+                  style={{ marginLeft: 10 }}
+                />
+              </View>
+              {/* <View
               style={{
                 marginLeft: 130,
                 marginTop: 5,
               }}
             > */}
-            <FontAwesome name="microphone" size={25} color="#707070" />
-            {/* </View> */}
+              <FontAwesome name="microphone" size={25} color="#707070" />
+            </View>
           </View>
-        </View>
+        </Pressable>
+
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Longtimefilter"), setloading(true);

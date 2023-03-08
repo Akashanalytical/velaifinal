@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
-
+import { useContext } from "react";
+import { L_FILTER, S_FILTER } from "../../../App";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import Top from "../Topcontainer";
@@ -37,6 +38,8 @@ export default function SelectCategory({ route }) {
     (state) => state.job_Provider_company_user_details
   );
   const [isclick, setIsclick] = useState(false);
+  const { state1, dispatch1 } = useContext(S_FILTER);
+  const { state2, dispatch2 } = useContext(L_FILTER);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isvoice, setisvoice] = useState(true);
@@ -51,6 +54,8 @@ export default function SelectCategory({ route }) {
 
   //habdle job seeker
   const handlejobseeker = () => {
+    dispatch1({ type: "RESET1" });
+    dispatch2({ type: "RESET" });
     dispatch({ type: "im_job_seeker" });
     navigation.navigate("bottomhome");
   };

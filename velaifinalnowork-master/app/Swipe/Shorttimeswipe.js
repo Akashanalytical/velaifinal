@@ -267,14 +267,14 @@ export default function ShorttimeSwiperCard({ route }) {
     return (rad * c).toFixed();
   }
 
-  useEffect(() => {
-    // getPermission();
-
-    getdata();
-    hellouser();
-    // navigation.addListener("tabPress", () => getdata());
-    // getJobs();
-  }, []);
+  // useEffect(() => {
+  //   // getPermission();
+  //   console.log("Im the useeffect");
+  //   getdata();
+  //   hellouser();
+  //   // navigation.addListener("tabPress", () => getdata());
+  //   // getJobs();
+  // }, []);
 
   React.useEffect(() => {
     if (isFocused) {
@@ -335,7 +335,13 @@ export default function ShorttimeSwiperCard({ route }) {
   const getdata23 = async (paras) => {
     const body = {};
     body.page = 0;
-    body.filter = state1;
+    body.filter = {
+      states: "$",
+      district: "$",
+      job_title: "$",
+      duration: "$",
+      salary: "$",
+    };
     console.log("IM THE BODY DAATA");
     console.log(body);
     try {
@@ -531,6 +537,7 @@ export default function ShorttimeSwiperCard({ route }) {
   const onSwiped = () => {
     // console.log(data[index]);
     // console.log(data[index].apply);
+    console.log("the card is swiped");
     console.log(data);
 
     transitionRef.current.animateNextTransition();
