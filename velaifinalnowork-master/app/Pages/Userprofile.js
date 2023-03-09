@@ -50,6 +50,7 @@ export default function Userprofile({ navigation }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
+  // const [editable,seteditable] = useState(true)
   const redux_dispatch = useDispatch();
   console.log(state);
   console.log(state.userdeatils);
@@ -642,7 +643,8 @@ export default function Userprofile({ navigation }) {
                             placeholder="Date Of Birth"
                             style={[styles.input, { position: "relative" }]}
                             underlineColorAndroid="transparent"
-                            placeholderTextColor={editable ? "grey" : "#707070"}
+                            placeholderTextColor={"#707070"}
+                            // placeholderTextColor={editable ? "grey" : "#707070"}
                             defaultValue={showplace ? "" : date.toDateString()}
                             editable={false}
                             theme={{ colors: { text: "black" } }}

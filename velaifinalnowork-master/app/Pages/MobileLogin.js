@@ -213,8 +213,8 @@ export default function Mobillogin({ route, navigation }) {
       setIntervalId(null);
       setTimerStarted(false);
       showToastWithGravity("OTP expired");
-      setIsActive(false);
       clearOTP();
+      // setIsActive(false);
     }
   }, [seconds]);
 

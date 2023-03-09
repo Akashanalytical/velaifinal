@@ -11,12 +11,15 @@ import DropDownLanguage2 from "./dropdown/DropDownlanguage2";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../App";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
 export default function Top() {
   //To pass the location
   const [location, setLocation] = useState(null);
+  const [currlocation, setcurrLocation] = useState(null);
   const [loading, setiloading] = useState(true);
   const navigation = useNavigation();
   const [isvoice, setisvoice] = useState(true);
+  const myIDnumber = useSelector((state) => state.ID);
   const { state, dispatch } = useContext(AuthContext);
   console.log(state);
   //to get the permission we use UseEffect Hook
@@ -31,6 +34,7 @@ export default function Top() {
       }
       //To get the current Location
       let CurrentLocation = await Location.getCurrentPositionAsync({});
+      setcurrLocation(CurrentLocation);
       const reverseGeocodeAddress = await Location.reverseGeocodeAsync({
         longitude: CurrentLocation.coords.longitude,
         latitude: CurrentLocation.coords.latitude,
@@ -44,6 +48,7 @@ export default function Top() {
         state.location != null
       ) {
         setiloading(false);
+        givelocation(currlocation);
         dispatch({
           type: "Set_Location",
           payload: `${location[0].district},${location[0].city},${location[0].region}`,
@@ -53,6 +58,45 @@ export default function Top() {
 
     getPermission();
   }, [location]);
+
+  const givelocation = async (paras) => {
+    console.log(myIDnumber);
+    console.log(paras);
+    //  try {
+    //    await fetch("http://192.168.1.20:5000/api/location_update", {
+    //      method: "POST",
+    //      mode: "cors", // no-cors, *cors, same-origin
+    //      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    //      credentials: "same-origin", // include, *same-origin, omit
+    //      headers: {
+    //        "Content-Type": "application/json",
+    //        // 'Content-Type': 'application/x-www-form-urlencoded',
+    //      },
+    //      body: JSON.stringify(value), // body data type must match "Content-Type" header
+    //    })
+    //      .then((response) => response.json())
+    //      .then((result) => {
+    //        console.log(result);
+    //        //  dispatch({
+    //        //    type: "Loged_In",
+    //        //    payload: result.user_id,
+    //        //  });
+    //        //  if (result.msg === "Login success") {
+    //        //    showToastWithGravity("Sucess");
+    //        //    handleAddTodo(result.user_id);
+    //        //    console.log("im going to call");
+    //        //    clearInterval(intervalId);
+    //        //    setIntervalId(null);
+    //        //    setTimerStarted(false);
+
+    //        // // pauseTimer(true);
+    //        // navigation.navigate("botnav");
+    //      });
+    //  } catch (error) {
+    //    console.warn(error);
+    //  }
+  };
+  // if (loading && state.location == "")
   return (
     <View style={styles.topContainer}>
       {/* <View
