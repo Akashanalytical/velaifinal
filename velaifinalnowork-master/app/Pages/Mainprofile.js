@@ -605,6 +605,7 @@ export default function Profilepage({ navigation, route }) {
 
   const { state, dispatch } = useContext(AuthContext);
   const [data, setdata] = useState({});
+  const [loading, setloading] = useState(true);
   console.log(state);
   console.log("Im at job profile");
   // console.log(route.params);
@@ -615,6 +616,7 @@ export default function Profilepage({ navigation, route }) {
   const getdataofuser = async () => {
     const body = {};
     console.log("Im at the get data of user");
+    console.log(states);
     body.user_id = userID;
     body.userType = states.job_seeker_info
       ? "job_seeker_info"
@@ -635,6 +637,7 @@ export default function Profilepage({ navigation, route }) {
         .then((result) => {
           console.log(result);
           setdata(result["profile_info"]);
+          setloading(false);
         });
     } catch (error) {
       console.log(error);
@@ -647,7 +650,9 @@ export default function Profilepage({ navigation, route }) {
       user_id: 4,
     });
   };
-
+  if (loading) {
+    return <Text>Loadinggg....</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.iconstotal}>
@@ -658,7 +663,7 @@ export default function Profilepage({ navigation, route }) {
           }}
         >
           <TouchableOpacity onPress={() => setprofilemodal(true)}>
-            {data.profilepic == null && profile == "" ? (
+            {data[0].profilepic == "" && profile == null ? (
               <>
                 <FontAwesome name="user-circle" size={80} color="#D9D9D9" />
                 <MaterialCommunityIcons
@@ -678,7 +683,8 @@ export default function Profilepage({ navigation, route }) {
               >
                 <Image
                   source={{
-                    uri: data.profilepic == null ? profile : data.profilepic,
+                    uri:
+                      data[0].profilepic == "" ? profile : data[0].profilepic,
                   }}
                   style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
                 />
@@ -756,16 +762,18 @@ export default function Profilepage({ navigation, route }) {
         <View style={styles.top2}>
           <View style={{ marginVertical: 10 }}>
             <Text style={{ fontSize: 18, color: "#333" }}>
-              {data.username ? data.username : "Your name"}
+              {data[0].username ? data[0].username : "Your name"}
             </Text>
           </View>
           <View>
-            <Text style={{ fontSize: 18, color: "#333" }}>{data.number}</Text>
+            <Text style={{ fontSize: 18, color: "#333" }}>
+              {data[0].number}
+            </Text>
           </View>
         </View>
       </View>
       <ScrollView style={{ marginHorizontal: 20 }}>
-        {!states.job_provider_info && !is_details_given ? (
+        {states.job_seeker_info && !is_details_given ? (
           <View
             style={{
               height: 130,

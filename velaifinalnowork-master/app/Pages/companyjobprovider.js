@@ -245,7 +245,7 @@ export default function CompanyJobProvider({ navigation }) {
         .then((result) => {
           console.log(result);
           if (result == "success") {
-            dispatch({ type: "User_details_given" });
+            dispatch({ type: "job_Provider_company" });
             navigation.navigate("jobprovidebottamtab");
           }
         });

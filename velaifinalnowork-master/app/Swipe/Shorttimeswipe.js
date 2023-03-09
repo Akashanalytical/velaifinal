@@ -446,7 +446,7 @@ export default function ShorttimeSwiperCard({ route }) {
         .then((result) => {
           console.log("post result");
           console.log(result);
-          if (result.result11) {
+          if (result.result) {
             redux_dispatch({ type: "User_Details_Given" });
           }
           // console.log(result);

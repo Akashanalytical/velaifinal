@@ -81,17 +81,19 @@ function CustomHeaderBackImage({ navigation }) {
 function Root({ navigation }) {
   // const navigation = useNavigation();
   const state = useSelector((state) => state);
-  console.log(state);
+  console.log(state.job_provider_info);
   console.log("im at the");
   const userlogin = useSelector((state) => state.IS_user_login);
   const personal_job_provider = useSelector(
     (state) => state.job_provider_personal_user_details
   );
   const company_job_provider = useSelector(
-    (state) => state.job_Provider_company
+    (state) => state.job_Provider_company_user_details
   );
+
   console.log(userlogin);
   console.log("inside Root");
+  console.log(company_job_provider, personal_job_provider);
   console.log(LocalizationContext);
   const { language, t, setlanguage } = useContext(LocalizationContext);
   console.log(language);
@@ -218,55 +220,58 @@ function Root({ navigation }) {
         ) : (
           <></>
         )}
-
-        <Stack.Screen
-          name="c_job_provider"
-          component={CompanyJobProvider}
-          options={{
-            headerRight: (props) => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginLeft: "70%",
-                  }}
-                >
-                  <Ionicons name="md-globe-outline" size={24} color="#333" />
-                  <Pressable>
-                    <Text style={{ Text: 18, color: "#333" }}>EN</Text>
-                  </Pressable>
+        {!company_job_provider ? (
+          <Stack.Screen
+            name="c_job_provider"
+            component={CompanyJobProvider}
+            options={{
+              headerRight: (props) => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginLeft: "70%",
+                    }}
+                  >
+                    <Ionicons name="md-globe-outline" size={24} color="#333" />
+                    <Pressable>
+                      <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                    </Pressable>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginHorizontal: 12,
+                    }}
+                  >
+                    <Pressable onPress={() => setisvoice(!isvoice)}>
+                      {isvoice ? (
+                        <MaterialCommunityIcons
+                          name="account-voice"
+                          size={26}
+                          color="#333"
+                        />
+                      ) : (
+                        <MaterialCommunityIcons
+                          name="account-voice-off"
+                          size={24}
+                          color="black"
+                        />
+                      )}
+                    </Pressable>
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginHorizontal: 12,
-                  }}
-                >
-                  <Pressable onPress={() => setisvoice(!isvoice)}>
-                    {isvoice ? (
-                      <MaterialCommunityIcons
-                        name="account-voice"
-                        size={26}
-                        color="#333"
-                      />
-                    ) : (
-                      <MaterialCommunityIcons
-                        name="account-voice-off"
-                        size={24}
-                        color="black"
-                      />
-                    )}
-                  </Pressable>
-                </View>
-              </View>
-            ),
-            headerStyle: {
-              backgroundColor: "#fff",
-            },
-            title: "",
-          }}
-        />
+              ),
+              headerStyle: {
+                backgroundColor: "#fff",
+              },
+              title: "",
+            }}
+          />
+        ) : (
+          <></>
+        )}
         <Stack.Screen
           name="Long"
           component={Sign}
@@ -551,56 +556,60 @@ function Root({ navigation }) {
           component={SelectCategoryform}
           options={{ headerShown: true }}
         ></Stack.Screen>
-        <Stack.Screen
-          name="Jobmainselect"
-          component={Jobmainselect}
-          options={{
-            headerTitle: (props) => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginLeft: "15%",
-                  }}
-                >
-                  <Ionicons name="md-globe-outline" size={24} color="#333" />
-                  <Pressable>
-                    <Text style={{ Text: 18, color: "#333" }}>EN</Text>
-                  </Pressable>
+        {!company_job_provider && !personal_job_provider ? (
+          <Stack.Screen
+            name="Jobmainselect"
+            component={Jobmainselect}
+            options={{
+              headerTitle: (props) => (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginLeft: "15%",
+                    }}
+                  >
+                    <Ionicons name="md-globe-outline" size={24} color="#333" />
+                    <Pressable>
+                      <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                    </Pressable>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginHorizontal: 12,
+                    }}
+                  >
+                    <Pressable onPress={() => setisvoice(!isvoice)}>
+                      {isvoice ? (
+                        <MaterialCommunityIcons
+                          name="account-voice"
+                          size={26}
+                          color="#333"
+                        />
+                      ) : (
+                        <MaterialCommunityIcons
+                          name="account-voice-off"
+                          size={24}
+                          color="black"
+                        />
+                      )}
+                    </Pressable>
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginHorizontal: 12,
-                  }}
-                >
-                  <Pressable onPress={() => setisvoice(!isvoice)}>
-                    {isvoice ? (
-                      <MaterialCommunityIcons
-                        name="account-voice"
-                        size={26}
-                        color="#333"
-                      />
-                    ) : (
-                      <MaterialCommunityIcons
-                        name="account-voice-off"
-                        size={24}
-                        color="black"
-                      />
-                    )}
-                  </Pressable>
-                </View>
-              </View>
-            ),
-            headerStyle: {
-              backgroundColor: "#fff",
-            },
-            headerBackImage: ({ tintColor }) => (
-              <CustomHeaderBackImage tintColor={tintColor} />
-            ),
-          }}
-        />
+              ),
+              headerStyle: {
+                backgroundColor: "#fff",
+              },
+              headerBackImage: ({ tintColor }) => (
+                <CustomHeaderBackImage tintColor={tintColor} />
+              ),
+            }}
+          />
+        ) : (
+          <></>
+        )}
         <Stack.Screen
           name="Faq"
           component={Faq}

@@ -85,7 +85,7 @@ export default function PersonProfilepage({ route, navigation }) {
   //getData
   const [eduexp, seteduexp] = useState(dummyArray);
   const [workexp, setworkexp] = useState(dummyArray);
-
+  const [loading, setloading] = useState(true);
   //data
   const [resume, setresume] = useState("");
   const [fileResponse, setfileResponse] = useState(null);
@@ -216,6 +216,7 @@ export default function PersonProfilepage({ route, navigation }) {
         .then((result) => {
           console.log(result);
           setdata(result["profile_info"]);
+          setloading(false);
         });
     } catch (error) {
       console.log(error);
@@ -502,6 +503,9 @@ export default function PersonProfilepage({ route, navigation }) {
     }
     submitdata();
   }
+  if (loading) {
+    return <Text>Loading....</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.iconstotal}>
@@ -512,7 +516,7 @@ export default function PersonProfilepage({ route, navigation }) {
               alignItems: "center",
             }}
           >
-            {data.profilepic == "" && profile == "" ? (
+            {data[0].profilepic == "" && profile == null ? (
               <>
                 <FontAwesome name="user-circle" size={80} color="#D9D9D9" />
                 <MaterialCommunityIcons
@@ -532,7 +536,8 @@ export default function PersonProfilepage({ route, navigation }) {
               >
                 <Image
                   source={{
-                    uri: data.profilepic == "" ? profile : data.profilepic,
+                    uri:
+                      data[0].profilepic == "" ? profile : data[0].profilepic,
                   }}
                   style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
                 />
@@ -679,7 +684,7 @@ export default function PersonProfilepage({ route, navigation }) {
               }}
             >
               <View>
-                <Text>{data.number}</Text>
+                <Text>{data[0].number}</Text>
               </View>
             </View>
           </View>
@@ -712,7 +717,7 @@ export default function PersonProfilepage({ route, navigation }) {
               >
                 <View>
                   <Text>
-                    {companyname == "" ? data.companyname : companyname}
+                    {companyname == "" ? data[0].companyname : companyname}
                   </Text>
                 </View>
                 <TouchableOpacity onPress={() => setcompanymodalVisible(true)}>
@@ -747,7 +752,7 @@ export default function PersonProfilepage({ route, navigation }) {
                       onChangeText={(companyname) =>
                         setcompanyname(companyname)
                       }
-                      defaultValue={data.username}
+                      defaultValue={data[0].username}
                       placeholder={"Comapny name"}
                       style={styles.input}
                     />
@@ -816,7 +821,7 @@ export default function PersonProfilepage({ route, navigation }) {
               >
                 <View>
                   <Text>
-                    {designation == "" ? data.designation : designation}
+                    {designation == "" ? data[0].designation : designation}
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -853,7 +858,7 @@ export default function PersonProfilepage({ route, navigation }) {
                       onChangeText={(designation) =>
                         setdesignation(designation)
                       }
-                      defaultValue={data.designation}
+                      defaultValue={data[0].designation}
                       placeholder={"Company name"}
                       style={styles.input}
                     />
@@ -925,7 +930,7 @@ export default function PersonProfilepage({ route, navigation }) {
             }}
           >
             <View>
-              <Text>{email == "" ? data.emailid : email}</Text>
+              <Text>{email == "" ? data[0].emailid : email}</Text>
             </View>
             <TouchableOpacity onPress={() => setemailmodalVisible(true)}>
               <View>
@@ -957,7 +962,7 @@ export default function PersonProfilepage({ route, navigation }) {
                     // value={companyname}
                     onChangeText={(email) => setemail(email)}
                     keyboardType="email-address"
-                    defaultValue={data.emailid}
+                    defaultValue={data[0].emailid}
                     placeholder={"Comapny name"}
                     style={styles.input}
                   />
@@ -1026,7 +1031,7 @@ export default function PersonProfilepage({ route, navigation }) {
             }}
           >
             <View>
-              <Text>Male</Text>
+              <Text>{data[0].gender}</Text>
             </View>
             <View></View>
           </View>
@@ -1059,7 +1064,7 @@ export default function PersonProfilepage({ route, navigation }) {
           >
             <View>
               <Text>
-                <Text>{username == "" ? data.username : username}</Text>
+                <Text>{username == "" ? data[0].username : username}</Text>
               </Text>
             </View>
             <View>
@@ -1093,7 +1098,7 @@ export default function PersonProfilepage({ route, navigation }) {
                       // value={companyname}
                       onChangeText={(username) => setusername(username)}
                       keyboardType="email-address"
-                      defaultValue={data.username}
+                      defaultValue={data[0].username}
                       placeholder={"Comapny name"}
                       style={styles.input}
                     />
@@ -1261,7 +1266,7 @@ export default function PersonProfilepage({ route, navigation }) {
                     style={{ color: "blue" }}
                     onPress={() => {
                       console.log(resume),
-                        Linking.openURL(resume == "" ? data.resume : resume);
+                        Linking.openURL(resume == "" ? data[0].resume : resume);
                     }}
                   >
                     {resume == ""
@@ -1313,21 +1318,27 @@ export default function PersonProfilepage({ route, navigation }) {
                     console.log(states.job_seeker_info);
                     states.job_seeker_info
                       ? handleSubmit({
-                          username: username == "" ? data.username : username,
-                          emailid: email == "" ? data.emailid : email,
-                          resume: resume == "" ? data.resume : resume,
+                          username:
+                            username == "" ? data[0].username : username,
+                          emailid: email == "" ? data[0].emailid : email,
+                          resume: resume == "" ? data[0].resume : resume,
                           profilepic:
-                            profilepic == "" ? data.profilepic : profilepic,
+                            profilepic == "" ? data[0].profilepic : profilepic,
                         })
                       : handleSubmit({
-                          username: username == "" ? data.username : username,
+                          username:
+                            username == "" ? data[0].username : username,
                           companyname:
-                            companyname == "" ? data.companyname : companyname,
-                          emailid: email == "" ? data.emailid : email,
+                            companyname == ""
+                              ? data[0].companyname
+                              : companyname,
+                          emailid: email == "" ? data[0].emailid : email,
                           designation:
-                            designation == "" ? data.designation : designation,
+                            designation == ""
+                              ? data[0].designation
+                              : designation,
                           profilepic:
-                            profilepic == "" ? data.profilepic : profilepic,
+                            profilepic == "" ? data[0].profilepic : profilepic,
                         });
                   }
                 }}

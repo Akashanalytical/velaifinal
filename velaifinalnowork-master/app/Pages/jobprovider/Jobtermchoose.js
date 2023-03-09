@@ -105,22 +105,36 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 import { AuthContext } from "../../../App";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
 // create a component
 function Jobmainselect({ naviagtion }) {
   const { state, dispatch } = useContext(AuthContext);
+  //use selector
+  const job_provider_info = useSelector((state) => state.job_provider_info);
+  const is_company_provider = useSelector(
+    (state) => state.job_Provider_company_user_details
+  );
   const redux_dispatch = useDispatch();
   console.log(state);
   const navigation = useNavigation();
   const handlecall = () => {
     // redux_dispatch({ type: "personal_job_provider" });
+    // if (job_provider_info) {
+    //   navigation.navigate("jobprovidebottamtab");
+    // } else {
     navigation.navigate("p_job_provider", { screen: "post" });
+    // }
   };
   const handlecall2 = () => {
     // redux_dispatch({ type: "job_Provider_company" });
+    // if (job_provider_info) {
+    //   navigation.navigate("jobprovidebottamtab");
+    // } else {
     navigation.navigate("c_job_provider", { screen: "post" });
+    // }
   };
   console.log(navigation);
   return (

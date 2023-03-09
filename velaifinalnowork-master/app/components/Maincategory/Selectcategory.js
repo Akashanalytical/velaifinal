@@ -105,44 +105,57 @@ export default function SelectCategory({ route }) {
   const checktheusercondtiton = async () => {
     const body = {};
     body.user_id = states.ID;
-    body.userType = states.job_seeker_info
-      ? "job_seeker_info"
-      : "job_provider_info";
+    body.userType = "job_provider_info";
     try {
-      await fetch(`http://192.168.1.20:5000/api/user_in_or_out`, {
-        method: "POST",
-        mode: "cors", // no-cors, *cors, same-origin
-        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        // credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("oiii im at the vlaue");
-          console.log(result);
-          if (result.result) {
-            return dispatch({ type: "job_Provider_company" });
-          } else {
-            return dispatch({ type: "personal_job_provider" });
-          }
-        });
+      const response = await fetch(
+        `http://192.168.1.20:5000/api/user_in_or_out`,
+        {
+          method: "POST",
+          mode: "cors", // no-cors, *cors, same-origin
+          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          // credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      const result = await response.json();
+      console.log("oiii im at the vlaue");
+      console.log(result);
+      if (result.result) {
+        console.log(result);
+        return result;
+      } else {
+        console.log(result);
+        return result;
+      }
     } catch (error) {
       console.log(error);
     }
   };
   //handlejobprovider
   const handleJobProvider = async () => {
-    console.log(is_personal_provider, is_company_provider);
+    console.log("immmmmmm");
     dispatch({ type: "job_provider" });
-    checktheusercondtiton();
-    if (is_personal_provider || is_company_provider) {
+    console.log(is_personal_provider, is_company_provider);
+    // checktheusercondtiton();
+    const resultof = await checktheusercondtiton();
+    // console.log(checktheusercondtiton());
+    console.log("immmmmmm at the");
+    console.log(resultof);
+    if (resultof.result) {
+      // dispatch({ type: "job_provider" });
       navigation.navigate("jobprovidebottamtab");
     } else {
+      // dispatch({ type: "job_provider" });
       navigation.navigate("Jobmainselect", { screen: "post" });
     }
+    // if (is_personal_provider || is_company_provider) {
+    //   navigation.navigate("jobprovidebottamtab");
+    // } else {
+    //   navigation.navigate("Jobmainselect", { screen: "post" });
+    // }
   };
   // console.log(route.params);
   // const userDetails = route.params.Details;

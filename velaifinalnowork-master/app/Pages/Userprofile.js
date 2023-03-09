@@ -359,6 +359,7 @@ export default function Userprofile({ navigation }) {
       })
         .then((response) => response.json())
         .then((result) => {
+          console.log(result);
           console.log(result === "success");
           if (result === "success") {
             redux_dispatch({ type: "User_Details_Given" });
