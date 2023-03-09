@@ -329,6 +329,7 @@ export default function Userprofile({ navigation }) {
   }
   const [showplace, setshowplace] = useState(true);
   const showDatepicker = () => {
+    console.log("im dateeee picker");
     showMode("date");
     setshowplace(false);
   };
@@ -370,6 +371,7 @@ export default function Userprofile({ navigation }) {
   //select Gender
   const [genderValue, setGenderValue] = useState(null);
   const [genderOpen, setGenderOpen] = useState(false);
+  const [companyopen, setCompanyOpen] = useState(true);
   const { handleSubmit, control } = useForm();
   const onGenderOpen = useCallback(() => {
     setCompanyOpen(false);
@@ -633,39 +635,46 @@ export default function Userprofile({ navigation }) {
                     />
                   </View>
                   {
-                    <View style={styles.password}>
-                      <TextInput
-                        placeholder="Date Of Birth"
-                        style={[styles.input, { position: "relative" }]}
-                        underlineColorAndroid="transparent"
-                        placeholderTextColor="#707070"
-                        defaultValue={showplace ? "" : date.toDateString()}
-                        // value={date.toDateString()}
-                      />
-                      <Pressable onPress={showDatepicker}>
-                        <FontAwesome5
-                          name="calendar-alt"
-                          size={24}
-                          color="#333"
-                          style={{
-                            position: "absolute",
-                            right: 40,
-                            bottom: 23,
-                          }}
-                        />
-                      </Pressable>
-                      {errors.password && touched.password && (
-                        <Text
-                          style={{
-                            fontSize: 13,
-                            color: "red",
-                            marginHorizontal: 20,
-                          }}
-                        >
-                          {errors.password}
-                        </Text>
-                      )}
-                    </View>
+                    <TouchableOpacity onPress={showDatepicker}>
+                      <View style={styles.password}>
+                        <TouchableOpacity onPress={showDatepicker}>
+                          <TextInput
+                            placeholder="Date Of Birth"
+                            style={[styles.input, { position: "relative" }]}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor={editable ? "grey" : "#707070"}
+                            defaultValue={showplace ? "" : date.toDateString()}
+                            editable={false}
+                            theme={{ colors: { text: "black" } }}
+                            // value={date.toDateString()}
+                            onFocus={showDatepicker}
+                          />
+                        </TouchableOpacity>
+                        <Pressable onPress={showDatepicker}>
+                          <FontAwesome5
+                            name="calendar-alt"
+                            size={24}
+                            color="#333"
+                            style={{
+                              position: "absolute",
+                              right: 40,
+                              bottom: 23,
+                            }}
+                          />
+                        </Pressable>
+                        {errors.password && touched.password && (
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              color: "red",
+                              marginHorizontal: 20,
+                            }}
+                          >
+                            {errors.password}
+                          </Text>
+                        )}
+                      </View>
+                    </TouchableOpacity>
                   }
                 </View>
                 <View style={styles.password}>
@@ -691,7 +700,7 @@ export default function Userprofile({ navigation }) {
                     </Text>
                   )}
                 </View>
-                <View style={styles.skill}>
+                {/* <View style={styles.skill}>
                   {skills === null ? (
                     <View>
                       <Text style={{ color: "#707070", marginHorizontal: 30 }}>
@@ -730,7 +739,7 @@ export default function Userprofile({ navigation }) {
                       badgeDotColors={["#00B4D8"]}
                     />
                   )}
-                </View>
+                </View> */}
                 <TouchableOpacity onPress={() => navigation.navigate("eduexp")}>
                   <View style={[styles.education, { paddingRight: 10 }]}>
                     <View style={styles.educationIcon}>

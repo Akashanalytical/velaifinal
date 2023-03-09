@@ -18,6 +18,7 @@ import { Provider } from "react-redux";
 import Jobmainselect from "./app/Pages/jobprovider/Jobtermchoose";
 import SwiperCard from "./app/Pages/Post";
 import translations from "./app/Pages/translations";
+import PersonalJobProvider from "./app/Pages/personalJobProvider";
 import RentalJobProvider from "./app/Pages/Rental/Rentalprovider/Rentaljobproviderform";
 import Root from "./app/Rootstack/Rootstack";
 import { doSomethingWithInput, changeLanguage } from "./app/util/util.js";

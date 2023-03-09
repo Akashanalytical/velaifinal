@@ -81,6 +81,7 @@ export default function Mobillogin({ route, navigation }) {
       }
       //To get the current Location
       let CurrentLocation = await Location.getCurrentPositionAsync({});
+      console.log(CurrentLocation);
       setLocation(CurrentLocation);
     };
 
@@ -220,8 +221,8 @@ export default function Mobillogin({ route, navigation }) {
     alert("hiiii");
     value.otp = otpCode;
     value.number = mobilenumber;
-    value.latitude = location.coords.latitude;
-    value.longitude = location.coords.longitude;
+    value.latitude = await location.coords.latitude;
+    value.longitude = await location.coords.longitude;
     console.log(location.coords.latitude);
     console.log(location.coords.longitude);
     console.log(value);
