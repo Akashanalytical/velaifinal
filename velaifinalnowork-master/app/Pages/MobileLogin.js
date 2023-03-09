@@ -36,7 +36,7 @@ export default function Mobillogin({ route, navigation }) {
   const [mobilenumber, setmobilenumber] = useState("");
   const { state, dispatch } = useContext(AuthContext);
   const [otpCode, setotpCode] = useState("");
-  const [location, setLocation] = useState("");
+  // const [location, setLocation] = useState(null);
   const [finalotp, setfinalotp] = useState("");
   const [ispinready, setispinready] = useState(false);
   const [ispinCorrect, setispincorrect] = useState(false);
@@ -47,7 +47,7 @@ export default function Mobillogin({ route, navigation }) {
   const todoList = useSelector((state) => state.IS_user_login);
   const myIDnumber = useSelector((state) => state.ID);
   const Reduxdispatch = useDispatch();
-  console.log("hi i am the id", myIDnumber, todoList);
+
   // to mAKE THE user id
   const handleAddTodo = (paras) => {
     console.log(paras);
@@ -70,23 +70,23 @@ export default function Mobillogin({ route, navigation }) {
     getData();
   });
   //get location
-  useEffect(() => {
-    //getting a user Location takes time so i need to wait so i make a async function
-    const getPermission = async () => {
-      //we use foreround permission for gettin Permission inside the app
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Please give permissions to acces the Loaction");
-        return;
-      }
-      //To get the current Location
-      let CurrentLocation = await Location.getCurrentPositionAsync({});
-      console.log(CurrentLocation);
-      setLocation(CurrentLocation);
-    };
+  // useEffect(() => {
+  //   //getting a user Location takes time so i need to wait so i make a async function
+  //   const getPermission = async () => {
+  //     //we use foreround permission for gettin Permission inside the app
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       console.log("Please give permissions to acces the Loaction");
+  //       return;
+  //     }
+  //     //To get the current Location
+  //     let CurrentLocation = await Location.getCurrentPositionAsync({});
+  //     console.log(CurrentLocation);
+  //     setLocation(CurrentLocation);
+  //   };
 
-    getPermission();
-  }, [location]);
+  //   getPermission();
+  // }, [location]);
 
   //get data
   const getData = async () => {
@@ -184,7 +184,9 @@ export default function Mobillogin({ route, navigation }) {
           .then((response) => response.json())
           .then((result) => {
             console.log("IM AT THE ");
-            console.log(result.updated);
+            // console.log(result.updated);
+            // console.log(location != null);
+            // console.log(result);
             if (result) {
               showToastWithGravity("Sucess");
               setisotpFound(true);
@@ -221,11 +223,12 @@ export default function Mobillogin({ route, navigation }) {
     alert("hiiii");
     value.otp = otpCode;
     value.number = mobilenumber;
-    value.latitude = await location.coords.latitude;
-    value.longitude = await location.coords.longitude;
-    console.log(location.coords.latitude);
-    console.log(location.coords.longitude);
-    console.log(value);
+    // console.log(location.coords.latitude);
+    // console.log(location.coords.longitude);
+    // console.log(value);
+    // value.latitude = await location.coords.latitude;
+    // value.longitude = await location.coords.longitude;
+
     try {
       await fetch("http://192.168.1.20:5000/sms/verification", {
         method: "POST",
@@ -628,8 +631,12 @@ export default function Mobillogin({ route, navigation }) {
                       console.log(result);
                       if (result) {
                         showToastWithGravity("Sucess");
-                        setSeconds(30);
-                        setIsActive(true);
+                        setSeconds(60);
+                        const id = setInterval(() => {
+                          setSeconds((seconds) => seconds - 1);
+                        }, 1000);
+                        setIntervalId(id);
+                        setTimerStarted(true);
                       } else {
                         showToastWithGravity("Error");
                       }

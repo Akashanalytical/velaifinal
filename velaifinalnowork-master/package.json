@@ -72,5 +72,8 @@
   "devDependencies": {
     "@babel/core": "^7.19.3"
   },
-  "private": true
+  "private": true,
+  "description": "Velai mobile app for the future job model. <br><br>\r 'Get all type job at anywhare!'",
+  "author": "",
+  "license": "ISC"
 }

@@ -4,6 +4,7 @@ import { USER_ID } from "./action.js";
 const initialState = {
   IS_user_login: false,
   ID: "",
+
   user_details_given: false,
   job_provider_info: false,
   job_provider_personal_user_details: false,
