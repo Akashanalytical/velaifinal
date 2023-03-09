@@ -195,16 +195,16 @@ const data = [
 ];
 
 export default function Rental(navigation) {
-  const [status, setStatus] = useState("location");
+  const [status, setStatus] = useState("Tools");
   const [dataList, setDataList] = useState([
-    ...data.filter((e) => e.status === "location"),
+    ...data.filter((e) => e.status === "Tools"),
   ]);
 
   const setStatusFilter = (status) => {
-    if (status !== "location") {
+    if (status !== "Tools") {
       setDataList([...data.filter((e) => e.status === status)]);
     } else {
-      setDataList([...data.filter((e) => e.status === "location")]);
+      setDataList([...data.filter((e) => e.status === "Tools")]);
     }
 
     setStatus(status);

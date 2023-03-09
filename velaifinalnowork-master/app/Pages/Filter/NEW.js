@@ -184,18 +184,18 @@ const data = [
 ];
 
 export default function New({ navigation: { goBack } }) {
-  const [status, setStatus] = useState("location");
+  const [status, setStatus] = useState("Location");
   const { state2, dispatch2 } = useContext(L_FILTER);
 
   const [dataList, setDataList] = useState([
-    ...data.filter((e) => e.status === "location"),
+    ...data.filter((e) => e.status === "Location"),
   ]);
 
   const setStatusFilter = (status) => {
-    if (status !== "location") {
+    if (status !== "Location") {
       setDataList([...data.filter((e) => e.status === status)]);
     } else {
-      setDataList([...data.filter((e) => e.status === "location")]);
+      setDataList([...data.filter((e) => e.status === "Location")]);
     }
 
     setStatus(status);

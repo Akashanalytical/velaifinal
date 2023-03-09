@@ -183,10 +183,10 @@ const data = [
 export default function Shorttimefilter({ navigation: { goBack } }) {
   const userID = useSelector((state) => state.ID);
   const Redux_Dispatch = useDispatch();
-  const [status, setStatus] = useState("location");
+  const [status, setStatus] = useState("Location");
   const { state1, dispatch1 } = useContext(S_FILTER);
   const [dataList, setDataList] = useState([
-    ...data.filter((e) => e.status === "location"),
+    ...data.filter((e) => e.status === "Location"),
   ]);
 
   async function getthechangedvalue(paras) {
@@ -217,10 +217,10 @@ export default function Shorttimefilter({ navigation: { goBack } }) {
     // }
   }
   const setStatusFilter = (status) => {
-    if (status !== "location") {
+    if (status !== "Location") {
       setDataList([...data.filter((e) => e.status === status)]);
     } else {
-      setDataList([...data.filter((e) => e.status === "location")]);
+      setDataList([...data.filter((e) => e.status === "Location")]);
     }
 
     setStatus(status);
