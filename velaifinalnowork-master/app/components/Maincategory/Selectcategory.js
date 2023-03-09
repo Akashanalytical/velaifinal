@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "react-native-reanimated-carousel";
 import { useSelector, useDispatch } from "react-redux";
-
+import { AuthContext } from "../../../App";
 import { Ionicons } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 import SwiperCard from "../../Pages/Post";
@@ -31,6 +31,8 @@ export default function SelectCategory({ route }) {
   console.log(route);
   const hi = "helllo";
   console.log(`${hi},hello`);
+  const { state, dispatch12 } = useContext(AuthContext);
+  // const myIDnumber = useSelector((state) => state.ID);
   const is_personal_provider = useSelector(
     (state) => state.job_provider_personal_user_details
   );
@@ -51,7 +53,48 @@ export default function SelectCategory({ route }) {
   console.log("hi i am the id", myIDnumber);
   console.log(todoList);
   const states = useSelector((state) => state);
+  // useEffect(async () => {
+  //   console.log("im from a front page");
+  //   console.log(state.coords.coords.latitude);
+  //   console.log(state.coords.coords.longitude);
+  //   const body = {};
+  //   body.user_id = myIDnumber;
+  //   body.latitude = state.coords.coords.latitude;
+  //   body.longitude = state.coords.coords.longitude;
+  //   try {
+  //     await fetch("http://192.168.1.20:5000/api/location_update", {
+  //       method: "PUT",
+  //       mode: "cors", // no-cors, *cors, same-origin
+  //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+  //       credentials: "same-origin", // include, *same-origin, omit
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         // 'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //       body: JSON.stringify(body), // body data type must match "Content-Type" header
+  //     })
+  //       .then((response) => response.json())
+  //       .then((result) => {
+  //         console.log(result);
+  //         //  dispatch({
+  //         //    type: "Loged_In",
+  //         //    payload: result.user_id,
+  //         //  });
+  //         //  if (result.msg === "Login success") {
+  //         //    showToastWithGravity("Sucess");
+  //         //    handleAddTodo(result.user_id);
+  //         //    console.log("im going to call");
+  //         //    clearInterval(intervalId);
+  //         //    setIntervalId(null);
+  //         //    setTimerStarted(false);
 
+  //         // // pauseTimer(true);
+  //         // navigation.navigate("botnav");
+  //       });
+  //   } catch (error) {
+  //     console.warn(error);
+  //   }
+  // }, []);
   //habdle job seeker
   const handlejobseeker = () => {
     dispatch1({ type: "RESET1" });

@@ -36,7 +36,7 @@ export default function Mobillogin({ route, navigation }) {
   const [mobilenumber, setmobilenumber] = useState("");
   const { state, dispatch } = useContext(AuthContext);
   const [otpCode, setotpCode] = useState("");
-  // const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(null);
   const [finalotp, setfinalotp] = useState("");
   const [ispinready, setispinready] = useState(false);
   const [ispinCorrect, setispincorrect] = useState(false);
@@ -68,25 +68,25 @@ export default function Mobillogin({ route, navigation }) {
 
   useEffect(() => {
     getData();
-  });
-  //get location
-  // useEffect(() => {
-  //   //getting a user Location takes time so i need to wait so i make a async function
-  //   const getPermission = async () => {
-  //     //we use foreround permission for gettin Permission inside the app
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       console.log("Please give permissions to acces the Loaction");
-  //       return;
-  //     }
-  //     //To get the current Location
-  //     let CurrentLocation = await Location.getCurrentPositionAsync({});
-  //     console.log(CurrentLocation);
-  //     setLocation(CurrentLocation);
-  //   };
+  }, []);
+  // get location
+  useEffect(() => {
+    //getting a user Location takes time so i need to wait so i make a async function
+    const getPermission = async () => {
+      //we use foreround permission for gettin Permission inside the app
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Please give permissions to acces the Loaction");
+        return;
+      }
+      //To get the current Location
+      let CurrentLocation = await Location.getCurrentPositionAsync({});
+      dispatch({ type: "Set_coords", payload: CurrentLocation });
+      console.log(CurrentLocation);
+    };
 
-  //   getPermission();
-  // }, [location]);
+    getPermission();
+  }, [location]);
 
   //get data
   const getData = async () => {

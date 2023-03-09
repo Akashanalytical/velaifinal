@@ -7,6 +7,7 @@ export const Inital_State = {
   job_seeker_info: false,
   isrentalseeker: false,
   isrentalprovider: false,
+  coords: {},
   location: "",
 };
 
@@ -35,6 +36,13 @@ export const AUthReducer = (state, action) => {
       return {
         ...state,
         location: action.payload,
+      };
+    }
+
+    case "Set_coords": {
+      return {
+        ...state,
+        coords: action.payload,
       };
     }
     case "Set_Job_Provider": {

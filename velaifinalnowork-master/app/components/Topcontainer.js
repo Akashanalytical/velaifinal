@@ -34,11 +34,26 @@ export default function Top() {
       }
       //To get the current Location
       let CurrentLocation = await Location.getCurrentPositionAsync({});
-      setcurrLocation(CurrentLocation);
+      dispatch({ type: "Set_coords", payload: CurrentLocation });
+
+      // setcurrLocation(CurrentLocation);
       const reverseGeocodeAddress = await Location.reverseGeocodeAsync({
         longitude: CurrentLocation.coords.longitude,
         latitude: CurrentLocation.coords.latitude,
       });
+      console.log("im at the Topp containerrrr");
+      if (Object.keys(state.coords).length > 0) {
+        givelocation(
+          state.coords.coords.latitude,
+          state.coords.coords.longitude
+        );
+      } else {
+        givelocation(
+          CurrentLocation.coords.latitude,
+          CurrentLocation.coords.longitude
+        );
+      }
+
       setLocation(reverseGeocodeAddress);
       if (
         (location &&
@@ -48,7 +63,7 @@ export default function Top() {
         state.location != null
       ) {
         setiloading(false);
-        givelocation(currlocation);
+
         dispatch({
           type: "Set_Location",
           payload: `${location[0].district},${location[0].city},${location[0].region}`,
@@ -57,44 +72,49 @@ export default function Top() {
     };
 
     getPermission();
-  }, [location]);
+  }, []);
 
-  const givelocation = async (paras) => {
+  const givelocation = async (paras1, paras2) => {
+    console.log("im at the locatiooooon");
+    const body = {};
+    body.user_id = myIDnumber;
+    body.latitude = paras1;
+    body.longitude = paras2;
     console.log(myIDnumber);
-    console.log(paras);
-    //  try {
-    //    await fetch("http://192.168.1.20:5000/api/location_update", {
-    //      method: "POST",
-    //      mode: "cors", // no-cors, *cors, same-origin
-    //      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    //      credentials: "same-origin", // include, *same-origin, omit
-    //      headers: {
-    //        "Content-Type": "application/json",
-    //        // 'Content-Type': 'application/x-www-form-urlencoded',
-    //      },
-    //      body: JSON.stringify(value), // body data type must match "Content-Type" header
-    //    })
-    //      .then((response) => response.json())
-    //      .then((result) => {
-    //        console.log(result);
-    //        //  dispatch({
-    //        //    type: "Loged_In",
-    //        //    payload: result.user_id,
-    //        //  });
-    //        //  if (result.msg === "Login success") {
-    //        //    showToastWithGravity("Sucess");
-    //        //    handleAddTodo(result.user_id);
-    //        //    console.log("im going to call");
-    //        //    clearInterval(intervalId);
-    //        //    setIntervalId(null);
-    //        //    setTimerStarted(false);
+    console.log(body);
+    try {
+      await fetch("http://192.168.1.20:5000/api/location_update", {
+        method: "PUT",
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(body), // body data type must match "Content-Type" header
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          //  dispatch({
+          //    type: "Loged_In",
+          //    payload: result.user_id,
+          //  });
+          //  if (result.msg === "Login success") {
+          //    showToastWithGravity("Sucess");
+          //    handleAddTodo(result.user_id);
+          //    console.log("im going to call");
+          //    clearInterval(intervalId);
+          //    setIntervalId(null);
+          //    setTimerStarted(false);
 
-    //        // // pauseTimer(true);
-    //        // navigation.navigate("botnav");
-    //      });
-    //  } catch (error) {
-    //    console.warn(error);
-    //  }
+          // // pauseTimer(true);
+          // navigation.navigate("botnav");
+        });
+    } catch (error) {
+      console.warn(error);
+    }
   };
   // if (loading && state.location == "")
   return (
