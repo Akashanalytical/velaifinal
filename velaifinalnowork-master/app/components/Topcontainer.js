@@ -73,7 +73,7 @@ export default function Top() {
 
     getPermission();
   }, []);
-
+  //for gett the accurate values we need to change the dependency array value to "location"
   const givelocation = async (paras1, paras2) => {
     console.log("im at the locatiooooon");
     const body = {};
