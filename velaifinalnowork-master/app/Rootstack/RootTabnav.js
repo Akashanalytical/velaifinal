@@ -221,6 +221,7 @@ function MealsScreenTabs() {
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#333",
           tabBarPressColor: "#707070",
+          // tabBarBadge: <Linear />,
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "700",
@@ -270,7 +271,11 @@ function MealsScreenTabs() {
           justifyContent: "center",
         }}
       >
-        <MealsTabs.Screen name="Messages" component={MealsUpcomingScreen} />
+        <MealsTabs.Screen
+          name="MESSAGES"
+          component={MealsUpcomingScreen}
+          // options={<Linear />}
+        />
         <MealsTabs.Screen name="Notifications" component={MealsPastScreen} />
       </MealsTabs.Navigator>
     </>
@@ -691,15 +696,19 @@ export default function BottomTAb({ route }) {
                 : "chatbubble-ellipses-outline";
             }
             return (
-              <Ionicons name={iconName} size={28} color={color} fill={"red"} />
+              <Ionicons name={iconName} size={22} color={color} fill={"red"} />
             );
           },
           tabBarActiveTintColor: "#1E5966",
           tabBarInactiveTintColor: "#333",
           headerShown: false,
           tabBarPosition: "bottom",
+          tabBarLabelStyle: { paddingBottom: 10, fontWeight: "500" },
+          tabBarIconStyle: { paddingBottom: -11 },
           tabBarStyle: {
             backgroundColor: "#fff",
+            borderTopWidth: 1,
+            borderColor: "#333",
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25,
             shadowColor: "#333",
@@ -710,7 +719,7 @@ export default function BottomTAb({ route }) {
             shadowOpacity: 0.2,
             shadowRadius: 10,
             elevation: 8,
-            height: "7%",
+            height: "7.5%",
           },
         })}
       >
@@ -748,7 +757,7 @@ export default function BottomTAb({ route }) {
         <Tab.Screen
           name="messagefake"
           component={ChatmainScreen}
-          options={{ title: "message" }}
+          options={{ title: "Alerts" }}
         />
         {/* <Tab.Screen
         name="filter"
@@ -884,7 +893,7 @@ export function Rentalseekerbottomtab({ route }) {
           }
           // <Ionicons name="add-circle-outline" size={24} color="black" />;
           return (
-            <Ionicons name={iconName} size={28} color={color} fill={"red"} />
+            <Ionicons name={iconName} size={22} color={color} fill={"red"} />
           );
         },
         tabBarActiveTintColor: "#1E5966",

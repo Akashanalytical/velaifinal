@@ -117,21 +117,18 @@ export default function PersonProfilepage({ route, navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(
-            `http://192.168.1.20:5000/api/file/aws_upload/${userID}`,
-            {
-              method: "POST",
-              mode: "cors", // no-cors, *cors, same-origin
-              // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-              // credentials: "same-origin", // include, *same-origin, omit
-              headers: {
-                // Accept: "application/json",
-                "Content-Type": "multipart/form-data",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: formdata, // body data type must match "Content-Type" header
-            }
-          )
+          await fetch(`http://192.168.1.3:5000/api/file/aws_upload/${userID}`, {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          })
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
@@ -155,19 +152,16 @@ export default function PersonProfilepage({ route, navigation }) {
       : "job_seeker_info";
     console.log(data);
     try {
-      await fetch(
-        `http://192.168.1.20:5000/api/user_details_update/${userID}`,
-        {
-          method: "PUT",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      )
+      await fetch(`http://192.168.1.3:5000/api/user_details_update/${userID}`, {
+        method: "PUT",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
@@ -202,7 +196,7 @@ export default function PersonProfilepage({ route, navigation }) {
       : "job_seeker_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.20:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.3:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -237,7 +231,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.20:5000/api/education/${userID}`, {
+      await fetch(`http://192.168.1.3:5000/api/education/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -346,7 +340,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.20:5000/api/experience/${userID}`, {
+      await fetch(`http://192.168.1.3:5000/api/experience/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -407,7 +401,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.3:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -476,7 +470,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.3:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin

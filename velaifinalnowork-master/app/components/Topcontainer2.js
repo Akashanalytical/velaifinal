@@ -10,13 +10,13 @@ import DropDownLanguage from "./dropdown/DropDownLanguage";
 import DropDownLanguage2 from "./dropdown/DropDownlanguage2";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../App";
-
+import { useSelector } from "react-redux";
 import { FontAwesome5 } from "@expo/vector-icons";
 export default function Top2() {
   //to make use of the state for save the user loaction
   const { state, dispatch } = useContext(AuthContext);
   console.log(state);
-
+  const user_details = useSelector((state) => state.user_details_given);
   //To pass the location
   const [location, setLocation] = useState(null);
   const [loading, setiloading] = useState(true);
@@ -141,19 +141,19 @@ export default function Top2() {
             <Text
               style={{
                 fontSize: 10,
-                fontWeight: "700",
-                color: "red",
+                fontWeight: "500",
+                color: "#333",
                 marginLeft: 2,
               }}
             >
-              loading..
+              Loading...
             </Text>
           ) : (
             <Text
               style={{
                 fontSize: 10,
-                fontWeight: "700",
-                color: "black",
+                fontWeight: "500",
+                color: "#333",
                 marginLeft: 2,
 
                 width: 100,
@@ -169,8 +169,9 @@ export default function Top2() {
       <View
         style={{
           flexDirection: "row",
+          marginLeft: 5,
+          justifyContent: "space-evenly",
           alignItems: "center",
-          justifyContent: "space-around",
           width: "40%",
         }}
       >
@@ -191,7 +192,7 @@ export default function Top2() {
             alignItems: "center",
           }}
         >
-          <Ionicons name="md-globe-outline" size={24} color="#333" />
+          <Ionicons name="md-globe-outline" size={22} color="#333" />
           <Pressable>
             <Text style={{ Text: 18, color: "#333" }}>EN</Text>
           </Pressable>
@@ -200,23 +201,28 @@ export default function Top2() {
           {isvoice ? (
             <MaterialCommunityIcons
               name="account-voice"
-              size={24}
+              size={22}
               color="#333"
             />
           ) : (
             <MaterialCommunityIcons
               name="account-voice-off"
-              size={24}
-              color="black"
+              size={22}
+              color="#333"
             />
           )}
         </Pressable>
         <Pressable
+          style={{ marginLeft: -2, marginRight: -5 }}
           onPress={() => {
-            navigation.navigate("mainprofile");
+            if (user_details) {
+              navigation.navigate("mainprofile");
+            } else {
+              navigation.navigate("Userprofile");
+            }
           }}
         >
-          <Ionicons name="person-circle-sharp" size={35} color="black" />
+          <Ionicons name="person-circle-sharp" size={40} color="#707070" />
         </Pressable>
       </View>
       {/* <View style={{ marginTop: -12 }}> */}

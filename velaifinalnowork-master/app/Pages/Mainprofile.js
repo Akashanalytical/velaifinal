@@ -446,8 +446,10 @@ import {
   TextInput,
   Modal,
   Image,
+  Pressable,
   ActivityIndicator,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -508,7 +510,7 @@ export default function Profilepage({ navigation, route }) {
     body.profilepic = paras1;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.20:5000/api/prfilepic_update`, {
+      await fetch(`http://192.168.1.3:5000/api/prfilepic_update`, {
         method: "PUT",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -569,7 +571,7 @@ export default function Profilepage({ navigation, route }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.3:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -623,7 +625,7 @@ export default function Profilepage({ navigation, route }) {
       : "job_provider_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.20:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.3:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -635,9 +637,14 @@ export default function Profilepage({ navigation, route }) {
       })
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
-          setdata(result["profile_info"]);
-          setloading(false);
+          console.log("im theeee data");
+          console.log(result["profile_info"].length > 0);
+          if (result["profile_info"].length > 0) {
+            setdata(result["profile_info"]);
+            setloading(false);
+          } else {
+            setloading(false);
+          }
         });
     } catch (error) {
       console.log(error);
@@ -716,7 +723,7 @@ export default function Profilepage({ navigation, route }) {
                       style={{
                         ...styles.openButton,
                         width: 150,
-                        backgroundColor: "#2196F3",
+                        backgroundColor: "#1E5966",
                       }}
                       onPress={() => {
                         takeAndUploadPhotoAsync1("camera");
@@ -730,14 +737,16 @@ export default function Profilepage({ navigation, route }) {
                         }}
                       >
                         <AntDesign name="camera" size={24} color="white" />
-                        <Text style={styles.textStyle}>{t("pic")}</Text>
+                        <Text style={{ color: "#fff", padding: 5 }}>
+                          {t("pic")}
+                        </Text>
                       </View>
                     </TouchableHighlight>
                     <TouchableHighlight
                       style={{
                         ...styles.openButton,
                         width: 150,
-                        backgroundColor: "#2196F3",
+                        backgroundColor: "#1E5966",
                         marginTop: 20,
                       }}
                       onPress={() => takeAndUploadPhotoAsync1("files")}
@@ -750,9 +759,25 @@ export default function Profilepage({ navigation, route }) {
                         }}
                       >
                         <FontAwesome name="files-o" size={24} color="white" />
-                        <Text style={styles.textStyle}>{t("fi")}</Text>
+                        <Text style={{ color: "#fff", padding: 5 }}>
+                          {t("fi")}
+                        </Text>
                       </View>
                     </TouchableHighlight>
+                    <TouchableOpacity
+                      style={{ marginTop: 59 }}
+                      onPress={() => setprofilemodal(!profilemodal)}
+                    >
+                      <Text
+                        style={{
+                          textDecorationLine: "underline",
+                          fontSize: 17,
+                          color: "#333",
+                        }}
+                      >
+                        Close
+                      </Text>
+                    </TouchableOpacity>
                   </>
                 )}
               </View>
@@ -1132,14 +1157,15 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     borderRadius: 25,
     borderColor: "#707070",
     padding: 100,
     height: "42%",
+    width: "90%",
     alignItems: "center",
     shadowColor: "#000",
-    borderWidth: 2,
+    borderWidth: 1,
     shadowOffset: {
       width: 0,
       height: 2,

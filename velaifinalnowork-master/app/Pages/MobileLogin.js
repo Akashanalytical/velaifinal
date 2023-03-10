@@ -115,7 +115,7 @@ export default function Mobillogin({ route, navigation }) {
       console.log(mobilenumber);
       if (mobilenumber.length > 10) {
         const body = { number: mobilenumber };
-        const response = await fetch("http://192.168.1.20:5000/sms", {
+        const response = await fetch("http://192.168.1.03:5000/sms", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -170,7 +170,7 @@ export default function Mobillogin({ route, navigation }) {
       body.number = mobilenumber;
       console.log(body);
       try {
-        await fetch("http://192.168.1.20:5000/api/sms", {
+        await fetch("http://192.168.1.03:5000/api/sms", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -230,7 +230,7 @@ export default function Mobillogin({ route, navigation }) {
     // value.longitude = await location.coords.longitude;
 
     try {
-      await fetch("http://192.168.1.20:5000/sms/verification", {
+      await fetch("http://192.168.1.03:5000/sms/verification", {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -271,7 +271,7 @@ export default function Mobillogin({ route, navigation }) {
     try {
       const body = {};
       body.number = mobilenumber;
-      const response = await fetch("http://192.168.1.20:5000/invaild", {
+      const response = await fetch("http://192.168.1.03:5000/invaild", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -307,26 +307,28 @@ export default function Mobillogin({ route, navigation }) {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginRight: 15,
+            marginRight: 20,
           }}
         >
-          <Ionicons name="md-globe-outline" size={24} color="#333" />
+          <Ionicons name="md-globe-outline" size={22} color="#333" />
           <Pressable>
-            <Text style={{ marginLeft: 3, Text: 18 }}>EN</Text>
+            <Text style={{ marginLeft: 3, fontSize: 13, color: "#333" }}>
+              EN
+            </Text>
           </Pressable>
         </View>
-        <View style={{ marginRight: -15 }}>
+        <View style={{ marginRight: -27 }}>
           <Pressable onPress={() => setisvoice(!isvoice)}>
             {isvoice ? (
               <MaterialCommunityIcons
                 name="account-voice"
-                size={24}
+                size={22}
                 color="#333"
               />
             ) : (
               <MaterialCommunityIcons
                 name="account-voice-off"
-                size={24}
+                size={22}
                 color="#333"
               />
             )}
@@ -360,10 +362,10 @@ export default function Mobillogin({ route, navigation }) {
             marginLeft: 6,
             fontSize: 30,
             fontWeight: "900",
-            top: 5,
+            top: 1,
           }}
         >
-          HI
+          HI !
         </Text>
         <Text
           style={{
@@ -371,12 +373,12 @@ export default function Mobillogin({ route, navigation }) {
             paddingRight: 50,
             paddingLeft: 15,
             marginLeft: 6,
-            fontSize: 21,
-            fontWeight: "400",
-            top: 10,
+            fontSize: 20,
+            fontWeight: "500",
+            top: 1,
           }}
         >
-          Welcome!
+          Welcome
         </Text>
         {/* <View
         >
@@ -385,7 +387,7 @@ export default function Mobillogin({ route, navigation }) {
           style={{
             width: "100%",
             color: "#333",
-            marginTop: 26,
+            marginTop: 23,
             textAlign: "center",
             fontSize: 25,
             fontWeight: "600",
@@ -395,7 +397,7 @@ export default function Mobillogin({ route, navigation }) {
         </Text>
         <View
           style={{
-            // top: 10,
+            top: -10,
             justifyContent: "space-between",
             flexWrap: "nowrap",
             flexDirection: "row",
@@ -441,34 +443,42 @@ export default function Mobillogin({ route, navigation }) {
           />
         </View>
 
-        <View style={{ marginTop: -100 }}>
+        <View style={{ marginTop: -110 }}>
           <View
             style={{
               flexDirection: "row",
               marginLeft: 15,
-              marginBottom: 15,
+              marginBottom: 22,
             }}
           >
             <Pressable onPress={() => setistick(!istick)}>
               {istick ? (
                 <MaterialIcons
                   name="check-box-outline-blank"
-                  size={24}
+                  size={22}
                   color="#1e5966"
                 />
               ) : (
-                <MaterialIcons name="check-box" size={24} color="#1e5966" />
+                <MaterialIcons name="check-box" size={22} color="#1e5966" />
               )}
             </Pressable>
-            <Text style={{ fontSize: 17 }}>I agree </Text>
+            <Text style={{ fontSize: 17, marginRight: 3, marginLeft: 5 }}>
+              I agree
+            </Text>
 
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Termscondition");
               }}
             >
-              <Text style={{ color: "#0047FF", fontSize: 17 }}>
-                terms and conditions
+              <Text
+                style={{
+                  color: "#0047FF",
+                  fontSize: 17,
+                  textDecorationLine: "underline",
+                }}
+              >
+                Terms and Conditions
               </Text>
             </TouchableOpacity>
           </View>
@@ -480,7 +490,7 @@ export default function Mobillogin({ route, navigation }) {
               marginBottom: 20,
             }}
           >
-            <Text style={{ fontSize: 23, fontWeight: "500", color: "#333" }}>
+            <Text style={{ fontSize: 20, fontWeight: "500", color: "#333" }}>
               Enter OTP
             </Text>
           </View>
@@ -517,7 +527,7 @@ export default function Mobillogin({ route, navigation }) {
                 fontSize: 17,
                 fontWeight: "400",
                 color: "#1E5966",
-                marginTop: 10,
+                marginTop: 17,
               }}
             >
               {seconds} Sec
@@ -589,7 +599,7 @@ export default function Mobillogin({ route, navigation }) {
               alignItems: "center",
               width: "100%",
               fontWeight: "400",
-              marginTop: 20,
+              marginTop: 9,
             }}
           >
             <Text
@@ -614,7 +624,7 @@ export default function Mobillogin({ route, navigation }) {
                 value.number = mobilenumber;
                 console.log(value);
                 try {
-                  await fetch("http://192.168.1.20:5000/api/sms", {
+                  await fetch("http://192.168.1.03:5000/api/sms", {
                     method: "POST",
                     mode: "cors", // no-cors, *cors, same-origin
                     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -652,9 +662,10 @@ export default function Mobillogin({ route, navigation }) {
                   // justifyContent: "center",
                   // alignItems: "center",
                   // alignContent: "center",
-                  fontSize: 20,
+                  fontSize: 15,
                   marginLeft: 10,
-                  // width: "100%",
+                  textDecorationLine: "underline",
+                  // width:"100%",
                   fontWeight: "400",
                   // marginTop: 20,
                 }}

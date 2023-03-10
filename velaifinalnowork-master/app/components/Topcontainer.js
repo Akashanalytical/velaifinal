@@ -193,7 +193,7 @@ export default function Top() {
       <View style={styles.leftSide}>
         <View style={{ marginLeft: 7 }}>
           <Text>
-            <Ionicons name="ios-pin-sharp" size={24} color="black" />
+            <Ionicons name="ios-pin-sharp" size={22} color="#333" />
           </Text>
         </View>
         <View>
@@ -201,19 +201,19 @@ export default function Top() {
             <Text
               style={{
                 fontSize: 10,
-                fontWeight: "700",
-                color: "red",
+                fontWeight: "500",
+                color: "#333",
                 marginLeft: 2,
               }}
             >
-              loading..
+              Loading...
             </Text>
           ) : (
             <Text
               style={{
                 fontSize: 10,
-                fontWeight: "700",
-                color: "black",
+                fontWeight: "500",
+                color: "#333",
                 marginLeft: 2,
 
                 width: 100,
@@ -230,7 +230,8 @@ export default function Top() {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "flex-end",
+          marginRight: 20,
           width: "40%",
         }}
       >
@@ -248,10 +249,12 @@ export default function Top() {
         <View
           style={{
             flexDirection: "row",
+            marginRight: 20,
+
             alignItems: "center",
           }}
         >
-          <Ionicons name="md-globe-outline" size={24} color="#333" />
+          <Ionicons name="md-globe-outline" size={22} color="#333" />
           <Pressable>
             <Text style={{ Text: 18, color: "#333" }}>EN</Text>
           </Pressable>
@@ -260,14 +263,14 @@ export default function Top() {
           {isvoice ? (
             <MaterialCommunityIcons
               name="account-voice"
-              size={24}
+              size={22}
               color="#333"
             />
           ) : (
             <MaterialCommunityIcons
               name="account-voice-off"
-              size={24}
-              color="black"
+              size={22}
+              color="#333"
             />
           )}
         </Pressable>

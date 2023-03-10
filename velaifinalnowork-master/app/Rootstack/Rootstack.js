@@ -26,6 +26,7 @@ import Jobseeker from "../Pages/jobseekerDeatils";
 import BottomTAb, {
   Filterscreenmain,
   JobProviderBottomTAb,
+  Linear,
   ModifyHome,
   Rentalproviderbottomtab,
   Rentalseekerbottomtab,
@@ -657,6 +658,7 @@ function Root({ navigation }) {
             },
           }}
         />
+
         <Stack.Screen
           name="Termscondition"
           component={Termscondition}
@@ -799,8 +801,8 @@ function Root({ navigation }) {
           }}
         />
         {/* <Stack.Screen
-          name="filter"
-          component={New}
+          name="Linear"
+          component={Linear}
           options={{ headerShown: true }}
         /> */}
         <Stack.Screen
@@ -983,15 +985,17 @@ function Root({ navigation }) {
           name="Userprofile"
           component={Userprofile}
           options={{
+            title: "",
             headerRight: (props) => (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View
                   style={{
                     flexDirection: "row",
                     marginLeft: "70%",
+                    alignItems: "center",
                   }}
                 >
-                  <Ionicons name="md-globe-outline" size={24} color="#333" />
+                  <Ionicons name="md-globe-outline" size={22} color="#333" />
                   <Pressable>
                     <Text style={{ Text: 18, color: "#333" }}>EN</Text>
                   </Pressable>
@@ -1007,14 +1011,14 @@ function Root({ navigation }) {
                     {isvoice ? (
                       <MaterialCommunityIcons
                         name="account-voice"
-                        size={26}
+                        size={22}
                         color="#333"
                       />
                     ) : (
                       <MaterialCommunityIcons
                         name="account-voice-off"
-                        size={24}
-                        color="black"
+                        size={22}
+                        color="#333"
                       />
                     )}
                   </Pressable>

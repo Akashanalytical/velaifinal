@@ -265,7 +265,7 @@ const Heart = ({ navigation }) => {
   async function fetchdata() {
     console.log("i am at the dataass");
     try {
-      await fetch(`http://192.168.1.20:5000/api/s_l_like_job/${user_id}`, {
+      await fetch(`http://192.168.1.3:5000/api/s_l_like_job/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

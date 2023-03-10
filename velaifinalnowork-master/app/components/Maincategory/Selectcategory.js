@@ -62,7 +62,7 @@ export default function SelectCategory({ route }) {
   //   body.latitude = state.coords.coords.latitude;
   //   body.longitude = state.coords.coords.longitude;
   //   try {
-  //     await fetch("http://192.168.1.20:5000/api/location_update", {
+  //     await fetch("http://192.168.1.03:5000/api/location_update", {
   //       method: "PUT",
   //       mode: "cors", // no-cors, *cors, same-origin
   //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -108,7 +108,7 @@ export default function SelectCategory({ route }) {
     body.userType = "job_provider_info";
     try {
       const response = await fetch(
-        `http://192.168.1.20:5000/api/user_in_or_out`,
+        `http://192.168.1.03:5000/api/user_in_or_out`,
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
@@ -199,7 +199,7 @@ export default function SelectCategory({ route }) {
         <Image
           source={item.src}
           style={{
-            resizeMode: "contain",
+            resizeMode: "cover",
             width: "100%",
             height: "100%",
             marginTop: 140,
@@ -330,21 +330,21 @@ export default function SelectCategory({ route }) {
             }}
           >
             <View style={{ justifyContent: "center" }}>
-              <EvilIcons name="search" size={24} color="#707070" />
+              <EvilIcons name="search" size={22} color="#707070" />
             </View>
             <TextInput
               value={search}
               underlineColorAndroid="transparent"
               placeholder="Search here"
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 2 }}
             />
             <View
               style={{
-                marginLeft: 130,
+                marginLeft: 110,
                 marginTop: 5,
               }}
             >
-              <FontAwesome name="microphone" size={24} color="#707070" />
+              <FontAwesome name="microphone" size={22} color="#707070" />
             </View>
           </View>
         </View>
@@ -620,8 +620,8 @@ export default function SelectCategory({ route }) {
             renderItem={({ item, index }) => (
               <CarouselItem2 item={item} index={index} />
             )}
-            height={60}
-            width={360}
+            height={55}
+            width={340}
             style={{ backgroundColor: "#fff", borderRadius: 20 }}
             inactiveSlideScale={2}
             autoplayInterval={2000}
@@ -631,7 +631,7 @@ export default function SelectCategory({ route }) {
           style={{
             backgroundColor: "#FFF",
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "space-evenly",
           }}
         >
           <LinearGradient
@@ -640,8 +640,8 @@ export default function SelectCategory({ route }) {
             end={{ x: 1, y: 1 }}
             useAngle={45}
             style={{
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               backgroundColor: "#FFFFFF",
               marginHorizontal: 5,
               marginVertical: 20,
@@ -664,14 +664,18 @@ export default function SelectCategory({ route }) {
           >
             <Image
               resizeMode="contain"
-              source={require("../Maincategory/Categoryimage/deal.png")}
-              style={{ width: 40, height: 40 }}
+              source={require("../Maincategory/Categoryimage/Saveenergy.png")}
+              style={{
+                width: 40,
+                height: 40,
+                marginBottom: 5,
+              }}
             />
             <Text
               style={{
                 fontSize: 13,
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "500",
               }}
             >
               Insurance
@@ -692,8 +696,8 @@ export default function SelectCategory({ route }) {
             end={{ x: 1, y: 1 }}
             useAngle={45}
             style={{
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               backgroundColor: "#FFFFFF",
               marginHorizontal: 5,
               marginVertical: 20,
@@ -716,14 +720,14 @@ export default function SelectCategory({ route }) {
           >
             <Image
               resizeMode="contain"
-              style={{ width: 40, height: 40 }}
+              style={{ width: 40, height: 40, marginBottom: 5 }}
               source={require("../../images/freelance.png")}
             />
             <Text
               style={{
                 fontSize: 13,
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "500",
               }}
             >
               Freelance
@@ -744,8 +748,8 @@ export default function SelectCategory({ route }) {
             end={{ x: 1, y: 1 }}
             useAngle={45}
             style={{
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               backgroundColor: "#FFFFFF",
               marginHorizontal: 5,
               marginVertical: 20,
@@ -769,22 +773,27 @@ export default function SelectCategory({ route }) {
             <Image
               resizeMode="contain"
               source={require("../../images/government.png")}
-              style={{ width: 40, height: 40 }}
+              style={{
+                width: 40,
+                height: 40,
+                paddingBottom: 50,
+                marginTop: 10,
+              }}
             />
             <Text
               style={{
-                fontSize: 13,
+                fontSize: 12,
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "500",
               }}
             >
               Government
             </Text>
             <Text
               style={{
-                fontSize: 13,
+                fontSize: 12,
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "500",
               }}
             >
               Job
