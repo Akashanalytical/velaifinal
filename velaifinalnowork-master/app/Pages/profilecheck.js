@@ -149,7 +149,7 @@ export default function CheckProfile() {
   const getid = async () => {
     try {
       console.log("im here");
-      await fetch("http://192.168.1.7:5000/api/count_apply_job/11", {
+      await fetch("http://192.168.1.11:5000/api/count_apply_job/11", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -171,7 +171,7 @@ export default function CheckProfile() {
     try {
       for (let i = 0; i < params.length; i++) {
         await fetch(
-          `http://192.168.1.7:5000/api/apply_jobed/${params[i].post_id}`,
+          `http://192.168.1.11:5000/api/apply_jobed/${params[i].post_id}`,
           {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
