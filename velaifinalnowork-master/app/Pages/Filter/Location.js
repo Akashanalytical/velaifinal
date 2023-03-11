@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext, useState, useEffect, useMemo } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
 import { S_FILTER } from "../../../App";
 import { useSelector } from "react-redux";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -188,70 +188,86 @@ export default function Location(props) {
   //   return <Text>Loading....</Text>;
   // }
   return (
-    <View
-      View
-      style={{
-        justifyContent: "space-between",
-      }}
-    >
-      <Text>
-        Selected values State:{state1.states == "" ? "" : state1.states}
-        District:{state1.district == "" ? "" : state1.district}
-      </Text>
-      <View style={{ margin: 30 }}>
-        <DropDownPicker
-          open={open2}
-          value={value2}
-          items={items2}
-          placeholder={"Enter State"}
-          dropDownContainerStyle={{
-            backgroundColor: "#DFDFDF",
-          }}
-          listMode="MODAL"
-          modalTitle="Select an item"
-          modalAnimationType="slide"
-          modalContentContainerStyle={{
-            backgroundColor: "#fff",
-            color: "red",
-          }}
-          modalTitleStyle={{
-            fontWeight: "bold",
-          }}
-          searchable={true}
-          mode="BADGE"
-          setOpen={setOpen2}
-          setValue={setValue2}
-          setItems={setitems2}
-          style={styles.drope}
-          showArrowIcon={true}
-          // multiple={true}
-          customItemLabelStyle={{
-            fontStyle: "italic",
-          }}
-          onChangeValue={(value) => {
-            console.log("Im at the states chnge");
-            console.log(value);
-            dispatch1({ type: "SET_STATE", payload: value });
-            // handledistrict(value);
-          }}
-          listItemLabelStyle={{
-            color: "black",
-          }}
-        />
-      </View>
-      <View style={{ margin: 10 }}>
-        <TextInput
-          value={District}
-          onChangeText={(dist) => setDistrict(dist)}
-          placeholder={"Enter the district"}
-          style={styles.input}
-          onBlur={() => {
-            console.log(District),
-              dispatch1({ type: "SET_DISTRICT", payload: District });
-          }}
-          // onBlur={() => dispatch1({ type: "SET_DISTRICT", payload: District })}
-        />
-        {/* {/* <DropDownPicker
+    <ScrollView style={{ flex: 1 }}>
+      <View
+        View
+        style={{
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ height: 20, backgroundColor: "red" }}>
+          <Text style={{ color: "#fff" }}>
+            Selected:{state1.states == "" ? "" : state1.states}
+          </Text>
+        </View>
+        {/* <ScrollView horizontal> */}
+        <View style={{ width: "80%", backgroundColor: "blue" }}>
+          <Text>Selected:{state1.district == "" ? "" : state1.district}</Text>
+        </View>
+        {/* <View
+            style={{
+              width: 100,
+              height: 20,
+              backgroundColor: "green",
+            }}
+          > */}
+        {/* <Text>{state1.district == "" ? "" : state1.district}</Text> */}
+        {/* </View> */}
+        {/* </ScrollView> */}
+        <View style={{ margin: 30 }}>
+          <DropDownPicker
+            open={open2}
+            value={value2}
+            items={items2}
+            placeholder={"Enter State"}
+            dropDownContainerStyle={{
+              backgroundColor: "#DFDFDF",
+            }}
+            listMode="MODAL"
+            modalTitle="Select an item"
+            modalAnimationType="slide"
+            modalContentContainerStyle={{
+              backgroundColor: "#fff",
+              color: "red",
+            }}
+            modalTitleStyle={{
+              fontWeight: "bold",
+            }}
+            searchable={true}
+            mode="BADGE"
+            setOpen={setOpen2}
+            setValue={setValue2}
+            setItems={setitems2}
+            style={styles.drope}
+            showArrowIcon={true}
+            // multiple={true}
+            customItemLabelStyle={{
+              fontStyle: "italic",
+            }}
+            onChangeValue={(value) => {
+              console.log("Im at the states chnge");
+              console.log(value);
+              dispatch1({ type: "SET_STATE", payload: value });
+              // handledistrict(value);
+            }}
+            listItemLabelStyle={{
+              color: "black",
+            }}
+          />
+        </View>
+        <View style={{ margin: 10 }}>
+          <TextInput
+            value={District}
+            onChangeText={(dist) => setDistrict(dist)}
+            placeholder={"Enter the district"}
+            style={styles.input}
+            onBlur={() => {
+              console.log(District),
+                dispatch1({ type: "SET_DISTRICT", payload: District });
+            }}
+            // onBlur={() => dispatch1({ type: "SET_DISTRICT", payload: District })}
+          />
+          {/* {/* <DropDownPicker
           open={open3}
           value={value3}
           items={items3}
@@ -289,8 +305,9 @@ export default function Location(props) {
             color: "black",
           }}
         /> */}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

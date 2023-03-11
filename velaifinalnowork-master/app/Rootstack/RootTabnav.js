@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Text, View, StatusBar } from "react-native";
+import { useState } from "react";
+import { Text, View, StatusBar, Pressable } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import SwiperCard from "../Pages/Post";
 import MainPage from "../Pages/MainScreen";
 import Heart from "../Pages/Heart";
@@ -42,6 +43,7 @@ import { BottomTabBar } from "@react-navigation/bottom-tabs";
 
 import ShorttimeSwiperCard from "../Swipe/Shorttimeswipe";
 import Top2 from "../components/Topcontainer2";
+import Top3 from "../components/Topcontainer3";
 
 const Homestack = createNativeStackNavigator();
 function SettingsScreen({ route }) {
@@ -60,6 +62,8 @@ function SettingsScreen({ route }) {
 }
 
 export function ModifyHome({ route }) {
+  const [isvoice, setisvoice] = useState(true);
+
   return (
     <Homestack.Navigator>
       <Homestack.Screen
@@ -72,12 +76,78 @@ export function ModifyHome({ route }) {
       <Homestack.Screen
         name="bottomhome"
         component={SwipeChatmainScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerTitle: (props) => (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              {/* <View
+                style={{
+                  flexDirection: "row",
+                }}
+              > */}
+              {/* <Ionicons name="md-globe-outline" size={24} color="#333" />
+                <Pressable>
+                  <Text style={{ Text: 18, color: "#333" }}>EN</Text>
+                </Pressable> */}
+              {/* </View> */}
+              {/* <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginHorizontal: 12,
+                }}
+              > */}
+              {/* <Pressable onPress={() => setisvoice(!isvoice)}>
+                  {isvoice ? (
+                    <MaterialCommunityIcons
+                      name="account-voice"
+                      size={26}
+                      color="#333"
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="account-voice-off"
+                      size={24}
+                      color="black"
+                    />
+                  )}
+                </Pressable> */}
+              {/* </View> */}
+              <Top3 />
+            </View>
+          ),
+          headerStyle: {
+            backgroundColor: "#fff",
+          },
+
+          // headerBackImage: ({ tintColor }) => (
+          //   <CustomHeaderBackImage tintColor={tintColor} />
+          // ),
+          // headerRight: () => <></>,
+        }}
+        // options={{
+        //   title: "",
+        //   headerShown: true,
+        //   headerRight: (props) => (
+        //     <View
+        //       style={{
+        //         flexDirection: "row",
+        //         justifyContent: "flex-end",
+        //         alignItems: "center",
+        //         marginRight: -100,
+        //       }}
+        //     >
+        //       <Top2 />
+        //     </View>
+        //   ),
+        //   headerStyle: {
+        //     backgroundColor: "#fff",
+        //   },
+        // }}
       />
       <Homestack.Screen
         name="fill"
         component={New}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
     </Homestack.Navigator>
   );
@@ -314,7 +384,7 @@ function SwipeMealsPastScreen({ route }) {
 function SwipeMealsScreenTabs() {
   return (
     <>
-      <Top2 />
+      {/* <Top2 /> */}
       {/* <LinearGradient
       colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
     style={{ flex: 1, width: "100%", justifyContent: "center" }}

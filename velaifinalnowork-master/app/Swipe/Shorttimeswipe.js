@@ -142,7 +142,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.03:5000/api/s_like_details", {
+      await fetch("http://192.168.1.8:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -169,7 +169,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.03:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.8:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -224,7 +224,7 @@ export default function ShorttimeSwiperCard({ route }) {
   //To get the applied jobs
   // const getJobs = async () => {
   //   try {
-  //     await fetch(`http://192.168.1.03:5000/api/count_apply_job/${userID}`, {
+  //     await fetch(`http://192.168.1.11:5000/api/count_apply_job/${userID}`, {
   //       method: "GET",
   //       mode: "cors",
   //       cache: "no-cache",
@@ -306,7 +306,7 @@ export default function ShorttimeSwiperCard({ route }) {
     setloading(true);
     try {
       await fetch(
-        `http://192.168.1.03:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.8:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -352,7 +352,7 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.03:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.8:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -389,7 +389,7 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.03:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.8:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -432,7 +432,7 @@ export default function ShorttimeSwiperCard({ route }) {
       : "job_provider_info";
     // body.page = 0;
     try {
-      await fetch(`http://192.168.1.03:5000/api/user_in_or_out`, {
+      await fetch(`http://192.168.1.8:5000/api/user_in_or_out`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -465,7 +465,7 @@ export default function ShorttimeSwiperCard({ route }) {
   //   const body = {};
   //   body.page = paras;
   //   try {
-  //     await fetch("http://192.168.1.03:5000/api/limit/s_like_apply_check/4", {
+  //     await fetch("http://192.168.1.11:5000/api/limit/s_like_apply_check/4", {
   //       method: "POST",
   //       mode: "cors",
   //       cache: "no-cache",
@@ -502,7 +502,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.03:5000/api/apply_job", {
+      await fetch("http://192.168.1.8:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -677,7 +677,7 @@ export default function ShorttimeSwiperCard({ route }) {
                   }}
                 >
                   {data[index].liked == "true" ? (
-                    <AntDesign name="heart" size={26} color="black" />
+                    <AntDesign name="heart" size={26} color="#333" />
                   ) : (
                     <AntDesign name="hearto" size={26} color="black" />
                   )}
@@ -748,6 +748,8 @@ export default function ShorttimeSwiperCard({ route }) {
                 // marginTop: 340,
                 // position: "absolute",
                 marginHorizontal: 10,
+                justifyContent: "center",
+                alignContent: "center",
                 flexDirection: "column",
               }}
             >
@@ -1159,7 +1161,9 @@ export default function ShorttimeSwiperCard({ route }) {
                     </TouchableOpacity>
                   </View>
 
-                  <View style={{ marginTop: 50, height: 400 }}>
+                  <View
+                    style={{ marginTop: 50, height: 400, marginBottom: 60 }}
+                  >
                     {/* <Text style={{ fontSize: 16, fontWeight: "700" }}>
                       {t("e_skill")}
                     </Text>
@@ -1268,7 +1272,7 @@ export default function ShorttimeSwiperCard({ route }) {
   // }, []);
   // async function fetchdata() {
   //   try {
-  //     await fetch("http://192.168.1.03:5000/api/job_title", {
+  //     await fetch("http://192.168.1.11:5000/api/job_title", {
   //       method: "GET", // *GET, POST, PUT, DELETE, etc.
   //       mode: "cors", // no-cors, *cors, same-origin
   //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -1442,7 +1446,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     position: "relative",
     shadowRadius: 50,
-    borderRadius: 40,
+    borderRadius: 15,
     width: "100%",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 10,

@@ -16,7 +16,7 @@
 //       <View style={styles.iconstotal}>
 //         <View
 //           style={{
-//             flexGrow: 0.3,
+//             flexGrow: 0.11,
 //             alignItems: "center",
 //           }}
 //         >
@@ -510,7 +510,7 @@ export default function Profilepage({ navigation, route }) {
     body.profilepic = paras1;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.3:5000/api/prfilepic_update`, {
+      await fetch(`http://192.168.1.8:5000/api/prfilepic_update`, {
         method: "PUT",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -571,7 +571,7 @@ export default function Profilepage({ navigation, route }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.3:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.8:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -625,7 +625,7 @@ export default function Profilepage({ navigation, route }) {
       : "job_provider_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.3:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.8:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -665,7 +665,7 @@ export default function Profilepage({ navigation, route }) {
       <View style={styles.iconstotal}>
         <View
           style={{
-            flexGrow: 0.3,
+            flexGrow: 0.11,
             alignItems: "center",
           }}
         >

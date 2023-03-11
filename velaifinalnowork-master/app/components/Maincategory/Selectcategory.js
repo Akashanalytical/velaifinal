@@ -62,7 +62,7 @@ export default function SelectCategory({ route }) {
   //   body.latitude = state.coords.coords.latitude;
   //   body.longitude = state.coords.coords.longitude;
   //   try {
-  //     await fetch("http://192.168.1.03:5000/api/location_update", {
+  //     await fetch("http://192.168.1.11:5000/api/location_update", {
   //       method: "PUT",
   //       mode: "cors", // no-cors, *cors, same-origin
   //       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -108,7 +108,7 @@ export default function SelectCategory({ route }) {
     body.userType = "job_provider_info";
     try {
       const response = await fetch(
-        `http://192.168.1.03:5000/api/user_in_or_out`,
+        `http://192.168.1.8:5000/api/user_in_or_out`,
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
@@ -353,7 +353,7 @@ export default function SelectCategory({ route }) {
           style={{
             backgroundColor: "#FFF",
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "space-evenly",
             // marginVertical: 50,
           }}
         >
@@ -375,8 +375,8 @@ export default function SelectCategory({ route }) {
                 height: 150,
                 width: 150,
                 backgroundColor: "#FFFFFF",
-                marginHorizontal: 5,
-                marginVertical: 20,
+                marginHorizontal: -5,
+                marginVertical: 10,
                 justifyContent: "center",
                 alignItems: "center",
                 // borderWidth: 1,
@@ -436,8 +436,8 @@ export default function SelectCategory({ route }) {
                 height: 150,
                 width: 150,
                 backgroundColor: "#FFFFFF",
-                marginHorizontal: 5,
-                marginVertical: 20,
+                marginHorizontal: -5,
+                marginVertical: 10,
                 justifyContent: "center",
                 alignItems: "center",
                 // borderWidth: 1,
@@ -480,7 +480,7 @@ export default function SelectCategory({ route }) {
           style={{
             backgroundColor: "#FFF",
             flexDirection: "row",
-            justifyContent: "space-around",
+            justifyContent: "space-evenly",
           }}
         >
           <Pressable
@@ -495,8 +495,8 @@ export default function SelectCategory({ route }) {
                 height: 150,
                 width: 150,
                 backgroundColor: "#FFFFFF",
-                marginHorizontal: 5,
-                marginVertical: 20,
+                marginHorizontal: -5,
+                marginVertical: 8,
                 justifyContent: "center",
                 alignItems: "center",
                 // borderWidth: 1,
@@ -554,8 +554,8 @@ export default function SelectCategory({ route }) {
                 height: 150,
                 width: 150,
                 backgroundColor: "#FFFFFF",
-                marginHorizontal: 5,
-                marginVertical: 20,
+                marginHorizontal: -5,
+                marginVertical: 8,
                 justifyContent: "center",
                 alignItems: "center",
                 // borderWidth: 1,

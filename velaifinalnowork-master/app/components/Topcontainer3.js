@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../App";
 import { useSelector } from "react-redux";
 import { FontAwesome5 } from "@expo/vector-icons";
-export default function Top2() {
+export default function Top3() {
   //to make use of the state for save the user loaction
   const { state, dispatch } = useContext(AuthContext);
   console.log(state);
@@ -130,8 +130,8 @@ export default function Top2() {
           </Pressable>
         </View>
       </View> */}
-      <View style={styles.leftSide}>
-        <View style={{ marginLeft: 7 }}>
+      <View style={{ backgroundColor: "red" }}>
+        {/* <View style={{ marginLeft: 7 }}>
           <Text>
             <Ionicons name="ios-pin-sharp" size={24} color="black" />
           </Text>
@@ -164,7 +164,7 @@ export default function Top2() {
                 : state.location}
             </Text>
           )}
-        </View>
+        </View> */}
       </View>
       <View
         style={{
@@ -213,7 +213,7 @@ export default function Top2() {
           )}
         </Pressable>
         <Pressable
-          style={{ marginLeft: -2, marginRight: -5 }}
+          //   style={{ marginLeft: -2, marginRight: -5 }}
           onPress={() => {
             if (user_details) {
               navigation.navigate("mainprofile");
@@ -249,16 +249,13 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // padding: 5,
     height: 60,
-    width: "100%",
+    // backgroundColor: "red",
+    width: "80%",
     position: "relative",
     backgroundColor: "#fff",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
+    marginLeft: 160,
   },
-  leftSide: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-  },
+  leftSide: {},
 });

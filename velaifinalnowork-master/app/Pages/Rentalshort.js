@@ -182,7 +182,7 @@ const ShortTermRental = () => {
   };
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.10:5000/api/job_title", {
+      await fetch("http://192.168.1.11:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -254,7 +254,7 @@ const ShortTermRental = () => {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.10:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.11:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -295,7 +295,7 @@ const ShortTermRental = () => {
     console.log(data, "data");
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.10:5000/api/shorttime_job", {
+        await fetch("http://192.168.1.11:5000/api/shorttime_job", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

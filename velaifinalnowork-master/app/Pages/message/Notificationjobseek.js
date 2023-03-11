@@ -103,10 +103,10 @@ function Notificationjobseeker({ navigation }) {
           </View>
         </View> */}
         <ScrollView>
-          <View style={{ marginHorizontal: 15 }}>
+          <View style={{}}>
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",
@@ -158,7 +158,7 @@ function Notificationjobseeker({ navigation }) {
             {/* 2 */}
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",
@@ -211,7 +211,7 @@ function Notificationjobseeker({ navigation }) {
             {/* 3 */}
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",
@@ -263,7 +263,7 @@ function Notificationjobseeker({ navigation }) {
             {/* 4 */}
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",
@@ -315,7 +315,7 @@ function Notificationjobseeker({ navigation }) {
             {/* 5 */}
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",
@@ -367,7 +367,7 @@ function Notificationjobseeker({ navigation }) {
             {/* 6 */}
             <View
               style={{
-                width: 358,
+                width: "100%",
                 height: 100,
                 backgroundColor: "#FFFFFF",
                 justifyContent: "space-evenly",

@@ -2074,7 +2074,7 @@ export default function SwiperCard({ route }) {
   }, []);
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.2:5000/api/job_title", {
+      await fetch("http://192.168.1.11:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

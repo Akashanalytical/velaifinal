@@ -16,12 +16,13 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import Top from "../components/Topcontainer";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import {
   MaterialCommunityIcons,
   FontAwesome,
   SimpleLineIcons,
   EvilIcons,
+  Entypo,
 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -40,7 +41,7 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
         shadowColor: "#000000",
         shadowOffset: {
           width: 0,
-          height: 6,
+          height: 2,
         },
         shadowOpacity: 0.2,
         shadowRadius: 5.62,
@@ -51,20 +52,70 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
+          alignItems: "center",
+
           marginHorizontal: 10,
         }}
       >
         <Text
           style={{
             color: "#333",
-            fontSize: 18,
-            fontWeight: "500",
+            fontSize: 20,
+            fontWeight: "600",
+            width: 130,
             marginTop: 10,
+            marginLeft: 10,
           }}
         >
           {title}
         </Text>
-        <FontAwesome name="share-alt" size={34} color="#333" />
+        <LinearGradient
+          colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+          style={{
+            borderRadius: 10,
+            width: 80,
+            height: 30,
+            marginTop: 10,
+
+            marginLeft: "20%",
+            flexDirection: "row",
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          useAngle={45}
+        >
+          {/* <View
+              style={{
+                borderTopWidth: 20,
+                backgroundColor: "red",
+                borderColor: "red",
+              }}
+            > */}
+
+          <Text
+            style={{
+              fontSize: 13,
+              color: "#fff",
+              fontWeight: "400",
+              textAlign: "center",
+            }}
+          >
+            {short == "True" ? "Short Time" : "Long Time"}
+          </Text>
+          {/* </View> */}
+        </LinearGradient>
+        <View
+          style={{
+            marginTop: 10,
+            marginRight: "20%",
+            marginLeft: "3%",
+          }}
+        >
+          <FontAwesome name="share-alt" size={22} color="#333" />
+        </View>
       </View>
 
       <Text
@@ -72,9 +123,9 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
           color: "#333",
           fontSize: 14,
           fontWeight: "400",
-          marginTop: 10,
-
-          marginHorizontal: 10,
+          marginTop: 5,
+          marginBottom: 10,
+          marginHorizontal: 20,
         }}
       >
         Posted By: {name}
@@ -99,16 +150,18 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
             style={{
               flexDirection: "row",
               marginBottom: 10,
+              marginLeft: 10,
+
               alignContent: "center",
             }}
           >
-            <FontAwesome name="rupee" size={22} color="#333" />
+            <FontAwesome5 name="coins" size={20} color="#333" />
             <Text
               style={{
                 // marginTop: 3,
 
                 marginLeft: 10,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: "400",
               }}
             >
@@ -120,14 +173,21 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
               flexDirection: "row",
               marginBottom: 10,
               width: 150,
+              marginLeft: 10,
+              marginTop: 8,
+
               alignContent: "center",
             }}
           >
-            <MaterialCommunityIcons name="timer-sand" size={24} color="#333" />
+            <MaterialCommunityIcons
+              name="calendar-clock"
+              size={20}
+              color="#333"
+            />
             <Text
               style={{
                 marginLeft: 10,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: "400",
               }}
             >
@@ -150,11 +210,11 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
               alignContent: "center",
             }}
           >
-            <Ionicons name="location-outline" size={24} color="#333" />
+            <Entypo name="location-pin" size={20} color="#333" />
             <Text
               style={{
                 marginLeft: 10,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: "400",
               }}
             >
@@ -164,62 +224,28 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
           <View
             style={{
               alignContent: "center",
+              marginTop: 8,
 
               flexDirection: "row",
               marginBottom: 10,
-              width: 180,
+              width: "80%",
             }}
           >
             <MaterialCommunityIcons
               name="map-marker-distance"
-              size={22}
+              size={20}
               color="#333"
             />
             <Text
               style={{
                 marginLeft: 10,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: "400",
               }}
             >
-              {Dis}
+              {Dis} km
             </Text>
           </View>
-          <LinearGradient
-            colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
-            style={{
-              alignContent: "center",
-              borderRadius: 10,
-              width: 100,
-              height: 30,
-              marginLeft: 70,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 14,
-            }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            useAngle={45}
-          >
-            {/* <View
-              style={{
-                borderTopWidth: 20,
-                backgroundColor: "red",
-                borderColor: "red",
-              }}
-            > */}
-
-            <Text
-              style={{
-                fontSize: 13,
-                color: "#fff",
-                fontWeight: "400",
-              }}
-            >
-              {short == "True" ? "Short Time" : "Long Time"}
-            </Text>
-            {/* </View> */}
-          </LinearGradient>
         </View>
       </View>
     </View>
@@ -231,6 +257,7 @@ const Items = ({ title, sal, per, time, loc, Dis, name, short }) => (
 // create a component
 function Saved({ navigation }) {
   const user_id = useSelector((state) => state.ID);
+  const [search, setSearch] = useState("");
 
   console.log(navigation);
   const [data, setdata] = useState([]);
@@ -248,7 +275,7 @@ function Saved({ navigation }) {
     console.log("i am at the dataa");
     console.log(navigation);
     try {
-      await fetch(`http://192.168.1.3:5000/api/s_apply_details/${user_id}`, {
+      await fetch(`http://192.168.1.8:5000/api/s_apply_details/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -281,6 +308,54 @@ function Saved({ navigation }) {
   return (
     <>
       <Top2 />
+      <Text
+        style={{
+          textAlign: "center",
+          fontSize: 22,
+          fontWeight: "500",
+          marginTop: 20,
+        }}
+      >
+        Applied Jobs
+      </Text>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            width: 280,
+            height: 35,
+            borderWidth: 1,
+            // paddingLeft: 20,
+            // margin: 5,
+
+            justifyContent: "space-evenly",
+            flexDirection: "row",
+            borderRadius: 20,
+            // marginLeft: 200,
+            borderColor: "#707070",
+            backgroundColor: "#fffff",
+            marginHorizontal: 55,
+            marginVertical: 20,
+          }}
+        >
+          <View style={{ justifyContent: "center" }}>
+            <EvilIcons name="search" size={22} color="#707070" />
+          </View>
+          <TextInput
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search here"
+            style={{ marginLeft: 10 }}
+          />
+          <View
+            style={{
+              marginLeft: 130,
+              marginTop: 5,
+            }}
+          >
+            <FontAwesome name="microphone" size={22} color="#707070" />
+          </View>
+        </View>
+      </View>
       <SafeAreaView style={styles.container}>
         <View>
           {refreshing ? <ActivityIndicator /> : null}

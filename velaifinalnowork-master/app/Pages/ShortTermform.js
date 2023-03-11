@@ -102,7 +102,7 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
   const [phonenumber, setphonenumber] = useState("");
   async function getuserdata() {
     try {
-      await fetch(`http://192.168.1.20:5000/api/user_number/${userID}`, {
+      await fetch(`http://192.168.1.11:5000/api/user_number/${userID}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -128,7 +128,7 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
   }, []);
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.20:5000/api/job_title", {
+      await fetch("http://192.168.1.11:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -201,7 +201,7 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.20:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -253,7 +253,7 @@ const ShortTermForms = ({ navigation: { goBack } }) => {
 
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.20:5000/api/shorttime_job", {
+        await fetch("http://192.168.1.11:5000/api/shorttime_job", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

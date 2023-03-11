@@ -67,47 +67,49 @@ function JobposterMessagemain({ navigation }) {
               <MaterialIcons name="message" size={44} color="#FF5A5F" />
             </Text>
           </View> */}
-          <View
-            style={{
-              width: 280,
-              height: 35,
-              borderWidth: 1,
-              // paddingLeft: 20,
-              // margin: 5,
-
-              justifyContent: "space-evenly",
-              flexDirection: "row",
-              borderRadius: 20,
-              // marginLeft: 200,
-              borderColor: "#707070",
-              backgroundColor: "#fffff",
-              marginHorizontal: 55,
-              marginVertical: 15,
-            }}
-          >
-            <View style={{ justifyContent: "center" }}>
-              <EvilIcons name="search" size={24} color="#707070" />
-            </View>
-            <TextInput
-              value={search}
-              underlineColorAndroid="transparent"
-              placeholder="Search here"
-              style={{ marginLeft: 10 }}
-            />
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
             <View
               style={{
-                marginLeft: 130,
-                marginTop: 5,
+                width: 280,
+                height: 35,
+                borderWidth: 1,
+                // paddingLeft: 20,
+                // margin: 5,
+
+                justifyContent: "space-evenly",
+                flexDirection: "row",
+                borderRadius: 20,
+                // marginLeft: 200,
+                borderColor: "#707070",
+                backgroundColor: "#fffff",
+                marginHorizontal: 55,
+                marginVertical: 15,
               }}
             >
-              <FontAwesome name="microphone" size={24} color="#707070" />
+              <View style={{ justifyContent: "center" }}>
+                <EvilIcons name="search" size={24} color="#707070" />
+              </View>
+              <TextInput
+                value={search}
+                underlineColorAndroid="transparent"
+                placeholder="Search here"
+                style={{ marginLeft: 10 }}
+              />
+              <View
+                style={{
+                  marginLeft: 130,
+                  marginTop: 5,
+                }}
+              >
+                <FontAwesome name="microphone" size={24} color="#707070" />
+              </View>
             </View>
           </View>
           <ScrollView>
             <View style={{ marginHorizontal: 15 }}>
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",
@@ -196,7 +198,7 @@ function JobposterMessagemain({ navigation }) {
               {/* 2 */}
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",
@@ -287,7 +289,7 @@ function JobposterMessagemain({ navigation }) {
               {/* 3 */}
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",
@@ -375,7 +377,7 @@ function JobposterMessagemain({ navigation }) {
               {/* 4 */}
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",
@@ -463,7 +465,7 @@ function JobposterMessagemain({ navigation }) {
               {/* 5 */}
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",
@@ -551,7 +553,7 @@ function JobposterMessagemain({ navigation }) {
               {/* 6 */}
               <View
                 style={{
-                  width: 358,
+                  width: "100%",
                   height: 100,
                   backgroundColor: "#FFFFFF",
                   justifyContent: "space-evenly",

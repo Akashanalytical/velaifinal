@@ -88,7 +88,7 @@ export default function UserInfoTwo({ navigation, route }) {
     const postdata = async () => {
       try {
         await fetch(
-          `http://192.168.1.3:5000/api/users/update/${route.params.details.user_id}`,
+          `http://192.168.1.11:5000/api/users/update/${route.params.details.user_id}`,
           {
             method: "PUT", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
