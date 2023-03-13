@@ -268,20 +268,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
 
     justifyContent: "center",
   },
   listTab: {
     borderColor: "#f5f5f5",
-    borderWidth: 2,
+    // borderWidth: 2,
     backgroundColor: "#1E5966",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
-    marginLeft: 5,
-    borderRadius: 20,
+    // marginTop: 20,
+    // marginLeft: 5,
+    borderRadius: 25,
     // backgroundColor: "red",
   },
   btnTab: {
@@ -318,13 +318,13 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   itemContainer: {
-    paddingVertical: 15,
+    // paddingVertical: 15,
     height: "100%",
     width: "100%",
     flex: 1,
     justifyContent: "center",
-    marginLeft: 30,
-    marginTop: 10,
+    // marginLeft: 300,
+    // marginTop: 10,
   },
   itemName: {
     fontWeight: "bold",

@@ -142,7 +142,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/s_like_details", {
+      await fetch("http://192.168.1.7:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -169,7 +169,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.7:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -306,7 +306,7 @@ export default function ShorttimeSwiperCard({ route }) {
     setloading(true);
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -352,7 +352,7 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -389,7 +389,7 @@ export default function ShorttimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/s_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/s_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -432,7 +432,7 @@ export default function ShorttimeSwiperCard({ route }) {
       : "job_provider_info";
     // body.page = 0;
     try {
-      await fetch(`http://192.168.1.12:5000/api/user_in_or_out`, {
+      await fetch(`http://192.168.1.7:5000/api/user_in_or_out`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -502,7 +502,7 @@ export default function ShorttimeSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/apply_job", {
+      await fetch("http://192.168.1.7:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -634,19 +634,27 @@ export default function ShorttimeSwiperCard({ route }) {
           hitSlop={{ top: 200, bottom: -1100, left: -1100, right: -1000 }}
         >
           <View style={styles.card}>
-            <View
-              style={{
-                marginTop: 20,
-                // position: "absolute",
-                alignContent: "center",
-                marginHorizontal: 10,
-                width: 200,
-              }}
-            >
-              <Text style={{ color: "#333", fontWeight: "700", fontSize: 25 }}>
-                {data[index].job_title}
-              </Text>
-              {/* <Text style={{ color: "#333" }}>
+            <View style={{ marginTop: "3%" }}>
+              <View
+                style={{
+                  // position: "absolute",
+                  alignContent: "center",
+                  marginHorizontal: 10,
+                  marginLeft: "7%",
+                  width: "60%",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#333",
+                    fontWeight: "500",
+                    fontSize: 22,
+                    // textAlign: "left",
+                  }}
+                >
+                  {data[index].job_title}
+                </Text>
+                {/* <Text style={{ color: "#333" }}>
                 <SimpleLineIcons
                   name="location-pin"
                   size={24}
@@ -654,19 +662,17 @@ export default function ShorttimeSwiperCard({ route }) {
                 />
                 {data[index].location}
               </Text> */}
-            </View>
-            <View
-              style={{
-                position: "absolute",
-                marginTop: 20,
-                marginLeft: 260,
-                justifyContent: "space-evenly",
-                width: "25%",
-                flexDirection: "row",
-              }}
-            >
-              <Text
-                style={{ color: "#000000", fontSize: 15, fontWeight: "600" }}
+              </View>
+              <View
+                style={{
+                  position: "absolute",
+                  marginLeft: "68%",
+                  alignItems: "center",
+                  height: "100%",
+                  justifyContent: "space-evenly",
+                  width: "25%",
+                  flexDirection: "row",
+                }}
               >
                 {/* <FontAwesome name="rupee" size={16} color="#000000" />
                 {data[index].payment} */}
@@ -677,15 +683,14 @@ export default function ShorttimeSwiperCard({ route }) {
                   }}
                 >
                   {data[index].liked == "true" ? (
-                    <AntDesign name="heart" size={26} color="#333" />
+                    <AntDesign name="heart" size={24} color="#333" />
                   ) : (
-                    <AntDesign name="hearto" size={26} color="black" />
+                    <AntDesign name="hearto" size={24} color="#333" />
                   )}
 
                   {/* <AntDesign name="hearto" size={34} color="black" /> */}
                 </TouchableOpacity>
-              </Text>
-              {/* <Text
+                {/* <Text
                 style={{ color: "#000000", fontSize: 15, fontWeight: "600" }}
               >
                 <MaterialCommunityIcons
@@ -693,8 +698,8 @@ export default function ShorttimeSwiperCard({ route }) {
                   size={24}
                   color="black"
                 /> */}
-              {/* {t("distance")}: */}
-              {/* {address === null ? (
+                {/* {t("distance")}: */}
+                {/* {address === null ? (
                   <Text>Loading</Text>
                 ) : (
                   haversine(
@@ -704,9 +709,10 @@ export default function ShorttimeSwiperCard({ route }) {
                     data[index].longitude
                   )
                 )} */}
-              {/* KM
+                {/* KM
               </Text> */}
-              <FontAwesome name="share-alt" size={26} color="#333" />
+                <FontAwesome name="share-square-o" size={24} color="#333" />
+              </View>
             </View>
             <View>
               {data[index].pic === null ? (
@@ -780,8 +786,8 @@ export default function ShorttimeSwiperCard({ route }) {
                       height: 55,
                       marginTop: 35,
 
-                      borderRadius: 50,
-                      resizeMode: "contain",
+                      borderRadius: 10,
+                      resizeMode: "cover",
                     }}
                   />
                 ) : (
@@ -795,8 +801,8 @@ export default function ShorttimeSwiperCard({ route }) {
                       height: 55,
                       marginTop: 35,
 
-                      borderRadius: 50,
-                      resizeMode: "contain",
+                      borderRadius: 10,
+                      resizeMode: "cover",
                     }}
                   />
                 )}
@@ -810,31 +816,31 @@ export default function ShorttimeSwiperCard({ route }) {
                   width: 200,
                 }}
               >
-                <View style={{ flexDirection: "column" }}>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text
-                      style={{
-                        color: "#333",
-                        fontSize: 18,
-                        width: "90%",
-                        fontWeight: "900",
-                        justifyContent: "center",
-                        alignContent: "center",
-                      }}
-                    >
-                      {data[index].username}
-                    </Text>
-                    <View style={{ marginLeft: 30 }}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("messagefake")}
-                      >
-                        <AntDesign name="message1" size={40} color="black" />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <Text> {data[index].job_title}</Text>
+                {/* <View style={{ flexDirection: "column" }}> */}
+                {/* <View style={{ flexDirection: "row" }}> */}
+                <Text
+                  style={{
+                    color: "#333",
+                    fontSize: 18,
+                    width: "90%",
+                    fontWeight: "900",
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  {data[index].username}
+                </Text>
+                <View style={{ marginLeft: 30 }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("messagefake")}
+                  >
+                    <AntDesign name="message1" size={40} color="black" />
+                  </TouchableOpacity>
                 </View>
+                {/* </View> */}
+                <Text> {data[index].job_title}</Text>
               </View>
+              {/* </View> */}
             </View>
             <LinearGradient
               colors={["#e9eef0", "#e9eef0"]}
@@ -1327,7 +1333,7 @@ export default function ShorttimeSwiperCard({ route }) {
           style={{
             width: 270,
             height: 35,
-            borderWidth: 1,
+            // borderWidth: 1,
             // paddingLeft: 20,
             // margin: 5,
 
@@ -1336,9 +1342,9 @@ export default function ShorttimeSwiperCard({ route }) {
             flexDirection: "row",
             borderRadius: 20,
             // marginLeft: 200,
-            borderColor: "#707070",
-            backgroundColor: "#fffff",
-            marginVertical: 15,
+            // borderColor: "#707070",
+            backgroundColor: "#fff",
+            marginVertical: "1%",
           }}
         >
           <View
@@ -1445,13 +1451,13 @@ const styles = StyleSheet.create({
   card: {
     flex: 0.12,
     position: "relative",
-    shadowRadius: 50,
-    borderRadius: 15,
+    // shadowRadius: 50,
+    borderRadius: 16,
     width: "100%",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 10,
     shadowColor: "black",
-    backgroundColor: "#e9eef0",
+    backgroundColor: "#fff",
     // borderColor: "#1E5966",
     // borderWidth: 3,
     borderBottomEndRadius: 30,

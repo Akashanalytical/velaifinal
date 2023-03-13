@@ -116,7 +116,7 @@ function Maincategory({ route }) {
   async function getuserdata() {
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/rent_post_fillter/${selected_Tools}`,
+        `http://192.168.1.7:5000/api/rent_post_fillter/${selected_Tools}`,
         {
           method: "GET", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
@@ -179,19 +179,30 @@ export default Maincategory;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    width: 280,
+    backgroundColor: "red",
+    // backgroundColor: "#fff",
   },
   listContainer: {
     // width: Dimensions.get("window").width / 2 - 20,
-    width: 100,
+    width: "40%",
     height: 140,
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignContent: "center",
+    // alignItems: "center",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 15.62,
+    elevation: 18,
+    backgroundColor: "#fff",
     borderColor: "#707070",
-    borderWidth: 2,
+    // borderWidth: 2,
     margin: 5,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   imageContainer: {
     // margin: 15,
@@ -230,7 +241,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#62513E",
     padding: 10,
     margin: 15,
-    borderRadius: 10,
+    borderRadius: 20,
   },
   buttonText: {
     color: "white",

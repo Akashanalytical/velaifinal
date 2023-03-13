@@ -545,7 +545,7 @@ function Root({ navigation }) {
           <Stack.Screen
             name="providerform"
             component={RentalJobProvider}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           ></Stack.Screen>
         ) : (
           <></>

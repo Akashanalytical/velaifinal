@@ -222,7 +222,7 @@ export default function Top3() {
             }
           }}
         >
-          <Ionicons name="person-circle-sharp" size={40} color="#D9D9D9" />
+          <Ionicons name="person-circle-sharp" size={40} color="#d2d2d2" />
         </Pressable>
       </View>
       {/* <View style={{ marginTop: -12 }}> */}
@@ -252,10 +252,10 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
     width: "80%",
     position: "relative",
-    backgroundColor: "#fff",
+    // backgroundColor: "red",
     alignItems: "center",
     flexDirection: "row",
-    marginLeft: 160,
+    marginLeft: "32%",
   },
   leftSide: {},
 });

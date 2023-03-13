@@ -137,7 +137,7 @@ export default function RentalSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/s_like_details", {
+      await fetch("http://192.168.1.7:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -164,7 +164,7 @@ export default function RentalSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.7:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -223,7 +223,7 @@ export default function RentalSwiperCard({ route }) {
     body.userType = "";
 
     try {
-      await fetch(`http://192.168.1.12:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.7:5000/api/profile_details_show`, {
         method: "GET",
         mode: "cors",
         cache: "no-cache",
@@ -291,7 +291,7 @@ export default function RentalSwiperCard({ route }) {
     body.user_id = userID;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.12:5000/api/rentsee_choice`, {
+      await fetch(`http://192.168.1.7:5000/api/rentsee_choice`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -320,7 +320,7 @@ export default function RentalSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.12:5000/api/limit/s_like_apply_check/4", {
+      await fetch("http://192.168.1.7:5000/api/limit/s_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -357,7 +357,7 @@ export default function RentalSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/apply_job", {
+      await fetch("http://192.168.1.7:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -440,7 +440,7 @@ export default function RentalSwiperCard({ route }) {
     console.log(body);
 
     try {
-      await fetch("http://192.168.1.12:5000/api/rental_call_history", {
+      await fetch("http://192.168.1.7:5000/api/rental_call_history", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

@@ -77,6 +77,9 @@ export function ModifyHome({ route }) {
         name="bottomhome"
         component={SwipeChatmainScreen}
         options={{
+          // headerBackImage: {
+          //   color: "#333",
+          // },
           headerTitle: (props) => (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               {/* <View
@@ -116,7 +119,7 @@ export function ModifyHome({ route }) {
             </View>
           ),
           headerStyle: {
-            backgroundColor: "#fff",
+            backgroundColor: "#eefbff",
           },
 
           // headerBackImage: ({ tintColor }) => (
@@ -391,11 +394,11 @@ function SwipeMealsScreenTabs() {
     > */}
       <MealsTabs.Navigator
         screenOptions={{
-          tabBarGap: 5,
+          tabBarGap: 1,
 
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#333",
-          tabBarPressColor: "#707070",
+          tabBarPressColor: "#fff",
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "700",
@@ -414,7 +417,7 @@ function SwipeMealsScreenTabs() {
           tabBarIndicatorStyle: {
             backgroundColor: "#1F4C5B",
             height: "100%",
-            borderRadius: 20,
+            borderRadius: 15,
             // marginBottom: 8,
             width: "50%",
           },
@@ -422,16 +425,21 @@ function SwipeMealsScreenTabs() {
           swipeEnabled: false,
           tabBarStyle: {
             marginVertical: 10,
-            backgroundColor: "#FFF",
+            backgroundColor: "#fff",
             alignContent: "center",
             margin: 35,
-            borderRadius: 20,
+            borderRadius: 15,
             height: 40,
-            width: 320,
+            // width: 320,
           },
           // labelStyle: { fontSize: 14 },
         }}
-        style={{ flex: 1, width: "100%", justifyContent: "center" }}
+        style={{
+          flex: 1,
+          width: "100%",
+          justifyContent: "center",
+          backgroundColor: "#eefbff",
+        }}
       >
         <MealsTabs.Screen
           name="Short-Time Job"
@@ -447,7 +455,14 @@ function SwipeMealsScreenTabs() {
 }
 export function SwipeChatmainScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // backgroundColor: "#eefbff",
+      }}
+    >
       <SwipeMealsScreenTabs />
     </View>
   );
@@ -484,16 +499,19 @@ function JobMealsScreenTabs() {
     > */}
       <MealsTabs.Navigator
         screenOptions={{
+          tabBarGap: 1,
+
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#333",
-          tabBarPressColor: "#707070",
+          tabBarPressColor: "#fff",
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "700",
             marginTop: -5,
             paddingTop: 0,
           },
-          // scrollEnabled: false,
+
+          // showIcon: true,
           // pressColor: "#e9eef0",
           // tabStyle: {
           //   borderRadius: 10,
@@ -501,32 +519,31 @@ function JobMealsScreenTabs() {
           //   alignContent: "center",
           //   marginVertical: -10,
           // },
-          tabBarItemStyle: {
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 20,
-          },
           tabBarIndicatorStyle: {
             backgroundColor: "#1F4C5B",
-            height: 40,
-            borderRadius: 20,
-            alignItems: "center",
+            height: "100%",
+            borderRadius: 15,
+            // marginBottom: 8,
             width: "50%",
           },
+          tabBarBounces: true,
+          // swipeEnabled: false,
           tabBarStyle: {
             marginVertical: 10,
-            backgroundColor: "#FFF",
-            margin: 60,
-            borderRadius: 20,
+            backgroundColor: "#fff",
+            alignContent: "center",
+            margin: 35,
+            borderRadius: 15,
             height: 40,
-            width: 280,
+            // width: 320,
           },
+          // labelStyle: { fontSize: 14 },
         }}
         style={{
           flex: 1,
           width: "100%",
           justifyContent: "center",
+          backgroundColor: "#eefbff",
         }}
       >
         <MealsTabs.Screen
@@ -580,16 +597,19 @@ function RentalseekerMealsScreenTabs() {
     > */}
       <MealsTabs.Navigator
         screenOptions={{
+          tabBarGap: 1,
+
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#333",
-          tabBarPressColor: "#707070",
+          tabBarPressColor: "#fff",
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "700",
             marginTop: -5,
             paddingTop: 0,
           },
-          // scrollEnabled: false,
+
+          // showIcon: true,
           // pressColor: "#e9eef0",
           // tabStyle: {
           //   borderRadius: 10,
@@ -597,32 +617,31 @@ function RentalseekerMealsScreenTabs() {
           //   alignContent: "center",
           //   marginVertical: -10,
           // },
-          tabBarItemStyle: {
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 20,
-          },
           tabBarIndicatorStyle: {
             backgroundColor: "#1F4C5B",
-            height: 40,
-            borderRadius: 20,
-            alignItems: "center",
+            height: "100%",
+            borderRadius: 15,
+            // marginBottom: 8,
             width: "50%",
           },
+          tabBarBounces: true,
+          // swipeEnabled: false,
           tabBarStyle: {
             marginVertical: 10,
-            backgroundColor: "#FFF",
-            margin: 60,
-            borderRadius: 20,
+            backgroundColor: "#fff",
+            alignContent: "center",
+            margin: 35,
+            borderRadius: 15,
             height: 40,
-            width: 280,
+            // width: 320,
           },
+          // labelStyle: { fontSize: 14 },
         }}
         style={{
           flex: 1,
           width: "100%",
           justifyContent: "center",
+          backgroundColor: "#eefbff",
         }}
       >
         <MealsTabs.Screen
@@ -675,16 +694,19 @@ function RentalposterMealsScreenTabs() {
     > */}
       <MealsTabs.Navigator
         screenOptions={{
+          tabBarGap: 1,
+
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#333",
-          tabBarPressColor: "#707070",
+          tabBarPressColor: "#fff",
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "700",
             marginTop: -5,
             paddingTop: 0,
           },
-          // scrollEnabled: false,
+
+          // showIcon: true,
           // pressColor: "#e9eef0",
           // tabStyle: {
           //   borderRadius: 10,
@@ -692,32 +714,31 @@ function RentalposterMealsScreenTabs() {
           //   alignContent: "center",
           //   marginVertical: -10,
           // },
-          tabBarItemStyle: {
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 20,
-          },
           tabBarIndicatorStyle: {
             backgroundColor: "#1F4C5B",
-            height: 40,
-            borderRadius: 20,
-            alignItems: "center",
+            height: "100%",
+            borderRadius: 15,
+            // marginBottom: 8,
             width: "50%",
           },
+          tabBarBounces: true,
+          swipeEnabled: false,
           tabBarStyle: {
             marginVertical: 10,
-            backgroundColor: "#FFF",
-            margin: 60,
-            borderRadius: 20,
+            backgroundColor: "#fff",
+            alignContent: "center",
+            margin: 35,
+            borderRadius: 15,
             height: 40,
-            width: 280,
+            // width: 320,
           },
+          // labelStyle: { fontSize: 14 },
         }}
         style={{
           flex: 1,
           width: "100%",
           justifyContent: "center",
+          backgroundColor: "#eefbff",
         }}
       >
         <MealsTabs.Screen

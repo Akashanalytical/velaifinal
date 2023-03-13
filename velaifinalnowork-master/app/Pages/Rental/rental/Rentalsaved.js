@@ -213,7 +213,7 @@ function Rentalseeker() {
   const getData = async () => {
     try {
       await fetch(
-        `http://192.168.1.8:5000/api/rental_see_call_history/${UserID}`,
+        `http://192.168.1.12:5000/api/rental_see_call_history/${UserID}`,
         {
           method: "GET",
           mode: "cors",

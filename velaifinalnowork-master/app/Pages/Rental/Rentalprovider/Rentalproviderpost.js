@@ -73,7 +73,7 @@ export default function Rentalproviderpost({ navigation }) {
     body.rent_id = paras2;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.3:5000/api/rented_products`, {
+      await fetch(`http://192.168.1.12:5000/api/rented_products`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -98,7 +98,7 @@ export default function Rentalproviderpost({ navigation }) {
   };
   async function getuserdata() {
     try {
-      await fetch(`http://192.168.1.3:5000/api/rent_pro_post_show/${userID}`, {
+      await fetch(`http://192.168.1.12:5000/api/rent_pro_post_show/${userID}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

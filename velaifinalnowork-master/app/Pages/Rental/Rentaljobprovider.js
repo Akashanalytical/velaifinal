@@ -131,7 +131,7 @@ export default function RentalproviderSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.3:5000/api/s_like_details", {
+      await fetch("http://192.168.1.12:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -158,7 +158,7 @@ export default function RentalproviderSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.20:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.12:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

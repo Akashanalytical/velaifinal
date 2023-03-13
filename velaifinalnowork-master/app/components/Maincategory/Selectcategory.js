@@ -108,7 +108,7 @@ export default function SelectCategory({ route }) {
     body.userType = paras;
     try {
       const response = await fetch(
-        `http://192.168.1.12:5000/api/user_in_or_out`,
+        `http://192.168.1.7:5000/api/user_in_or_out`,
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
@@ -197,29 +197,29 @@ export default function SelectCategory({ route }) {
   const [index, setIndex] = useState(0);
   const [imageData, setImageData] = useState([
     {
-      src: require("../../images/ChatGPT.png"),
+      src: require("../../images/ai.jpg"),
       title: "ChatGPT Image 1",
     },
     {
-      src: require("../../images/Germanaid.png"),
+      src: require("../../images/cloud.jpg"),
       title: "ChatGPT Image 2",
     },
     {
-      src: require("../../images/GovtJobs.png"),
+      src: require("../../images/webhosting.jpg"),
       title: "ChatGPT Image 3",
     },
   ]);
   const [imageData2, setImageData2] = useState([
     {
-      src: require("../../images/Ad1.png"),
+      src: require("../../images/AD11.png"),
       title: "ChatGPT Image 1",
     },
     {
-      src: require("../../images/ad2.png"),
+      src: require("../../images/AD22.png"),
       title: "ChatGPT Image 2",
     },
     {
-      src: require("../../images/ad3.png"),
+      src: require("../../images/AD23.png"),
       title: "ChatGPT Image 3",
     },
   ]);
@@ -233,11 +233,10 @@ export default function SelectCategory({ route }) {
             resizeMode: "cover",
             width: "100%",
             height: "100%",
-            marginTop: 140,
-            borderRadius: 20,
+            borderRadius: 15,
           }}
         />
-        <Text
+        {/* <Text
           style={{
             bottom: 16,
             fontSize: 50,
@@ -245,7 +244,7 @@ export default function SelectCategory({ route }) {
           }}
         >
           {item.title}
-        </Text>
+        </Text> */}
       </View>
     );
   };
@@ -256,9 +255,10 @@ export default function SelectCategory({ route }) {
         <Image
           source={item.src}
           style={{
-            resizeMode: "contain",
+            resizeMode: "cover",
             width: "100%",
-            borderRadius: 20,
+            height: "100%",
+            borderRadius: 15,
           }}
         />
       </View>
@@ -266,7 +266,7 @@ export default function SelectCategory({ route }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#eefbff" }}>
       <StatusBar style="auto" />
       <Top />
       {/* <View
@@ -341,12 +341,18 @@ export default function SelectCategory({ route }) {
         </View>
       </View> */}
       <ScrollView decelerationRate="fast">
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#eefbff",
+          }}
+        >
           <View
             style={{
-              width: 280,
+              width: "84%",
               height: 35,
-              borderWidth: 1,
+              // borderWidth: 1,
               // paddingLeft: 20,
               // margin: 5,
 
@@ -354,8 +360,8 @@ export default function SelectCategory({ route }) {
               flexDirection: "row",
               borderRadius: 20,
               // marginLeft: 200,
-              borderColor: "#707070",
-              backgroundColor: "#fffff",
+              // borderColor: "#707070",
+              backgroundColor: "#fff",
               // marginHorizontal: 55,
               marginVertical: 15,
             }}
@@ -367,12 +373,13 @@ export default function SelectCategory({ route }) {
               value={search}
               underlineColorAndroid="transparent"
               placeholder="Search here"
-              style={{ marginLeft: 2 }}
+              style={{ marginRight: "15%" }}
             />
             <View
               style={{
                 marginLeft: 110,
-                marginTop: 5,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <FontAwesome name="microphone" size={22} color="#707070" />
@@ -382,7 +389,7 @@ export default function SelectCategory({ route }) {
 
         <View
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: "#eefbff",
             flexDirection: "row",
             justifyContent: "space-evenly",
             // marginVertical: 50,
@@ -412,7 +419,7 @@ export default function SelectCategory({ route }) {
                 alignItems: "center",
                 // borderWidth: 1,
                 // borderColor: "#A3A3A3",
-                borderRadius: 32,
+                borderRadius: 30,
                 alignContent: "center",
                 position: "relative",
                 // shadowColor: "#000000",
@@ -473,7 +480,7 @@ export default function SelectCategory({ route }) {
                 alignItems: "center",
                 // borderWidth: 1,
                 // borderColor: "#A3A3A3",
-                borderRadius: 32,
+                borderRadius: 30,
                 alignContent: "center",
                 position: "relative",
                 // shadowColor: "#000000",
@@ -509,7 +516,7 @@ export default function SelectCategory({ route }) {
 
         <View
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: "#eefbff",
             flexDirection: "row",
             justifyContent: "space-evenly",
           }}
@@ -530,7 +537,7 @@ export default function SelectCategory({ route }) {
                 alignItems: "center",
                 // borderWidth: 1,
                 // borderColor: "#A3A3A3",
-                borderRadius: 32,
+                borderRadius: 30,
                 alignContent: "center",
                 position: "relative",
                 // shadowColor: "#000000",
@@ -585,7 +592,7 @@ export default function SelectCategory({ route }) {
                 alignItems: "center",
                 // borderWidth: 1,
                 // borderColor: "#A3A3A3",
-                borderRadius: 32,
+                borderRadius: 30,
                 alignContent: "center",
                 position: "relative",
                 // shadowColor: "#000000",
@@ -633,10 +640,10 @@ export default function SelectCategory({ route }) {
           /> */}
         <View
           style={{
-            height: 60,
-
+            height: "8%",
+            backgroundColor: "#eefbff",
             alignItems: "center",
-            marginTop: 10,
+            paddingTop: "3%",
           }}
         >
           <Carousel
@@ -646,17 +653,17 @@ export default function SelectCategory({ route }) {
               <CarouselItem2 item={item} index={index} />
             )}
             height={55}
-            width={340}
-            style={{ backgroundColor: "#fff", borderRadius: 20 }}
+            width={324}
+            style={{ backgroundColor: "#eefbff", borderRadius: 15 }}
             inactiveSlideScale={2}
-            autoplayInterval={2000}
+            autoplayInterval={5000}
           />
         </View>
         <View
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: "#eefbff",
             flexDirection: "row",
-            justifyContent: "space-evenly",
+            justifyContent: "center",
           }}
         >
           <LinearGradient
@@ -839,9 +846,10 @@ export default function SelectCategory({ route }) {
           style={{
             height: 240,
             width: "100%",
+            backgroundColor: "#eefbff",
 
             alignItems: "center",
-            marginTop: 10,
+            paddingTop: "3%",
           }}
         >
           <Carousel
@@ -851,8 +859,8 @@ export default function SelectCategory({ route }) {
               <CarouselItem item={item} index={index} />
             )}
             height={200}
-            width={300}
-            style={{ backgroundColor: "#fff", borderRadius: 20 }}
+            width={324}
+            style={{ backgroundColor: "#fff", borderRadius: 15 }}
             inactiveSlideScale={2}
             autoplayInterval={5000}
           />
@@ -866,7 +874,7 @@ export default function SelectCategory({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#eefbff",
   },
 });
 

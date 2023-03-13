@@ -135,7 +135,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/l_like_job", {
+      await fetch("http://192.168.1.7:5000/api/l_like_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -162,7 +162,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/longtime_apply_job", {
+      await fetch("http://192.168.1.7:5000/api/longtime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -215,7 +215,7 @@ export default function LongtimeSwiperCard({ route }) {
   const getJobs = async () => {
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/count_apply_job/${route.params.userID}`,
+        `http://192.168.1.7:5000/api/count_apply_job/${route.params.userID}`,
         {
           method: "GET",
           mode: "cors",
@@ -274,7 +274,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.filter = state2;
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/L_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/L_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -315,7 +315,7 @@ export default function LongtimeSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/apply_job", {
+      await fetch("http://192.168.1.7:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -341,7 +341,7 @@ export default function LongtimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/L_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/L_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -1178,7 +1178,7 @@ export default function LongtimeSwiperCard({ route }) {
     console.log(body);
     try {
       await fetch(
-        `http://192.168.1.12:5000/api/limit/L_like_apply_check/${userID}`,
+        `http://192.168.1.7:5000/api/limit/L_like_apply_check/${userID}`,
         {
           method: "POST",
           mode: "cors",
@@ -1257,7 +1257,7 @@ export default function LongtimeSwiperCard({ route }) {
             style={{
               width: 270,
               height: 35,
-              borderWidth: 1,
+              // borderWidth: 1,
               // paddingLeft: 20,
               // margin: 5,
 
@@ -1266,8 +1266,8 @@ export default function LongtimeSwiperCard({ route }) {
               flexDirection: "row",
               borderRadius: 20,
               // marginLeft: 200,
-              borderColor: "#707070",
-              backgroundColor: "#fffff",
+              // borderColor: "#707070",
+              backgroundColor: "#fff",
               marginVertical: 15,
             }}
           >
