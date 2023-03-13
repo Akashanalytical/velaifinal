@@ -102,13 +102,13 @@ export default function SelectCategory({ route }) {
     dispatch({ type: "im_job_seeker" });
     navigation.navigate("bottomhome");
   };
-  const checktheusercondtiton = async () => {
+  const checktheusercondtiton = async (paras) => {
     const body = {};
     body.user_id = states.ID;
-    body.userType = "job_provider_info";
+    body.userType = paras;
     try {
       const response = await fetch(
-        `http://192.168.1.8:5000/api/user_in_or_out`,
+        `http://192.168.1.12:5000/api/user_in_or_out`,
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
@@ -140,7 +140,7 @@ export default function SelectCategory({ route }) {
     dispatch({ type: "job_provider" });
     console.log(is_personal_provider, is_company_provider);
     // checktheusercondtiton();
-    const resultof = await checktheusercondtiton();
+    const resultof = await checktheusercondtiton("job_provider_info");
     // console.log(checktheusercondtiton());
     console.log("immmmmmm at the");
     console.log(resultof);
@@ -156,6 +156,37 @@ export default function SelectCategory({ route }) {
     // } else {
     //   navigation.navigate("Jobmainselect", { screen: "post" });
     // }
+  };
+  //handlerentalProvider
+  const handleRentalProvider = async () => {
+    console.log("immmmmmm");
+    // navigation.navigate("rentalproviderbottamtab");
+    dispatch({ type: "im_Rental_provider" });
+    console.log(is_personal_provider, is_company_provider);
+    // checktheusercondtiton();
+    const resultof = await checktheusercondtiton("rental_provider_info");
+    // console.log(checktheusercondtiton());
+    console.log("immmmmmm at the");
+    console.log(resultof);
+    if (resultof.result) {
+      // dispatch({ type: "job_provider" });
+      navigation.navigate("rentalproviderbottamtab", { screen: "post" });
+    } else {
+      // dispatch({ type: "job_provider" });
+      navigation.navigate("providerform");
+    }
+    //Not needed belowww
+    // if (is_personal_provider || is_company_provider) {
+    //   navigation.navigate("jobprovidebottamtab");
+    // } else {
+    //   navigation.navigate("Jobmainselect", { screen: "post" });
+    // }
+  };
+  //handleRentalseeker
+  const handleRentalSeeker = () => {
+    dispatch({ type: "im_Rental_seeker" });
+    // navigation.navigate("rentalSeeker");
+    navigation.navigate("rentalseekerbottamtab");
   };
   // console.log(route.params);
   // const userDetails = route.params.Details;
@@ -483,9 +514,7 @@ export default function SelectCategory({ route }) {
             justifyContent: "space-evenly",
           }}
         >
-          <Pressable
-            onPress={() => navigation.navigate("rentalseekerbottamtab")}
-          >
+          <Pressable onPress={() => handleRentalSeeker()}>
             <LinearGradient
               colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
               start={{ x: 0, y: 0 }}
@@ -540,11 +569,7 @@ export default function SelectCategory({ route }) {
               </Text>
             </LinearGradient>
           </Pressable>
-          <Pressable
-            onPress={() =>
-              navigation.navigate("rentalproviderbottamtab", { screen: "post" })
-            }
-          >
+          <Pressable onPress={() => handleRentalProvider()}>
             <LinearGradient
               colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
               start={{ x: 0, y: 0 }}

@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 // import DropDownLanguage from "./dropdown/DropDownLanguage";
 // import DropDownLanguage2 from "./dropdown/DropDownlanguage2";
 import { useNavigation } from "@react-navigation/native";
-
+import { useSelector } from "react-redux";
 import { FontAwesome5 } from "@expo/vector-icons";
 export default function Topforjobprovider() {
   //To pass the location
@@ -17,7 +17,9 @@ export default function Topforjobprovider() {
   //   const [loading, setiloading] = useState(true);
   const navigation = useNavigation();
   const [isvoice, setisvoice] = useState(true);
-
+  const is_rental_details_given = useSelector(
+    (state) => state.rental_seeker_user_details
+  );
   //to get the permission we use UseEffect Hook
   //   useEffect(() => {
   //     //getting a user Location takes time so i need to wait so i make a async function
@@ -54,7 +56,11 @@ export default function Topforjobprovider() {
     >
       <Pressable
         onPress={() => {
-          navigation.navigate("mainprofile");
+          if (is_rental_details_given) {
+            navigation.navigate("mainprofile");
+          } else {
+            navigation.navigate("rentalSeeker");
+          }
         }}
       >
         <Ionicons name="person-circle-sharp" size={35} color="black" />

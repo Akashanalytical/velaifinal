@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import companyValidationSchema from "../components/companyjobvalidation";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   Text,
@@ -34,6 +33,7 @@ import { useContext } from "react";
 import { useCallback } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import providerValidationSchema from "../components/jobProviderValidation";
 import PhoneInput from "react-native-phone-number-input";
 import { parsePhoneNumber } from "react-native-phone-number-input";
 import Top from "../components/Topcontainer";
@@ -46,42 +46,73 @@ import { AuthContext, LocalizationContext } from "../../App";
 import { number } from "yup";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button } from "react-native-paper";
-export default function CompanyJobProvider({ navigation }) {
+import { useDispatch, useSelector } from "react-redux";
+export default function RentalSeeker({ navigation }) {
   const { t, language, setlanguage } = useContext(LocalizationContext);
   const [ActivityIndicators, setActivityIndicators] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
-
+  const Redux_dispatch = useDispatch();
+  const states = useSelector((state) => state);
+  console.log(states.job_provider_personal_user_details);
+  //to store the image
   //to set the image of the user
   const [profilemodal, setprofilemodal] = useState(false);
   const [profileActivityIndicators, setprofileActivityIndicators] =
     useState(false);
+  const [phonenumber, setphonenumber] = useState("");
   const [profile, setprofile] = useState(null);
   const [profilepic, setprofilepic] = useState("");
   // to addd the
-
+  useEffect(() => {
+    getdata();
+  }, []);
   //add image to backend
-
+  const getdata = async () => {
+    // body.user_id = userID;
+    // console.log(body);
+    try {
+      await fetch(`http://192.168.1.8:5000/api/user_number/${userID}`, {
+        method: "GET",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          setphonenumber(result["number"]);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //to get the image
   async function takeAndUploadPhotoAsync1(paras) {
     // Display the camera to the user and wait for them to take a photo or to cancel
     // the action
+    console.log("i m at the functioooon");
+    console.log(paras);
     let result =
       paras === "files"
         ? await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            // allowsEditing: true,
             base64: true,
 
+            allowsEditing: false,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.5,
           })
         : await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            // allowsEditing: true,
             base64: true,
 
+            allowsEditing: false,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.5,
           });
     result;
     // ImagePicker saves the taken photo to disk and returns a local URI to it
@@ -107,18 +138,21 @@ export default function CompanyJobProvider({ navigation }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.12:5000/api/job_post/aws_upload/4`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            Accept: "application/json",
-            // "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.8:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              Accept: "application/json",
+              // "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log("im at the a profile image");
@@ -137,6 +171,8 @@ export default function CompanyJobProvider({ navigation }) {
   }
   console.log(state);
 
+  console.log(state);
+  console.log(state.userdeatils);
   const handlecall = () => {
     // console.log("console.log");
     // alert("hiiii");
@@ -179,7 +215,7 @@ export default function CompanyJobProvider({ navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(`http://192.168.1.12:5000/api/job_post/aws_upload/25`, {
+          await fetch(`http://192.168.1.8:5000/api/job_post/aws_upload/25`, {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
             // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -220,17 +256,86 @@ export default function CompanyJobProvider({ navigation }) {
       mode: currentMode,
     });
   };
-
+  async function takeAndUploadPhotoAsync(paras) {
+    // Display the camera to the user and wait for them to take a photo or to cancel
+    // the action
+    let result =
+      paras === "files"
+        ? await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsMultipleSelection: true,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          })
+        : await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsMultipleSelection: true,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+    result;
+    // ImagePicker saves the taken photo to disk and returns a local URI to it
+    console.log(result);
+    setActivityIndicators(true);
+    console.log("result is " + result);
+    console.log(result);
+    let localUri = result.assets[0]["uri"];
+    console.log(localUri);
+    setImage(localUri);
+    let filename = localUri.split("/").pop();
+    console.log(filename);
+    // Infer the type of the image
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    console.log(type);
+    var formdata = new FormData();
+    formdata.append("file", { uri: localUri, name: filename, type });
+    // Upload the image using the fetch and FormData APIs
+    let FFormData = new FormData();
+    // Assume "photo" is the name of the form field the server expects
+    FFormData.append("photo", { uri: localUri, name: filename, type });
+    async function submitdata() {
+      try {
+        console.log("im inside");
+        await fetch(`http://192.168.1.8:5000/api/job_post/aws_upload/5`, {
+          method: "POST",
+          mode: "cors", // no-cors, *cors, same-origin
+          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          // credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            // Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formdata, // body data type must match "Content-Type" header
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            setjobpostpic(result["updated"]);
+            setActivityIndicators(false);
+            setModalVisible(false);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    submitdata();
+  }
   const showDatepicker = () => {
     showMode("date");
   };
   //select Gender
   const [genderValue, setGenderValue] = useState(null);
   const [genderOpen, setGenderOpen] = useState(false);
-  //fetch data
+
   async function fetchdata(paras1) {
+    console.log("im at the userr rental");
+    console.log(paras1);
     try {
-      await fetch("http://192.168.1.12:5000/api/job_pro_userinfo_details", {
+      await fetch("http://192.168.1.8:5000/api/rental_see_userinfo_details", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -245,18 +350,22 @@ export default function CompanyJobProvider({ navigation }) {
         .then((result) => {
           console.log(result);
           if (result == "success") {
-            dispatch({ type: "job_Provider_company" });
-            navigation.navigate("jobprovidebottamtab");
+            console.log("im at the sucess");
+            Redux_dispatch({ type: "Rental_seeker_user_details" });
+            navigation.goBack();
           }
         });
     } catch (error) {
       console.warn(error);
     }
   }
+  const userID = useSelector((state) => state.ID);
   const handlesubmits = (paras) => {
-    console.log(paras);
-    paras.user_id = 4;
+    paras.user_id = userID;
     paras.profilepic = profilepic;
+    paras.gender = genderValue;
+    paras.number = phonenumber;
+    console.log(paras);
     fetchdata(paras);
   };
   //   const { handleSubmit, control } = useForm();
@@ -276,13 +385,12 @@ export default function CompanyJobProvider({ navigation }) {
   const [jobseeker, setjobseeker] = useState(false);
   const [jobprovider, setjobprovider] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffff" }}>
       <StatusBar style="auto" />
 
       <View style={styles.title}>
-        <Text style={styles.titlestyle}>JobProvider Company Information</Text>
+        <Text style={styles.titlestyle}>Rental Seeker Information</Text>
       </View>
       <ScrollView nestedScrollEnabled={true}>
         <View style={styles.iconstotal}>
@@ -383,19 +491,16 @@ export default function CompanyJobProvider({ navigation }) {
           </View>
         </View>
         <Formik
-          validationSchema={companyValidationSchema}
+          validationSchema={providerValidationSchema}
           initialValues={{
             // email: "",
             // password: "",
             // phone_number: "",
             username: "",
-            companyname: "",
-            location: "",
-            designation: "",
             emailid: "",
             number: "",
             proof: "",
-
+            location: "",
             //location: "",
           }}
           onSubmit={(values) => handlesubmits(values)}
@@ -415,16 +520,16 @@ export default function CompanyJobProvider({ navigation }) {
                   <View style={styles.name}>
                     <View style={styles.fname}>
                       <TextInput
-                        placeholder="Company name"
+                        placeholder={t("firstname")}
                         name="firstname"
                         style={styles.input}
                         placeholderTextColor="#707070"
-                        onChangeText={handleChange("companyname")}
-                        onBlur={handleBlur("companyname")}
+                        onChangeText={handleChange("username")}
+                        onBlur={handleBlur("username")}
                         defaultValue=""
                         underlineColorAndroid={"transparent"}
                       />
-                      {errors.companyname && touched.companyname && (
+                      {errors.username && touched.username && (
                         <Text
                           style={{
                             fontSize: 13,
@@ -432,22 +537,24 @@ export default function CompanyJobProvider({ navigation }) {
                             marginHorizontal: 20,
                           }}
                         >
-                          {errors.companyname}
+                          {errors.username}
                         </Text>
                       )}
                     </View>
                   </View>
                   <View style={styles.phone}>
                     <TextInput
-                      placeholder="Company Location"
+                      placeholder={t("phoneplace")}
                       style={styles.input}
-                      //   keyboardType="number-pad"
+                      // maxLength={10}\
+                      editable={phonenumber == "" ? false : true}
+                      keyboardType="number-pad"
                       placeholderTextColor="#707070"
-                      onChangeText={handleChange("location")}
-                      onBlur={handleBlur("location")}
-                      defaultValue=""
+                      // onChangeText={handleChange("number")}
+                      // onBlur={handleBlur("number")}
+                      value={phonenumber == "" ? "" : phonenumber}
                     />
-                    {errors.location && touched.location && (
+                    {/* {errors.number && touched.number && (
                       <Text
                         style={{
                           fontSize: 13,
@@ -455,18 +562,18 @@ export default function CompanyJobProvider({ navigation }) {
                           marginHorizontal: 20,
                         }}
                       >
-                        {errors.location}
+                        {errors.number}
                       </Text>
-                    )}
+                    )} */}
                   </View>
-                  <View style={styles.phone}>
+                  <View style={styles.email}>
                     <TextInput
-                      placeholder="Mail id (optional)"
+                      placeholder={t("emailplace")}
                       style={styles.input}
                       keyboardType="email-address"
-                      placeholderTextColor="#707070"
                       onChangeText={handleChange("emailid")}
                       onBlur={handleBlur("emailid")}
+                      placeholderTextColor="#707070"
                       defaultValue=""
                     />
                     {errors.emailid && touched.emailid && (
@@ -483,73 +590,8 @@ export default function CompanyJobProvider({ navigation }) {
                   </View>
                   <View style={styles.email}>
                     <TextInput
-                      placeholder="Account manager name"
+                      placeholder="Enter adhar number"
                       style={styles.input}
-                      keyboardType="email-address"
-                      onChangeText={handleChange("username")}
-                      onBlur={handleBlur("username")}
-                      placeholderTextColor="#707070"
-                      defaultValue=""
-                    />
-                    {errors.username && touched.username && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.username}
-                      </Text>
-                    )}
-                  </View>
-                  <View style={styles.phone}>
-                    <TextInput
-                      placeholder="Your Designation"
-                      style={styles.input}
-                      placeholderTextColor="#707070"
-                      onChangeText={handleChange("designation")}
-                      onBlur={handleBlur("designation")}
-                      defaultValue=""
-                    />
-                    {errors.designation && touched.designation && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.designation}
-                      </Text>
-                    )}
-                  </View>
-                  <View style={styles.phone}>
-                    <TextInput
-                      placeholder="Mobile Number"
-                      style={styles.input}
-                      placeholderTextColor="#707070"
-                      onChangeText={handleChange("number")}
-                      onBlur={handleBlur("number")}
-                      defaultValue=""
-                    />
-                    {errors.number && touched.number && (
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color: "red",
-                          marginHorizontal: 20,
-                        }}
-                      >
-                        {errors.number}
-                      </Text>
-                    )}
-                  </View>
-                  <View style={styles.email}>
-                    <TextInput
-                      placeholder="Enter adhar number/ PAN number"
-                      style={styles.input}
-                      keyboardType="email-address"
                       onChangeText={handleChange("proof")}
                       onBlur={handleBlur("proof")}
                       placeholderTextColor="#707070"
@@ -564,6 +606,27 @@ export default function CompanyJobProvider({ navigation }) {
                         }}
                       >
                         {errors.proof}
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.email}>
+                    <TextInput
+                      placeholder="location"
+                      style={styles.input}
+                      onChangeText={handleChange("location")}
+                      onBlur={handleBlur("location")}
+                      placeholderTextColor="#707070"
+                      defaultValue=""
+                    />
+                    {errors.location && touched.location && (
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: "red",
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {errors.location}
                       </Text>
                     )}
                   </View>
@@ -738,7 +801,7 @@ export default function CompanyJobProvider({ navigation }) {
                     </Text>
                   )}
                 </View> */}
-                <TouchableOpacity onPress={() => handleSubmit()}>
+                <TouchableOpacity>
                   <LinearGradient
                     colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
                     style={{
@@ -749,7 +812,7 @@ export default function CompanyJobProvider({ navigation }) {
                       width: "50%",
                       alignSelf: "center",
                       opacity: isValid ? 1 : 0.5,
-                      borderRadius: 50,
+                      borderRadius: 10,
                       marginVertical: 20,
                     }}
                     start={{ x: 0, y: 0 }}
@@ -766,7 +829,7 @@ export default function CompanyJobProvider({ navigation }) {
                       //   marginVertical: 20,
                       // }}
                       onPress={() => handleSubmit()}
-                      disabled={!isValid}
+                      // disabled={!isValid}
                     >
                       <Text
                         style={{

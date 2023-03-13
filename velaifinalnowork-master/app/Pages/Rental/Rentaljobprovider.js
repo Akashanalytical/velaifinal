@@ -6,7 +6,6 @@ import {
   Text,
   View,
   Alert,
-  Linking,
   SafeAreaView,
   Dimensions,
   Animated,
@@ -23,7 +22,6 @@ import { useSelector } from "react-redux";
 import Top from "../../components/Topcontainer";
 import { useState, useEffect, useContext, useReducer } from "react";
 import { AuthContext } from "../../../App";
-// import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { FontAwesome5, Entypo } from "@expo/vector-icons";
@@ -52,7 +50,6 @@ import {
 } from "@react-navigation/native";
 import { isLoading } from "expo-font";
 import { useMemo } from "react";
-import { USER_ID } from "../../Redux/action";
 
 const { height, width } = Dimensions.get("window");
 
@@ -90,14 +87,11 @@ const transition = (
 );
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
-export default function RentalSwiperCard({ route }) {
+export default function RentalproviderSwiperCard({ route }) {
+  console.log(route.params);
   const { t, language, setlanguage, userDetails } =
     useContext(LocalizationContext);
   const isdetailsgiven = useSelector((state) => state.user_details_given);
-  const selected_Tools = useSelector((state) => state.selected_Tools);
-  const is_rental_details = useSelector(
-    (state) => state.rental_seeker_user_details
-  );
   const userID = useSelector((state) => state.ID);
   console.log("i am the Details ghiving shot");
   console.log(isdetailsgiven);
@@ -137,7 +131,7 @@ export default function RentalSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/s_like_details", {
+      await fetch("http://192.168.1.3:5000/api/s_like_details", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -164,7 +158,7 @@ export default function RentalSwiperCard({ route }) {
     body.user_id = paras1;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/shorttime_apply_job", {
+      await fetch("http://192.168.1.20:5000/api/shorttime_apply_job", {
         method: "post", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -216,32 +210,28 @@ export default function RentalSwiperCard({ route }) {
   //   }
   //   return false;
   // };
-  // To get the applied jobs
-  const getJobs = async () => {
-    const body = {};
-    body.user_id = userID;
-    body.userType = "";
-
-    try {
-      await fetch(`http://192.168.1.12:5000/api/profile_details_show`, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("giveing the applied jobss");
-          console.log(result);
-          setpostId(result);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //To get the applied jobs
+  // const getJobs = async () => {
+  //   try {
+  //     await fetch(`http://192.168.1.20:5000/api/count_apply_job/${userID}`, {
+  //       method: "GET",
+  //       mode: "cors",
+  //       cache: "no-cache",
+  //       credentials: "same-origin",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //       .then((response) => response.json())
+  //       .then((result) => {
+  //         console.log("giveing the applied jobss");
+  //         console.log(result);
+  //         setpostId(result);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   //TO CALUCULAET THE DISTANCE..
   function haversine(lat1, lon1, lat2, lon2) {
     // distance between latitudes
@@ -270,7 +260,7 @@ export default function RentalSwiperCard({ route }) {
     // getPermission();
 
     getdata();
-    getJobs();
+    // getJobs();
   }, []);
 
   useEffect(() => {
@@ -286,30 +276,30 @@ export default function RentalSwiperCard({ route }) {
 
   const getdata = async (paras) => {
     const body = {};
-    body.post_id = route.params.post_id;
-    body.selectedTools = selected_Tools;
-    body.user_id = userID;
-    console.log(body);
+    // body.page = 0;
     try {
-      await fetch(`http://192.168.1.12:5000/api/rentsee_choice`, {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
+      await fetch(
+        `http://192.168.1.3:5000/api/rent_pro_products/${route.params.post_id}`,
+        {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // body: JSON.stringify(body),
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log("post result");
           console.log(result);
-          console.log(result["choice"]);
-          setData(result["choice"]);
+          console.log(result);
+          setData(result);
           setloading(false);
-          // setpage(page + 1);
-          // console.log(data);
+          //   setpage(page + 1);
+          console.log(data);
         });
     } catch (error) {
       console.log(error);
@@ -320,7 +310,7 @@ export default function RentalSwiperCard({ route }) {
     const body = {};
     body.page = paras;
     try {
-      await fetch("http://192.168.1.12:5000/api/limit/s_like_apply_check/4", {
+      await fetch("http://192.168.1.20:5000/api/limit/s_like_apply_check/4", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -357,7 +347,7 @@ export default function RentalSwiperCard({ route }) {
     body.post_id = parameter;
     console.log(body);
     try {
-      await fetch("http://192.168.1.12:5000/api/apply_job", {
+      await fetch("http://192.168.1.20:5000/api/apply_job", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -432,90 +422,21 @@ export default function RentalSwiperCard({ route }) {
     alert(workspacevalue);
     console.log(workspacevalue);
   };
-
-  const handleliked = async (paras1, paras2) => {
-    const body = {};
-    body.user_id = paras1;
-    body.c_h_id = paras2;
-    console.log(body);
-
-    try {
-      await fetch("http://192.168.1.12:5000/api/rental_call_history", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("post result");
-          console.log(result);
-          // const updated = [...data, ...result["short"]];
-          // console.log(updated);
-          // // setnewcards();
-          // // setData(result["short"]);
-          // setData(updated);
-          // console.log(data);
-          // setpage(page + 1);
-          // setloading(false);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const Card = ({ card }) => {
     const { state, dispatch } = useContext(AuthContext);
 
     console.log(state);
     console.log("im after");
-    const handleCallclick = (paras) => {
-      // console.log(data[index].isallow_tocall);
-      // console.log(isdetailsgiven);
-      // console.log(is_rental_details);
-      // // dialCall = () => {
-      //For creating a number
-      // let phoneNumber = "";
-
-      // if (Platform.OS === "android") {
-      //   phoneNumber = `tel:${data[index].number}`;
-      // } else {
-      //   phoneNumber = "telprompt:${+1234567890}";
-      // }
-
-      // Linking.openURL(phoneNumber);
-      // // };
-      console.log("immmmmm the detaillsssss");
-      console.log(paras.id);
-
-      if (is_rental_details) {
-        // Alert.alert(
-        //   `Name: MR/Ms ${data[index].username}\nContact:${data[index].number}`
-        // );
-        handleliked(userID, paras.id);
-        let phoneNumber = "";
-
-        if (Platform.OS === "android") {
-          phoneNumber = `tel:${data[index].number}`;
-        } else {
-          phoneNumber = `telprompt:${data[index].number}`;
-        }
-
-        Linking.openURL(phoneNumber);
+    const handleCallclick = () => {
+      console.log(data[index].isallow_tocall);
+      console.log(isdetailsgiven);
+      if (data[index].isallow_tocall == "1" && isdetailsgiven) {
+        Alert.alert(
+          `Name: MR/Ms ${data[index].username}\nContact:${data[index].number}(or)\n${data[index].additionalnumber}`
+        );
       } else {
-        navigation.navigate("rentalSeeker");
+        navigation.navigate("Userprofile");
       }
-      // if (data[index].isallow_tocall == "1" && isdetailsgiven) {
-      //   Alert.alert(
-      //     `Name: MR/Ms ${data[index].username}\nContact:${data[index].number}(or)\n${data[index].additionalnumber}`
-      //   );
-      // } else {
-      //   navigation.navigate("rentalSeeker");
-      // }
     };
     const handlenavigation = (paras) => {
       console.log("im at navigatioon");
@@ -734,30 +655,15 @@ export default function RentalSwiperCard({ route }) {
                         alignContent: "center",
                       }}
                     >
-                      {data[index].username}
+                      {data[index].product_type}
                     </Text>
-                    <Text
-                      style={{
-                        color: "#333",
-                        fontSize: 18,
-                        width: "90%",
-                        fontWeight: "900",
-                        justifyContent: "center",
-                        alignContent: "center",
-                      }}
-                    >
-                      {
-                        (console.log("im  at the data!"),
-                        console.log(data[index].username))
-                      }
-                    </Text>
-                    <View style={{ marginLeft: 30 }}>
+                    {/* <View style={{ marginLeft: 30 }}>
                       <TouchableOpacity
                         onPress={() => navigation.navigate("messagefake")}
                       >
                         <AntDesign name="message1" size={40} color="black" />
                       </TouchableOpacity>
-                    </View>
+                    </View> */}
                   </View>
                   <Text> {data[index].job_title}</Text>
                 </View>
@@ -854,9 +760,7 @@ export default function RentalSwiperCard({ route }) {
                             fontWeight: "400",
                           }}
                         >
-                          {console.log("hiii dude")}
-                          {console.log(data[index].Duration)}
-                          {data[index].Duration}/ {data[index].Duration2}
+                          {data[index].Duration} {data[index].Duration2}
                         </Text>
                       </View>
                     </View>
@@ -902,16 +806,8 @@ export default function RentalSwiperCard({ route }) {
                         </Text>
                       </View>
                     </View>
-                    <View
-                      style={{
-                        borderColor: "#707070",
-                        borderWidth: 1,
-                        marginBottom: 10,
 
-                        borderRadius: 20,
-                      }}
-                    >
-                      <View
+                    {/* <View
                         style={{
                           justifyContent: "center",
                           flexDirection: "row",
@@ -936,8 +832,7 @@ export default function RentalSwiperCard({ route }) {
                         >
                           {data[index].distance} km
                         </Text>
-                      </View>
-                    </View>
+                      </View> */}
                   </View>
                 </View>
 
@@ -950,7 +845,7 @@ export default function RentalSwiperCard({ route }) {
                       marginVertical: 20,
                     }}
                   >
-                    Detailed description of the Product
+                    Detailed description of Product
                   </Text>
 
                   <Text
@@ -971,7 +866,7 @@ export default function RentalSwiperCard({ route }) {
                       marginVertical: 20,
                     }}
                   >
-                    Address:
+                    Address
                   </Text>
 
                   <Text
@@ -1025,9 +920,9 @@ export default function RentalSwiperCard({ route }) {
                   >
                     <TouchableOpacity
                       onPress={() => handleCallclick(data[index])}
-                      // disabled={data[index].isallow_tocall == "0"}
+                      disabled={data[index].isallow_tocall == "0"}
                     >
-                      <LinearGradient
+                      {/* <LinearGradient
                         colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
                         style={{
                           height: 42,
@@ -1055,7 +950,7 @@ export default function RentalSwiperCard({ route }) {
                         >
                           Call Now
                         </Text>
-                      </LinearGradient>
+                      </LinearGradient> */}
                     </TouchableOpacity>
 
                     {/* <LinearGradient
@@ -1104,9 +999,7 @@ export default function RentalSwiperCard({ route }) {
                             fontWeight: "600",
                           }}
                         >
-                          {data[index].apply == "True"
-                            ? "Applied"
-                            : "Apply Now"}
+                          Rented
                         </Text>
                       </LinearGradient>
                     </TouchableOpacity>
@@ -1245,10 +1138,10 @@ export default function RentalSwiperCard({ route }) {
       // getdata1(page);
       console.log("i get the data");
       console.log(data);
-      Alert.alert("No more cards left!");
+      Alert.alert("Thank you!");
+      setSwipedAll(true);
       navigation.goBack();
-      // setSwipedAll(true);
-      // getdata();
+      getdata();
       // Timeout used for show Ripples loader to remove swiper container re-render glitch
     }
   };

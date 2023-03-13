@@ -42,7 +42,7 @@ export default function UserInfoTwo({ navigation, route }) {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
     async function fetchdata() {
       try {
-        await fetch("http://192.168.1.3:5000/skills/api", {
+        await fetch("http://192.168.1.12:5000/skills/api", {
           method: "GET", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -88,7 +88,7 @@ export default function UserInfoTwo({ navigation, route }) {
     const postdata = async () => {
       try {
         await fetch(
-          `http://192.168.1.11:5000/api/users/update/${route.params.details.user_id}`,
+          `http://192.168.1.12:5000/api/users/update/${route.params.details.user_id}`,
           {
             method: "PUT", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin

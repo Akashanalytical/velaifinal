@@ -503,14 +503,18 @@ export default function Profilepage({ navigation, route }) {
   const addprofile = async (paras1, paras2) => {
     console.log("im at loading the image");
     const body = {};
-    body.userType = states.job_seeker_info
-      ? "job_seeker_info"
-      : "job_provider_info";
+    body.userType = !states.job_seeker_info
+      ? !states.job_provider_info
+        ? !states.rental_provider_info
+          ? "rental_seeker_info"
+          : "rental_provider_info"
+        : "job_provider_info"
+      : "job_seeker_info";
     body.user_id = userID;
     body.profilepic = paras1;
     console.log(body);
     try {
-      await fetch(`http://192.168.1.8:5000/api/prfilepic_update`, {
+      await fetch(`http://192.168.1.12:5000/api/prfilepic_update`, {
         method: "PUT",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -571,7 +575,7 @@ export default function Profilepage({ navigation, route }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.8:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.12:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -620,12 +624,15 @@ export default function Profilepage({ navigation, route }) {
     console.log("Im at the get data of user");
     console.log(states);
     body.user_id = userID;
-    body.userType = states.job_seeker_info
-      ? "job_seeker_info"
-      : "job_provider_info";
-    console.log(body);
+    body.userType = !states.job_seeker_info
+      ? !states.job_provider_info
+        ? !states.rental_provider_info
+          ? "rental_seeker_info"
+          : "rental_provider_info"
+        : "job_provider_info"
+      : "job_seeker_info";
     try {
-      await fetch(`http://192.168.1.8:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.12:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

@@ -4,12 +4,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import Posts from "../Pages/Post";
 import { NavigationContainer } from "@react-navigation/native";
+import RentalJobProvider from "../Pages/Rentaljobproviderform";
+import RentalproviderSwiperCard from "../Pages/Rental/Rentaljobprovider";
 import Landing from "../Pages/Landing";
 import { Ionicons } from "@expo/vector-icons";
 import JOBApplied from "../Pages/jobAppliedPersons";
 import EduInfo2 from "../Pages/EducationProfile2edit";
 import NomoreCards from "../nomorecards";
 import MainScreen from "../Pages/MainScreen";
+import RentalSeeker from "../Pages/rentalseekerform";
+
 import Workexperience2 from "../Pages/workexperience2";
 import Mobillogin from "../Pages/MobileLogin";
 import UserInfoTwo from "../Pages/UserInfoEdit";
@@ -537,11 +541,25 @@ function Root({ navigation }) {
             // headerRight: () => <></>,
           }}
         />
+        {!state.Rental_provider_user_details ? (
+          <Stack.Screen
+            name="providerform"
+            component={RentalJobProvider}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+        ) : (
+          <></>
+        )}
         {/* <Stack.Screen
           name="category"
           component={Maincategory}
           options={{ headerShown: false }}
         ></Stack.Screen> */}
+        <Stack.Screen
+          name="rentalproviderswipe"
+          component={RentalproviderSwiperCard}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
         <Stack.Screen
           name="SelectCategory"
           component={SelectCategory}
@@ -611,6 +629,11 @@ function Root({ navigation }) {
         ) : (
           <></>
         )}
+        <Stack.Screen
+          name="rentalSeeker"
+          component={RentalSeeker}
+          options={{ headerShown: true }}
+        ></Stack.Screen>
         <Stack.Screen
           name="Faq"
           component={Faq}

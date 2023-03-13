@@ -117,18 +117,21 @@ export default function PersonProfilepage({ route, navigation }) {
       async function submitdata() {
         try {
           console.log("im inside");
-          await fetch(`http://192.168.1.8:5000/api/file/aws_upload/${userID}`, {
-            method: "POST",
-            mode: "cors", // no-cors, *cors, same-origin
-            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            // credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-              // Accept: "application/json",
-              "Content-Type": "multipart/form-data",
-              // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formdata, // body data type must match "Content-Type" header
-          })
+          await fetch(
+            `http://192.168.1.12:5000/api/file/aws_upload/${userID}`,
+            {
+              method: "POST",
+              mode: "cors", // no-cors, *cors, same-origin
+              // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+              // credentials: "same-origin", // include, *same-origin, omit
+              headers: {
+                // Accept: "application/json",
+                "Content-Type": "multipart/form-data",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: formdata, // body data type must match "Content-Type" header
+            }
+          )
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
@@ -147,25 +150,33 @@ export default function PersonProfilepage({ route, navigation }) {
     }
   }, []);
   const handleSubmit = async (data) => {
-    data.userType = states.job_provider_info
-      ? "job_provider_info"
+    data.userType = !states.job_seeker_info
+      ? !states.job_provider_info
+        ? !states.rental_provider_info
+          ? "rental_seeker_info"
+          : "rental_provider_info"
+        : "job_provider_info"
       : "job_seeker_info";
     console.log(data);
     try {
-      await fetch(`http://192.168.1.8:5000/api/user_details_update/${userID}`, {
-        method: "PUT",
-        mode: "cors", // no-cors, *cors, same-origin
-        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        // credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      await fetch(
+        `http://192.168.1.12:5000/api/user_details_update/${userID}`,
+        {
+          method: "PUT",
+          mode: "cors", // no-cors, *cors, same-origin
+          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          // credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
           setdata(result["profile_info"]);
+          navigation.goBack();
         });
     } catch (error) {
       console.log(error);
@@ -191,12 +202,16 @@ export default function PersonProfilepage({ route, navigation }) {
   const getdataofuser = async () => {
     const body = {};
     body.user_id = userID;
-    body.userType = states.job_provider_info
-      ? "job_provider_info"
+    body.userType = !states.job_seeker_info
+      ? !states.job_provider_info
+        ? !states.rental_provider_info
+          ? "rental_seeker_info"
+          : "rental_provider_info"
+        : "job_provider_info"
       : "job_seeker_info";
     console.log(body);
     try {
-      await fetch(`http://192.168.1.8:5000/api/profile_details_show`, {
+      await fetch(`http://192.168.1.12:5000/api/profile_details_show`, {
         method: "POST",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -231,7 +246,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.8:5000/api/education/${userID}`, {
+      await fetch(`http://192.168.1.12:5000/api/education/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -340,7 +355,7 @@ export default function PersonProfilepage({ route, navigation }) {
     // body.userType = userType;
     // console.log(body);
     try {
-      await fetch(`http://192.168.1.3:5000/api/experience/${userID}`, {
+      await fetch(`http://192.168.1.12:5000/api/experience/${userID}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -401,7 +416,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.3:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.12:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -470,7 +485,7 @@ export default function PersonProfilepage({ route, navigation }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.11:5000/api/job_post/aws_upload/${userID}`,
+          `http://192.168.1.12:5000/api/job_post/aws_upload/${userID}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin
@@ -1135,7 +1150,7 @@ export default function PersonProfilepage({ route, navigation }) {
             </Modal>
           </View>
         </View>
-        {!states.job_provider_info ? (
+        {states.job_seeker_info ? (
           <>
             <View>
               <View
@@ -1310,27 +1325,39 @@ export default function PersonProfilepage({ route, navigation }) {
                 onPress={() => {
                   {
                     console.log(states.job_seeker_info);
-                    states.job_seeker_info
-                      ? handleSubmit({
+                    !states.job_seeker_info
+                      ? !states.job_provider_info
+                        ? handleSubmit({
+                            username:
+                              username == "" ? data[0].username : username,
+                            emailid: email == "" ? data[0].emailid : email,
+                            profilepic:
+                              profilepic == ""
+                                ? data[0].profilepic
+                                : profilepic,
+                          })
+                        : handleSubmit({
+                            username:
+                              username == "" ? data[0].username : username,
+                            companyname:
+                              companyname == ""
+                                ? data[0].companyname
+                                : companyname,
+                            emailid: email == "" ? data[0].emailid : email,
+                            designation:
+                              designation == ""
+                                ? data[0].designation
+                                : designation,
+                            profilepic:
+                              profilepic == ""
+                                ? data[0].profilepic
+                                : profilepic,
+                          })
+                      : handleSubmit({
                           username:
                             username == "" ? data[0].username : username,
                           emailid: email == "" ? data[0].emailid : email,
                           resume: resume == "" ? data[0].resume : resume,
-                          profilepic:
-                            profilepic == "" ? data[0].profilepic : profilepic,
-                        })
-                      : handleSubmit({
-                          username:
-                            username == "" ? data[0].username : username,
-                          companyname:
-                            companyname == ""
-                              ? data[0].companyname
-                              : companyname,
-                          emailid: email == "" ? data[0].emailid : email,
-                          designation:
-                            designation == ""
-                              ? data[0].designation
-                              : designation,
                           profilepic:
                             profilepic == "" ? data[0].profilepic : profilepic,
                         });

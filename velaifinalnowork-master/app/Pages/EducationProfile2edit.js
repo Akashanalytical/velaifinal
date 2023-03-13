@@ -106,7 +106,7 @@ export default function EduInfo2({ navigation: { goBack }, route }) {
     details.id = route.params.id;
     details.tableType = "education";
     try {
-      await fetch("http://192.168.1.11:5000/api/exp_eductaion_re", {
+      await fetch("http://192.168.1.12:5000/api/exp_eductaion_re", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -182,7 +182,7 @@ export default function EduInfo2({ navigation: { goBack }, route }) {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.7:5000/api/job_post/aws_upload/5`, {
+        await fetch(`http://192.168.1.12:5000/api/job_post/aws_upload/5`, {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -243,7 +243,7 @@ export default function EduInfo2({ navigation: { goBack }, route }) {
       console.log("Im at submitting thedata");
       console;
       try {
-        await fetch("http://192.168.1.11:5000/api/edu_exp_update", {
+        await fetch("http://192.168.1.12:5000/api/edu_exp_update", {
           method: "PUT", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

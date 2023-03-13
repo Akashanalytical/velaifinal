@@ -9,13 +9,19 @@ import {
   ActivityIndicator,
   Modal,
   Image,
+  Alert,
   TouchableHighlight,
 } from "react-native";
 import { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { useSelector, useDispatch } from "react-redux";
+
 import DropDownPicker from "react-native-dropdown-picker";
 import { useContext } from "react";
 import { LocalizationContext } from "../../App";
+//form validation for the react hook form
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import Checkbox from "expo-checkbox";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -24,7 +30,55 @@ import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 
-const ShortTermRental = () => {
+const schema = yup.object().shape({
+  product_name: yup.string().required("Job title cant be empty"),
+
+  product_type: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  // .typeError("workspace cannot be null")
+  product_fees: yup.string().required("workspace is required"),
+  product_fees_hour: yup
+    .string()
+    .required("workspace is required")
+    .typeError("workspace cannot be null"),
+  Duration2: yup
+    .string()
+    .required("workspace is required")
+    .typeError("workspace cannot be null"),
+  Duration: yup.string().required("workspace is required"),
+  country: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  state: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  District: yup
+    .string()
+    .required("Job title cant be empty")
+    .typeError("job title  cannot be null"),
+  address: yup.string().required("location of the job is required"),
+  product_description: yup.string().required("location of the job is required"),
+  // location: yup.string().required("location of the job is required"),
+  // Duration: yup
+  //   .string()
+  //   .typeError("Duration cannot be null")
+  //   .required("Duration is required"),
+  // per: yup
+  //   .string()
+  //   .required("salary details cant be empty")
+  //   .typeError("job title  cannot be null"),
+  // Salary: yup.required("Please enter the salary Details"),
+
+  // Salary: yup.string().required("Please enter the salary Details"),
+  // mobile_number: yup.string().required("Mobile number is required"),
+  // email: yup.string().required("email id is required"),
+});
+
+const ShortTermRental = ({ navigation: { goBack } }) => {
   const [genderOpen, setGenderOpen] = useState(false);
   const [genderValue, setGenderValue] = useState(null);
   const { t, language, setlanguage } = useContext(LocalizationContext);
@@ -65,6 +119,14 @@ const ShortTermRental = () => {
     { label: "7-12months", value: "7-12months" },
     { label: "Permanent", value: "Permanent" },
   ]);
+
+  //per
+  //  const [houropen, sethouropen] = useState(false);
+  //  const [hourvalue, sethourvalue] = useState(false);
+  //  const [hour, sethour] = useState([
+  //    { label: "/Per Month", value: "Per Month" },
+  //    { label: "/LPA", value: "/LPA" },
+  //  ]);
   const ondurationOpen = useCallback(() => {
     setProductOpen(false);
   });
@@ -72,6 +134,15 @@ const ShortTermRental = () => {
   //perday hour
   const [houropen, sethouropen] = useState(false);
   const [hourvalue, sethourvalue] = useState(false);
+  const [houropen1, sethouropen1] = useState(false);
+  const [hourvalue1, sethourvalue1] = useState(false);
+  const [duration1, setduration1] = useState([
+    { label: "Hour", value: "Hour" },
+    { label: "Week", value: "Week" },
+    { label: "Day", value: "Day" },
+    { label: "Month", value: "Month" },
+    { label: "Year", value: "Year" },
+  ]);
   const [hour, sethour] = useState([
     { label: "/Hour", value: "Hour" },
     { label: "/Week", value: "Week" },
@@ -90,6 +161,10 @@ const ShortTermRental = () => {
     { label: "/Per Year", value: "Per Year" },
   ]);
 
+  //country
+  const [countryopen, setcountryopen] = useState(false);
+  const [countryvalue, setcountryvalue] = useState(null);
+
   //company
   const [companyOpen, setCompanyOpen] = useState(false);
   const [companyValue, setCompanyValue] = useState(null);
@@ -99,11 +174,36 @@ const ShortTermRental = () => {
     { label: "UET", value: "uet" },
   ]);
 
+  const userID = useSelector((state) => state.ID);
+
   //to get the item
   useEffect(() => {
     fetchdata();
     getCountries();
+    getuserdata();
   }, []);
+  const [phonenumber, setphonenumber] = useState("");
+  async function getuserdata() {
+    try {
+      await fetch(`http://192.168.1.12:5000/api/user_number/${userID}`, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+        .then((response) => response.json())
+        .then(
+          (result) => (console.log(result), setphonenumber(result["number"]))
+        );
+    } catch (error) {
+      console.log("i at job titile error");
+      console.warn(error);
+    }
+  }
   //country city state
   const [data, setdata] = useState([]);
   // console.log(Country.getAllCountries());
@@ -153,9 +253,9 @@ const ShortTermRental = () => {
 
   // //to get the states
   const onCountryChange = (paras) => {
+    console.log("im at theee country changeee");
     let states = data.filter((e) => e.country == paras);
     console.log("im at country");
-    console.log(states);
     states = [...new Set(states.map((item) => item.subcountry))];
     states.sort();
 
@@ -169,7 +269,6 @@ const ShortTermRental = () => {
     let districts = data.filter((e) => e.subcountry == paras);
     console.log("Im at districts");
     districts = [...new Set(districts.map((item) => item.name))];
-    console.log(districts);
     for (let i = 0; i < districts.length; i++) {
       districtsobj.push({ label: districts[i], value: districts[i] });
     }
@@ -182,7 +281,7 @@ const ShortTermRental = () => {
   };
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.11:5000/api/job_title", {
+      await fetch("http://192.168.1.12:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -199,7 +298,7 @@ const ShortTermRental = () => {
       console.warn(error);
     }
   }
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const onGenderOpen = useCallback(() => {
     setCompanyOpen(false);
   }, []);
@@ -254,18 +353,21 @@ const ShortTermRental = () => {
     async function submitdata() {
       try {
         console.log("im inside");
-        await fetch(`http://192.168.1.11:5000/api/job_post/aws_upload/5`, {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            // Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formdata, // body data type must match "Content-Type" header
-        })
+        await fetch(
+          `http://192.168.1.12:5000/api/job_post/aws_upload/${userID}`,
+          {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+              // Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formdata, // body data type must match "Content-Type" header
+          }
+        )
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
@@ -279,8 +381,16 @@ const ShortTermRental = () => {
     }
     submitdata();
   }
-  const { handleSubmit, control } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const onSubmit = (data) => {
+    console.log("im at the recieving data");
+    console.log(data);
     const result = company.filter(checkcom);
     function checkcom(com) {
       return com.value == companyValue;
@@ -290,12 +400,16 @@ const ShortTermRental = () => {
     // console.log(finalJob);
     // data.job_title = finalJob;
     data.pic = jobpost;
-    data.isallow_tocall = isclicked;
-    console.log(durationvalue);
+    data.user_id = userID;
+    data.number = phonenumber;
+    // data.isallow_tocall = isclicked;
+    // console.log(durationvalue);
+    console.log("im at the recieving data");
     console.log(data, "data");
+
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.11:5000/api/shorttime_job", {
+        await fetch("http://192.168.1.12:5000/api/rental_pro_product_post", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -309,6 +423,11 @@ const ShortTermRental = () => {
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
+            if (result.post == "success") {
+              goBack();
+            } else {
+              Alert.alert(result.post);
+            }
           });
       } catch (error) {
         console.warn(error);
@@ -320,7 +439,7 @@ const ShortTermRental = () => {
     <View style={styles.container}>
       <ScrollView>
         <Controller
-          name="productname"
+          name="product_name"
           defaultValue=""
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -335,18 +454,35 @@ const ShortTermRental = () => {
             />
           )}
         />
+        {errors.product_name && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.product_name.message}
+          </Text>
+        )}
         <View style={styles.dropdownCompany}>
           <Controller
-            name="Product_type"
+            // name="hour"
+            // defaultValue=""
+            // control={control}
+            name="product_type"
             defaultValue=""
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value, onBlur } }) => (
               <DropDownPicker
                 style={styles.dropdown}
+                // open={houropen}
+                // value={hourvalue} //companyValue
+                // items={hour}
+                // setOpen={sethouropen}
+                // setValue={sethourvalue}
+                // setItems={sethour}
                 open={ProductOpen}
                 value={ProducttypeValue} //companyValue
                 items={Product}
                 setOpen={setProductOpen}
+                setValue={setProducttypeValue}
+                setItems={setProduct}
+                onBlur={onBlur}
                 listMode="MODAL"
                 modalTitle="SelecT Product Type"
                 modalProps={{
@@ -355,64 +491,178 @@ const ShortTermRental = () => {
                 modalContentContainerStyle={{
                   backgroundColor: "white",
                 }}
-                setValue={setProducttypeValue}
-                setItems={setProduct}
                 placeholder="Product Type"
                 placeholderStyle={styles.placeholderStyles}
                 loading={loading}
                 activityIndicatorColor="#5188E3"
                 searchable={true}
                 searchPlaceholder="Search title here..."
+                // onOpen={onCompanyOpen}
+                // onChangeValue={onChange}
                 onOpen={onCompanyOpen}
-                onChangeValue={onstateChange}
+                onChangeValue={onChange}
                 zIndex={1000}
                 zIndexInverse={3000}
               />
             )}
           />
+          {errors.product_type && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.product_type.message}
+            </Text>
+          )}
         </View>
-        <Controller
-          name="ProductFee"
-          defaultValue=""
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              selectionColor={"#5188E3"}
-              placeholder="Product Fee"
-              onChangeText={onChange}
-              value={value}
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <View>
+            <Controller
+              name="product_fees"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[styles.input, { width: 200 }]}
+                  selectionColor={"#5188E3"}
+                  placeholder="Product Fees"
+                  keyboardType="number-pad"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
-        <Controller
-          name="Rental Duration"
-          defaultValue=""
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              selectionColor={"#5188E3"}
-              placeholder="Rental Duration"
-              onChangeText={onChange}
-              value={value}
+            {errors.product_fees && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.product_fees.message}
+              </Text>
+            )}
+          </View>
+          <View>
+            <Controller
+              name="product_fees_hour"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <View style={styles.dropdownCompany}>
+                  <DropDownPicker
+                    style={[styles.dropdown, { width: 120 }]}
+                    open={houropen}
+                    value={hourvalue} //companyValue
+                    items={hour}
+                    setOpen={sethouropen}
+                    setValue={sethourvalue}
+                    setItems={sethour}
+                    placeholder="/hour"
+                    dropDownContainerStyle={{
+                      position: "relative", // to fix scroll issue ... it is by default 'absolute'
+                      top: 0, //to fix gap between label box and container
+                    }}
+                    placeholderStyle={[styles.placeholderStyles]}
+                    containerStyle={{ zIndex: 50, width: 120 }}
+                    loading={loading}
+                    listMode="SCROLLVIEW"
+                    activityIndicatorColor="#5188E3"
+                    searchable={true}
+                    searchPlaceholder="Set duration here..."
+                    onOpen={onCompanyOpen}
+                    onChangeValue={onChange}
+                  />
+                </View>
+              )}
             />
-          )}
-        />
+            {errors.product_fees_hour && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.product_fees_hour.message}
+              </Text>
+            )}
+          </View>
+          <View></View>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <View>
+            <Controller
+              name="Duration"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[styles.input, { width: 200 }]}
+                  selectionColor={"#5188E3"}
+                  placeholder="Rental Duration"
+                  keyboardType="number-pad"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            {errors.Duration && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.Duration.message}
+              </Text>
+            )}
+          </View>
+
+          <View>
+            <Controller
+              name="Duration2"
+              defaultValue=""
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <View style={styles.dropdownCompany}>
+                  <DropDownPicker
+                    style={[styles.dropdown, { width: 120 }]}
+                    open={houropen1}
+                    value={hourvalue1} //companyValue
+                    items={duration1}
+                    setOpen={sethouropen1}
+                    setValue={sethourvalue1}
+                    setItems={setduration1}
+                    placeholder="hour"
+                    dropDownContainerStyle={{
+                      position: "relative", // to fix scroll issue ... it is by default 'absolute'
+                      top: 0, //to fix gap between label box and container
+                    }}
+                    placeholderStyle={[styles.placeholderStyles]}
+                    containerStyle={{ zIndex: 50, width: 120 }}
+                    loading={loading}
+                    listMode="SCROLLVIEW"
+                    activityIndicatorColor="#5188E3"
+                    searchable={true}
+                    searchPlaceholder="Set duration here..."
+                    onOpen={ondurationOpen}
+                    onChangeValue={onChange}
+                  />
+                </View>
+              )}
+            />
+            {errors.Duration2 && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.Duration2.message}
+              </Text>
+            )}
+          </View>
+          <View></View>
+        </View>
         <View style={styles.dropdownCompany}>
           <Controller
-            name="District"
+            name="country"
             defaultValue=""
             control={control}
             render={({ field: { onChange, value } }) => (
               <DropDownPicker
                 style={styles.dropdown}
-                open={houropen}
-                value={hourvalue} //companyValue
+                open={countryopen}
+                value={countryvalue} //companyValue
                 items={countryObj}
-                setOpen={sethouropen}
-                setValue={sethourvalue}
-                setItems={sethour}
+                setOpen={setcountryopen}
+                setValue={setcountryvalue}
+                // setItems={sethour}
                 placeholder="Select Country"
                 dropDownContainerStyle={{
                   position: "relative", // to fix scroll issue ... it is by default 'absolute'
@@ -426,10 +676,15 @@ const ShortTermRental = () => {
                 searchable={true}
                 searchPlaceholder="Set duration here..."
                 onOpen={ondurationOpen}
-                onChangeValue={onCountryChange(hourvalue)}
+                onChangeValue={(onCountryChange(countryvalue), onChange)}
               />
             )}
           />
+          {errors.country && (
+            <Text style={{ color: "red", marginLeft: 20 }}>
+              {errors.country.message}
+            </Text>
+          )}
         </View>
         <View
           style={{
@@ -439,7 +694,7 @@ const ShortTermRental = () => {
         >
           <View>
             <Controller
-              name="city"
+              name="District"
               defaultValue=""
               control={control}
               render={({ field: { onChange, value } }) => (
@@ -451,8 +706,8 @@ const ShortTermRental = () => {
                     items={districtsobj}
                     setOpen={setcityopen}
                     setValue={setcityvalue}
-                    setItems={sethour}
-                    placeholder="State"
+                    // setItems={sethour}
+                    placeholder="District"
                     dropDownContainerStyle={{
                       position: "relative", // to fix scroll issue ... it is by default 'absolute'
                       top: 0, //to fix gap between label box and container
@@ -465,15 +720,20 @@ const ShortTermRental = () => {
                     searchable={true}
                     searchPlaceholder="Set duration here..."
                     onOpen={ondurationOpen}
-                    onChangeValue={onstateChange(companyValue)}
+                    onChangeValue={(onstateChange(companyValue), onChange)}
                   />
                 </View>
               )}
             />
+            {errors.District && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.District.message}
+              </Text>
+            )}
           </View>
           <View>
             <Controller
-              name="Job_Title"
+              name="state"
               defaultValue=""
               control={control}
               render={({ field: { onChange, value } }) => (
@@ -493,7 +753,7 @@ const ShortTermRental = () => {
                   }}
                   setValue={setCompanyValue}
                   setItems={setComapny}
-                  placeholder="Product Type"
+                  placeholder="state"
                   placeholderStyle={styles.placeholderStyles}
                   loading={loading}
                   activityIndicatorColor="#5188E3"
@@ -501,16 +761,21 @@ const ShortTermRental = () => {
                   containerStyle={{ zIndex: 50, width: 150 }}
                   searchPlaceholder="Search title here..."
                   onOpen={onCompanyOpen}
-                  onChangeValue={onCityChange(cityvalue)}
+                  onChangeValue={(onCityChange(cityvalue), onChange)}
                   zIndex={1000}
                   zIndexInverse={3000}
                 />
               )}
             />
+            {errors.state && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                {errors.state.message}
+              </Text>
+            )}
           </View>
         </View>
         <Controller
-          name="Address"
+          name="address"
           defaultValue=""
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -528,8 +793,13 @@ const ShortTermRental = () => {
             />
           )}
         />
+        {errors.address && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.address.message}
+          </Text>
+        )}
         <Controller
-          name="Product Description"
+          name="product_description"
           defaultValue=""
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -547,6 +817,31 @@ const ShortTermRental = () => {
             />
           )}
         />
+        {errors.product_description && (
+          <Text style={{ color: "red", marginLeft: 20 }}>
+            {errors.product_description.message}
+          </Text>
+        )}
+        <View>
+          <Controller
+            name="number"
+            defaultValue=""
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={[styles.input]}
+                selectionColor={"#5188E3"}
+                placeholder="Mobile Number"
+                keyboardType="number-pad"
+                multiline
+                // maxLength={}
+                numberOfLines={4}
+                onChangeText={onChange}
+                value={phonenumber == "" ? value : phonenumber}
+              />
+            )}
+          />
+        </View>
         <Text style={{ marginHorizontal: 10, color: "#333" }}> Add Image</Text>
         <TouchableOpacity
           onPress={() => {
@@ -649,22 +944,22 @@ const ShortTermRental = () => {
             </View>
           </View>
         </Modal>
-        <LinearGradient
-          colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
-          style={{
-            // backgroundColor: isValid ? "#6BC3FF" : "#87CEEB",
-            textAlign: "center",
-            marginHorizontal: 60,
-            paddingVertical: 15,
-            borderRadius: 15,
-            alignItems: "center",
-            marginTop: 20,
-          }}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          useAngle={45}
-        >
-          <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+          <LinearGradient
+            colors={["#16323B", "#1F4C5B", "#1E5966", "#16323B"]}
+            style={{
+              // backgroundColor: isValid ? "#6BC3FF" : "#87CEEB",
+              textAlign: "center",
+              marginHorizontal: 60,
+              paddingVertical: 15,
+              borderRadius: 15,
+              alignItems: "center",
+              marginTop: 20,
+            }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            useAngle={45}
+          >
             <Text
               style={{
                 color: "#fff",
@@ -672,8 +967,8 @@ const ShortTermRental = () => {
             >
               Create Post
             </Text>
-          </TouchableOpacity>
-        </LinearGradient>
+          </LinearGradient>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

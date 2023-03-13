@@ -55,53 +55,7 @@ const renderItem = ({ item, index }) => {
   );
 };
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
-
-const Item = ({ title, index, time, product_fees, pic, navigation, id }) => (
-  <MotiView
-    style={styles.listContainer}
-    from={{ opacity: 0, translateY: 50 }}
-    animate={{ opacity: 1, translateY: 0 }}
-    transition={{ delay: 10 + index * 200 }}
-  >
-    <View>
-      <TouchableWithoutFeedback
-        onPress={() =>
-          navigation.navigate("rentalswipe", {
-            post_id: id,
-          })
-        }
-      >
-        <View style={styles.imageContainer}>
-          <Image
-            resizeMode="contain"
-            source={{ uri: pic }}
-            style={styles.image}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      <Text style={styles.nameText}>{title}</Text>
-      <Text style={styles.priceText}>
-        {product_fees}/{time}
-      </Text>
-    </View>
-  </MotiView>
-);
-
-function Maincategory({ route }) {
+function Transport({ route }) {
   const hi = "helllo";
   console.log(`${hi},hello`);
   const navigation = useNavigation();
@@ -111,23 +65,20 @@ function Maincategory({ route }) {
   const [data, setData] = useState("");
   const [refreshing, setRefreshing] = useState(true);
   useEffect(() => {
-    getuserdata();
+    getuserdata("Transport");
   }, [selected_Tools]);
-  async function getuserdata() {
+  async function getuserdata(paras) {
     try {
-      await fetch(
-        `http://192.168.1.12:5000/api/rent_post_fillter/${selected_Tools}`,
-        {
-          method: "GET", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
-      )
+      await fetch(`http://192.168.1.3:5000/api/rent_post_fillter/${paras}`, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
@@ -151,30 +102,22 @@ function Maincategory({ route }) {
       {refreshing ? (
         <ActivityIndicator />
       ) : (
-        // <SafeAreaView style={styles.container}>
         <FlatList
           data={data}
-          renderItem={({ item, index }) => (
-            <Item
-              title={item.product_name}
-              index={index}
-              id={item.id}
-              pic={item.pic}
-              product_fees={item.product_fees}
-              time={item.product_fees_hour}
-              navigation={navigation}
-            />
-          )}
-          numColumns={2}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getuserdata()} />
+          }
         />
-        // </SafeAreaView>
       )}
     </SafeAreaView>
   );
 }
 
-export default Maincategory;
+export default Transport;
 
 const styles = StyleSheet.create({
   container: {

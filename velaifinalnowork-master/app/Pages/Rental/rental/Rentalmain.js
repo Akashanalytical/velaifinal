@@ -15,13 +15,13 @@ import { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
+import { useSelector, useDispatch } from "react-redux";
 import {
   MaterialIcons,
   MaterialCommunityIcons,
   FontAwesome,
 } from "@expo/vector-icons";
-
+import Transport from "../../../components/Maincategory/transpor";
 import Maincategory from "../../../components/Maincategory/Maincategory";
 // import Location from "./Location";
 // import MyComponent from "./Category";
@@ -46,7 +46,7 @@ const listTab = [
     ),
   },
   {
-    status: "Vehicles",
+    status: "Transport",
 
     icon: (
       <Image
@@ -57,7 +57,7 @@ const listTab = [
     ),
   },
   {
-    status: "Cloths",
+    status: "Jewellery",
     icon: (
       <Image
         resizeMode="contain"
@@ -67,7 +67,7 @@ const listTab = [
     ),
   },
   {
-    status: "Electronics",
+    status: "Home Appliances",
     icon: (
       <Image
         resizeMode="contain"
@@ -87,7 +87,7 @@ const listTab = [
     ),
   },
   {
-    status: "Furniture",
+    status: "Makeup",
     icon: (
       <Image
         resizeMode="contain"
@@ -97,7 +97,7 @@ const listTab = [
     ),
   },
   {
-    status: "Makeup kit",
+    status: "Cloths",
     icon: (
       <Image
         resizeMode="contain"
@@ -107,7 +107,7 @@ const listTab = [
     ),
   },
   {
-    status: "Company",
+    status: "Plots/Villas",
     icon: (
       <Image
         resizeMode="contain"
@@ -117,7 +117,7 @@ const listTab = [
     ),
   },
   {
-    status: "Posted by",
+    status: "Furnitures",
     icon: (
       <Image
         resizeMode="contain"
@@ -127,7 +127,7 @@ const listTab = [
     ),
   },
   {
-    status: "Poste by",
+    status: "Hospital",
     icon: (
       <Image
         resizeMode="contain"
@@ -146,65 +146,71 @@ const data = [
     status: "Tools",
   },
   {
-    name: "<MyComponent />",
+    name: <Maincategory />,
     text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
-    status: "Vehicles",
+    status: "Transport",
   },
 
   {
-    name: "<Duration />,",
+    name: <Maincategory />,
     text: "Here I go into details about myself and my business, including the services we provide, how we started and our overall ethos.",
-    status: "Cloths",
+    status: "Jewellery",
   },
   {
-    name: "<Workmode />",
+    name: <Maincategory />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Electronics",
+    status: "Home Appliances",
   },
   {
-    name: "<Salery />",
+    name: <Maincategory />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
     status: "Kitchen Tools",
   },
   {
-    name: "<Education />",
+    name: <Maincategory />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Furniture",
+    status: "Makeup",
   },
   {
-    name: "<Experiance />",
+    name: <Maincategory />,
     text: "This is my homepage. Here I welcome you to my website and try me best to make a good impression. I tell you about the services I provide and encourage you to venture into my site.",
-    status: "Makeup kit",
+    status: "Cloths",
   },
   {
-    name: "<Company />",
+    name: <Maincategory />,
 
     text: "work",
-    status: "Company",
+    status: "Plots/Villas",
   },
   {
-    name: "<Post />",
+    name: <Maincategory />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Posted by",
+    status: "Furnitures",
   },
   {
-    name: "<Post />",
+    name: <Maincategory />,
     text: "Here we give you information on how to contact us for business discussions and possible collaborations.",
-    status: "Poste by",
+    status: "Hospital",
   },
 ];
 
 export default function Rental(navigation) {
-  const [status, setStatus] = useState("Tools");
+  const Redux_Dispatch = useDispatch();
+
+  const selected_Tools = useSelector((state) => state.selected_Tools);
+  console.log(selected_Tools);
+  const [status, setStatus] = useState(selected_Tools);
   const [dataList, setDataList] = useState([
-    ...data.filter((e) => e.status === "Tools"),
+    ...data.filter((e) => e.status === selected_Tools),
   ]);
 
   const setStatusFilter = (status) => {
-    if (status !== "Tools") {
+    if (status !== selected_Tools) {
       setDataList([...data.filter((e) => e.status === status)]);
+      console.log(status);
+      Redux_Dispatch({ type: "select_items", payload: status });
     } else {
-      setDataList([...data.filter((e) => e.status === "Tools")]);
+      setDataList([...data.filter((e) => e.status === selected_Tools)]);
     }
 
     setStatus(status);
@@ -241,7 +247,7 @@ export default function Rental(navigation) {
 
         <FlatList
           data={dataList}
-          keyExtractor={(e, i) => i.toString()}
+          // keyExtractor={(e, i) => i.toString()}
           renderItem={renderItem}
         />
       </View>

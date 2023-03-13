@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const providerValidationSchema = yup.object().shape({
-  number: yup.number().required("number is required"),
+  // number: yup.number().required("number is required"),
   emailid: yup
     .string()
     .email("Please enter valid email")

@@ -94,7 +94,7 @@ export default function Landing({ navigation }) {
     console.log(body);
     async function submitdata() {
       try {
-        await fetch("http://192.168.1.9:5000/api/signin   ", {
+        await fetch("http://192.168.1.12:5000/api/signin   ", {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

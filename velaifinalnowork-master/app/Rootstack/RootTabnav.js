@@ -1036,7 +1036,7 @@ export function Rentalseekerbottomtab({ route }) {
   );
 }
 
-export function Rentalproviderbottomtab({ route }) {
+export function Rentalproviderbottomtab({ route, navigation }) {
   // console.log("im at bot nav");
   return (
     <Tab.Navigator
@@ -1112,6 +1112,7 @@ export function Rentalproviderbottomtab({ route }) {
         name="history"
         component={Rentalproducthistory}
         options={{ title: "History" }}
+        navigation={navigation}
       />
       {/* <Tab.Screen name="chat" component={ChatScreen} options={{ title: "" }} /> */}
       <Tab.Screen

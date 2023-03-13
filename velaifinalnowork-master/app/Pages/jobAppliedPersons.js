@@ -51,7 +51,7 @@ const JOBApplied = ({ route }) => {
   async function submitdata(paras1) {
     console.log(paras1);
     try {
-      await fetch(`http://192.168.1.11:5000/api/job_s_apply_user/${paras1}`, {
+      await fetch(`http://192.168.1.12:5000/api/job_s_apply_user/${paras1}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -76,7 +76,7 @@ const JOBApplied = ({ route }) => {
   }
   async function submitdata1(paras1) {
     try {
-      await fetch(`http://192.168.1.11:5000/api/job_l_apply_user/${paras1}`, {
+      await fetch(`http://192.168.1.12:5000/api/job_l_apply_user/${paras1}`, {
         method: "GET",
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

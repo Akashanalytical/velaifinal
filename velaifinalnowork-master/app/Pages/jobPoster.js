@@ -76,7 +76,7 @@ export default function JobposterDetails({ route }) {
   }, []);
   async function fetchdata() {
     try {
-      await fetch("http://192.168.1.11:5000/api/job_title", {
+      await fetch("http://192.168.1.12:5000/api/job_title", {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -121,7 +121,7 @@ export default function JobposterDetails({ route }) {
     console.log(paras);
     const JobpostingData = async () => {
       try {
-        await fetch("http://192.168.1.11:5000/api/poster", {
+        await fetch("http://192.168.1.12:5000/api/poster", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           mode: "cors", // no-cors, *cors, same-origin
           cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -191,7 +191,7 @@ export default function JobposterDetails({ route }) {
       try {
         console.log("im inside");
         await fetch(
-          `http://192.168.1.11:5000/api/job_post/aws_upload/${final_Id}`,
+          `http://192.168.1.12:5000/api/job_post/aws_upload/${final_Id}`,
           {
             method: "POST",
             mode: "cors", // no-cors, *cors, same-origin

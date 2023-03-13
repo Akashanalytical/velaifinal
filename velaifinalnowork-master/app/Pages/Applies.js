@@ -275,7 +275,7 @@ function Saved({ navigation }) {
     console.log("i am at the dataa");
     console.log(navigation);
     try {
-      await fetch(`http://192.168.1.8:5000/api/s_apply_details/${user_id}`, {
+      await fetch(`http://192.168.1.12:5000/api/s_apply_details/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
